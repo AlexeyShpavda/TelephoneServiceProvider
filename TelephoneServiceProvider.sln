@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelephoneServiceProvider.PresentationLayer", "TelephoneServiceProvider.PresentationLayer\TelephoneServiceProvider.PresentationLayer.csproj", "{DCD15E39-E7A6-4084-A2E2-FABD30A8BD17}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelephoneServiceProvider.BillingSystem", "TelephoneServiceProvider.BillingSystem\TelephoneServiceProvider.BillingSystem.csproj", "{30FD13A9-55FC-4D25-A2B9-A10ECADC860A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DCD15E39-E7A6-4084-A2E2-FABD30A8BD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCD15E39-E7A6-4084-A2E2-FABD30A8BD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCD15E39-E7A6-4084-A2E2-FABD30A8BD17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30FD13A9-55FC-4D25-A2B9-A10ECADC860A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30FD13A9-55FC-4D25-A2B9-A10ECADC860A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30FD13A9-55FC-4D25-A2B9-A10ECADC860A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30FD13A9-55FC-4D25-A2B9-A10ECADC860A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
