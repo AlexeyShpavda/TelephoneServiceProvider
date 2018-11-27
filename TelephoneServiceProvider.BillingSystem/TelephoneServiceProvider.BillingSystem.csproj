@@ -37,6 +37,9 @@
   <ItemGroup>
     <Compile Include="Call.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tariffs\Abstract\Tariff.cs" />
+    <Compile Include="Tariffs\Homebody.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
