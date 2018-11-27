@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using TelephoneServiceProvider.BillingSystem.Tariffs.Abstract;
 using TelephoneServiceProvider.Core.Clients;
+using TelephoneServiceProvider.Equipment.ClientHardware;
+using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
 namespace TelephoneServiceProvider.Core
 {
@@ -16,6 +21,40 @@ namespace TelephoneServiceProvider.Core
             Name = name;
             Clients = new List<Client>();
             Contracts = new List<Contract>();
+        }
+
+        public Contract EnterIntoContract(Client client, Tariff selectedTariff)
+        {
+            var company = this;
+            var passport = client.Passport;
+            var tariff = selectedTariff;
+            var clientEquipment = new ClientEquipment(new Terminal(), new Port(GetUniquePhoneNumber()));
+            var conditions = "Do not break equipment";
+
+            var newContract = new Contract(company, passport, tariff, clientEquipment, conditions);
+
+            Contracts.Add(newContract);
+
+            if (Clients.All(x => x != client))
+            {
+                Clients.Add(client);
+            }
+
+            return newContract;
+        }
+
+        private string GetUniquePhoneNumber()
+        {
+            var random = new Random();
+
+            string generatedPhoneNumber;
+
+            do
+            {
+                generatedPhoneNumber = Convert.ToString(random.Next());
+            } while (Contracts.Select(x => x.ClientEquipment.Port.PhoneNumber).Contains(generatedPhoneNumber));
+
+            return generatedPhoneNumber;
         }
     }
 }
