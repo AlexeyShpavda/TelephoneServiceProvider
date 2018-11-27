@@ -2,11 +2,11 @@
 
 namespace TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs
 {
-    public class IncomingCallEventArguments : EventArgs
+    public class IncomingCallEventArgs : EventArgs
     {
         public string SenderPhoneNumber { get; set; }
 
-        public IncomingCallEventArguments(string senderPhoneNumber)
+        public IncomingCallEventArgs(string senderPhoneNumber)
         {
             SenderPhoneNumber = senderPhoneNumber;
         }

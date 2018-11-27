@@ -14,9 +14,9 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public event EventHandler<RejectedCallEventArgs> NotifyTerminalOfRejectionOfCall;
 
-        public event EventHandler<FailureEventArguments> NotifyTerminalOfFailure;
+        public event EventHandler<FailureEventArgs> NotifyTerminalOfFailure;
 
-        public event EventHandler<IncomingCallEventArguments> NotifyTerminalOfIncomingCall;
+        public event EventHandler<IncomingCallEventArgs> NotifyTerminalOfIncomingCall;
 
         public string PhoneNumber { get; private set; }
 
@@ -46,7 +46,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             OnNotifyStationOfOutgoingCall(new OutgoingCallEventArgs(PhoneNumber, receiverPhoneNumber));
         }
 
-        public void IncomingCall(object sender, IncomingCallEventArguments e)
+        public void IncomingCall(object sender, IncomingCallEventArgs e)
         {
             PortStatus = PortStatus.Busy;
 
@@ -72,7 +72,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             OnNotifyTerminalOfRejectionOfCall(e);
         }
 
-        public void ReportError(object sender, FailureEventArguments e)
+        public void ReportError(object sender, FailureEventArgs e)
         {
             PortStatus = PortStatus.Free;
 
@@ -84,12 +84,12 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             NotifyStationOfOutgoingCall?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyTerminalOfFailure(FailureEventArguments e)
+        protected virtual void OnNotifyTerminalOfFailure(FailureEventArgs e)
         {
             NotifyTerminalOfFailure?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyTerminalOfIncomingCall(IncomingCallEventArguments e)
+        protected virtual void OnNotifyTerminalOfIncomingCall(IncomingCallEventArgs e)
         {
             NotifyTerminalOfIncomingCall?.Invoke(this, e);
         }

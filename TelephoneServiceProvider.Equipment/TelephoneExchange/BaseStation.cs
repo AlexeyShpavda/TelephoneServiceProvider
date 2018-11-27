@@ -9,11 +9,11 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 {
     public class BaseStation
     {
-        public event EventHandler<IncomingCallEventArguments> NotifyPortOfIncomingCall;
+        public event EventHandler<IncomingCallEventArgs> NotifyPortOfIncomingCall;
 
         public event EventHandler<RejectedCallEventArgs> NotifyPortOfRejectionOfCall;
 
-        public event EventHandler<FailureEventArguments> NotifyPortOfFailure;
+        public event EventHandler<FailureEventArgs> NotifyPortOfFailure;
 
         public IList<Port> Ports { get; }
 
@@ -37,12 +37,12 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             {
                 CallsWaitingToBeAnswered.Add(senderPort, receiverPort);
 
-                OnNotifyPortOfIncomingCall(new IncomingCallEventArguments(senderPort.PhoneNumber), senderPort,
+                OnNotifyPortOfIncomingCall(new IncomingCallEventArgs(senderPort.PhoneNumber), senderPort,
                     receiverPort);
             }
             else
             {
-                OnNotifyPortOfFailure(new FailureEventArguments(e.ReceiverPhoneNumber), senderPort);
+                OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber), senderPort);
             }
         }
 
@@ -80,23 +80,23 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             OnNotifyPortAboutRejectionOfCall(e, portWhichNeedToSendNotification);
         }
 
-        protected virtual void OnNotifyPortOfIncomingCall(IncomingCallEventArguments e, Port senderPort, Port receiverPort)
+        protected virtual void OnNotifyPortOfIncomingCall(IncomingCallEventArgs e, Port senderPort, Port receiverPort)
         {
             try
             {
                 (NotifyPortOfIncomingCall?.GetInvocationList().First(x => x.Target == receiverPort) as
-                    EventHandler<IncomingCallEventArguments>)?.Invoke(this, e);
+                    EventHandler<IncomingCallEventArgs>)?.Invoke(this, e);
             }
             catch (Exception)
             {
-                OnNotifyPortOfFailure(new FailureEventArguments(receiverPort.PhoneNumber), senderPort);
+                OnNotifyPortOfFailure(new FailureEventArgs(receiverPort.PhoneNumber), senderPort);
             }
         }
 
-        protected virtual void OnNotifyPortOfFailure(FailureEventArguments e, Port port)
+        protected virtual void OnNotifyPortOfFailure(FailureEventArgs e, Port port)
         {
             (NotifyPortOfFailure?.GetInvocationList().First(x => x.Target == port) as
-                EventHandler<FailureEventArguments>)?.Invoke(this, e);
+                EventHandler<FailureEventArgs>)?.Invoke(this, e);
         }
 
         protected virtual void OnNotifyPortAboutRejectionOfCall(RejectedCallEventArgs e, Port port)

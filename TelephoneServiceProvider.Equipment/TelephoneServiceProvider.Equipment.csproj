@@ -40,8 +40,8 @@
     <Compile Include="TelephoneExchange\BaseStation.cs" />
     <Compile Include="TelephoneExchange\Enums\PortStatus.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\AnsweredCallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\FailureEventArguments.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\IncomingCallEventArguments.cs" />
+    <Compile Include="TelephoneExchange\EventsArgs\FailureEventArgs.cs" />
+    <Compile Include="TelephoneExchange\EventsArgs\IncomingCallEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\OutgoingCallEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\RejectedCallEventArgs.cs" />
     <Compile Include="TelephoneExchange\Port.cs" />

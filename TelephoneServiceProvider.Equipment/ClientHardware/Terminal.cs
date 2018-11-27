@@ -79,12 +79,12 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             }
         }
 
-        public void NotifyUserAboutError(object sender, FailureEventArguments e)
+        public void NotifyUserAboutError(object sender, FailureEventArgs e)
         {
             Console.WriteLine($"{e.ReceiverPhoneNumber} - Subscriber Doesn't Exist or He is Busy");
         }
 
-        public void NotifyUserAboutIncomingCall(object sender, IncomingCallEventArguments e)
+        public void NotifyUserAboutIncomingCall(object sender, IncomingCallEventArgs e)
         {
             IsThereUnansweredCall = true;
             Console.WriteLine($"{e.SenderPhoneNumber} - is calling you");
