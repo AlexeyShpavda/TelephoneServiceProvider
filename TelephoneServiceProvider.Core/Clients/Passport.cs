@@ -10,7 +10,7 @@ namespace TelephoneServiceProvider.Core.Clients
 
         public string LastName { get; private set; }
 
-        public Passport(Guid identificationNumber, string firstName, string lastName)
+        public Passport(string firstName, string lastName)
         {
             IdentificationNumber = Guid.NewGuid();
             FirstName = firstName;
