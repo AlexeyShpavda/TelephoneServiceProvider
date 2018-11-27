@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using TelephoneServiceProvider.BillingSystem.Tariffs;
+using TelephoneServiceProvider.Core;
+using TelephoneServiceProvider.Core.Clients;
 using TelephoneServiceProvider.Equipment.ClientHardware;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
@@ -9,11 +12,21 @@ namespace TelephoneServiceProvider.PresentationLayer
     {
         private static void Main()
         {
-            var port1 = new Port("1");
-            var terminal1 = new Terminal();
+            var company = new Company("AS");
 
-            var port2 = new Port("2");
-            var terminal2 = new Terminal();
+            var tariff = new Homebody();
+
+            var client1 = new Client();
+            var client2 = new Client();
+
+            client1.Contract = company.EnterIntoContract(client1, tariff);
+            client2.Contract = company.EnterIntoContract(client2, tariff);
+
+            var terminal1 = client1.Contract.ClientEquipment.Terminal;
+            var port1 = client1.Contract.ClientEquipment.Port;
+
+            var terminal2 = client2.Contract.ClientEquipment.Terminal;
+            var port2 = client2.Contract.ClientEquipment.Port;
 
             var baseStation = new BaseStation(new List<Port> {port1, port2});
 

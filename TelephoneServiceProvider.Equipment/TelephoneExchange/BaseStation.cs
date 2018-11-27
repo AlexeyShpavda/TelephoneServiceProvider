@@ -51,6 +51,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             var receiverPort = (Port) sender;
             var senderPort = CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == receiverPort).Key;
 
+            if(senderPort == null) return;
+
             CallsWaitingToBeAnswered.Remove(senderPort);
 
             CallsInProgress.Add(new Call(senderPort.PhoneNumber, receiverPort.PhoneNumber)
@@ -61,7 +63,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         {
             var portRejectedCall = (Port) sender;
 
-            Port portWhichNeedToSendNotification = null;
+            Port portWhichNeedToSendNotification;
 
             var canceledCall =
                 CallsInProgress.FirstOrDefault(x =>
@@ -91,7 +93,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
                     portWhichNeedToSendNotification =
                         CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == portRejectedCall).Key;
 
-                    CallsWaitingToBeAnswered.Remove(portWhichNeedToSendNotification);
+                    if (portWhichNeedToSendNotification != null)
+                        CallsWaitingToBeAnswered.Remove(portWhichNeedToSendNotification);
                 }
             }
 

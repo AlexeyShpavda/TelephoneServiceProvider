@@ -4,6 +4,8 @@
     {
         public Passport Passport;
 
+        public Contract Contract { get; set; }
+
         public string Codeword { get; private set; }
     }
 }
