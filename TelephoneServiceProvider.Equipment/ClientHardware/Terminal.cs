@@ -14,12 +14,15 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public event EventHandler<AnsweredCallEventArgs> NotifyPortAboutAnsweredCall;
 
+        public Guid SerialNumber { get; }
+
         public bool IsConnectedWithPort { get; private set; }
 
         private Port Port { get; set; }
 
         public Terminal()
         {
+            SerialNumber = Guid.NewGuid();
             IsConnectedWithPort = false;
             Port = null;
         }
