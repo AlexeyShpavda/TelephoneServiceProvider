@@ -7,11 +7,15 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
     {
         public TerminalStatus TerminalStatus { get; private set; }
 
+        public bool IsConnectedWithPort { get; private set; }
+
         private Port Port { get; set; }
 
-        public Terminal(Port port)
+        public Terminal()
         {
-            Port = port;
+            TerminalStatus = TerminalStatus.SwitchedOff;
+            IsConnectedWithPort = false;
+            Port = null;
         }
 
         public void SwitchOn()
@@ -30,9 +34,24 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             }
         }
 
+        public void ConnectToPort(Port port)
+        {
+            Port = port;
+            IsConnectedWithPort = true;
+        }
+
+        public void DisconnectFromPort()
+        {
+            Port = null;
+            IsConnectedWithPort = false;
+        }
+
         public void Call(string number)
         {
-            Port.Call(number);
+            if (TerminalStatus == TerminalStatus.SwitchedOn && IsConnectedWithPort)
+            {
+                Port?.Call(number);
+            }
         }
     }
 }
