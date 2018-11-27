@@ -28,7 +28,7 @@ namespace TelephoneServiceProvider.Core
             var company = this;
             var passport = client.Passport;
             var tariff = selectedTariff;
-            var clientEquipment = new ClientEquipment(new Terminal(), new Port(GetUniquePhoneNumber()));
+            var clientEquipment = new ClientEquipment(new Terminal(), new Port(GetUniquePhoneNumber(), selectedTariff));
             var conditions = "Do not break equipment";
 
             var newContract = new Contract(company, passport, tariff, clientEquipment, conditions);

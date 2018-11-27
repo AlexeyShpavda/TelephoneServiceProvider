@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TelephoneServiceProvider.BillingSystem.Tariffs;
 using TelephoneServiceProvider.Core;
 using TelephoneServiceProvider.Core.Clients;
-using TelephoneServiceProvider.Equipment.ClientHardware;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
 namespace TelephoneServiceProvider.PresentationLayer
@@ -68,11 +67,11 @@ namespace TelephoneServiceProvider.PresentationLayer
             terminal2.NotifyPortAboutAnsweredCall += port2.AnswerCall;
             port2.NotifyStationOfAnsweredCall += baseStation.AnswerCall;
 
-            terminal1.Call("2");
+            terminal1.Call(port2.PhoneNumber);
 
             terminal2.Answer();
 
-            terminal1.Reject();
+            terminal2.Reject();
 
             Console.ReadKey();
         }

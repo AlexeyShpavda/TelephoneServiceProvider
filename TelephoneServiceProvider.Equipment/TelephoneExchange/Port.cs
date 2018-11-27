@@ -1,4 +1,5 @@
 ﻿using System;
+using TelephoneServiceProvider.BillingSystem.Tariffs.Abstract;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
@@ -20,12 +21,15 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public string PhoneNumber { get; private set; }
 
+        public Tariff Tariff { get; private set; }
+
         public PortStatus PortStatus { get; private set; }
 
-        public Port(string phoneNumber)
+        public Port(string phoneNumber, Tariff tariff)
         {
             PortStatus = PortStatus.SwitchedOff;
             PhoneNumber = phoneNumber;
+            Tariff = tariff;
         }
 
         public void ConnectToTerminal(object sender, EventArgs e)
