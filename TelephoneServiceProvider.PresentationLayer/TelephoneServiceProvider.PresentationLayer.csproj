@@ -43,5 +43,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TelephoneServiceProvider.Equipment\TelephoneServiceProvider.Equipment.csproj">
+      <Project>{c1767c8a-c025-4fa2-957b-9f8724e3c583}</Project>
+      <Name>TelephoneServiceProvider.Equipment</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

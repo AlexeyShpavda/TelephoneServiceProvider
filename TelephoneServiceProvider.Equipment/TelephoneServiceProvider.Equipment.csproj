@@ -35,7 +35,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientHardware\Enums\TerminalStatus.cs" />
+    <Compile Include="ClientHardware\Terminal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TelephoneExchange\BaseStation.cs" />
+    <Compile Include="TelephoneExchange\Enums\PortStatus.cs" />
+    <Compile Include="TelephoneExchange\Port.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
