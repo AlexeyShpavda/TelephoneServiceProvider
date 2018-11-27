@@ -8,6 +8,10 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
     {
         public event EventHandler<OutgoingCallEventArgs> NotifyStationOfOutgoingCall;
 
+        public event EventHandler<RejectedCallEventArgs> NotifyStationOfRejectionOfCall;
+
+        public event EventHandler<RejectedCallEventArgs> NotifyTerminalOfRejectionOfCall;
+
         public event EventHandler<FailureEventArguments> NotifyTerminalOfFailure;
 
         public event EventHandler<IncomingCallEventArguments> NotifyTerminalOfIncomingCall;
@@ -34,7 +38,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public void OutgoingCall(string receiverPhoneNumber)
         {
-            if (PortStatus != PortStatus.Free) return;
+            if (PortStatus != PortStatus.Free || PhoneNumber == receiverPhoneNumber) return;
 
             PortStatus = PortStatus.Busy;
             OnNotifyStationOfOutgoingCall(new OutgoingCallEventArgs(PhoneNumber, receiverPhoneNumber));
@@ -45,6 +49,20 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             PortStatus = PortStatus.Busy;
 
             OnNotifyTerminalOfIncomingCall(e);
+        }
+
+        public void RejectCall(object sender, RejectedCallEventArgs e)
+        {
+            PortStatus = PortStatus.Free;
+
+            OnNotifyStationAboutRejectionOfCall(new RejectedCallEventArgs(PhoneNumber));
+        }
+
+        public void InformTerminalAboutRejectionOfCall(object sender, RejectedCallEventArgs e)
+        {
+            PortStatus = PortStatus.Free;
+
+            OnNotifyTerminalOfRejectionOfCall(e);
         }
 
         public void ReportError(object sender, FailureEventArguments e)
@@ -67,6 +85,16 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         protected virtual void OnNotifyTerminalOfIncomingCall(IncomingCallEventArguments e)
         {
             NotifyTerminalOfIncomingCall?.Invoke(this, e);
+        }
+
+        protected virtual void OnNotifyStationAboutRejectionOfCall(RejectedCallEventArgs e)
+        {
+            NotifyStationOfRejectionOfCall?.Invoke(this, e);
+        }
+
+        protected virtual void OnNotifyTerminalOfRejectionOfCall(RejectedCallEventArgs e)
+        {
+            NotifyTerminalOfRejectionOfCall?.Invoke(this, e);
         }
     }
 }

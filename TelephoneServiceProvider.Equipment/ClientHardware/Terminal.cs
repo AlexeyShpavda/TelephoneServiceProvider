@@ -1,5 +1,4 @@
 ﻿using System;
-using TelephoneServiceProvider.Equipment.ClientHardware.Enums;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
@@ -11,33 +10,19 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public event EventHandler DisconnectedFromPort;
 
-        public TerminalStatus TerminalStatus { get; private set; }
+        public event EventHandler<RejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
 
         public bool IsConnectedWithPort { get; private set; }
+
+        public bool IsThereUnansweredCall;
 
         private Port Port { get; set; }
 
         public Terminal()
         {
-            TerminalStatus = TerminalStatus.SwitchedOff;
             IsConnectedWithPort = false;
+            IsThereUnansweredCall = false;
             Port = null;
-        }
-
-        public void SwitchOn()
-        {
-            if (TerminalStatus == TerminalStatus.SwitchedOff)
-            {
-                TerminalStatus = TerminalStatus.SwitchedOn;
-            }
-        }
-
-        public void SwitchOff()
-        {
-            if (TerminalStatus == TerminalStatus.SwitchedOn)
-            {
-                TerminalStatus = TerminalStatus.SwitchedOff;
-            }
         }
 
         public void ConnectToPort(Port port)
@@ -58,10 +43,25 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void Call(string receiverPhoneNumber)
         {
-            if (TerminalStatus == TerminalStatus.SwitchedOn && IsConnectedWithPort)
+            if (IsConnectedWithPort)
             {
                 Port.OutgoingCall(receiverPhoneNumber);
             }
+        }
+
+        public void Reject()
+        {
+            if (IsThereUnansweredCall)
+            {
+                Console.WriteLine("You Rejected Call");
+                IsThereUnansweredCall = false;
+                OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs(""));
+            }
+            else
+            {
+                Console.WriteLine("Nobody Calls You");
+            }
+
         }
 
         public void NotifyUserAboutError(object sender, FailureEventArguments e)
@@ -71,7 +71,13 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void NotifyUserAboutIncomingCall(object sender, IncomingCallEventArguments e)
         {
+            IsThereUnansweredCall = true;
             Console.WriteLine($"{e.SenderPhoneNumber} - is calling you");
+        }
+
+        public void NotifyUserAboutRejectedCall(object sender, RejectedCallEventArgs e)
+        {
+            Console.WriteLine($"{e.PhoneNumberOfPersonRejectedCall} - canceled the call");
         }
 
         protected virtual void OnConnectedToPort()
@@ -82,6 +88,11 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
         protected virtual void OnDisconnectedFromPort()
         {
             DisconnectedFromPort?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnNotifyPortAboutRejectionOfCall(RejectedCallEventArgs e)
+        {
+            NotifyPortAboutRejectionOfCall?.Invoke(this, e);
         }
     }
 }
