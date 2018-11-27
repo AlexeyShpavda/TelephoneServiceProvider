@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TelephoneServiceProvider.BillingSystem;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
@@ -16,11 +17,14 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public IList<Port> Ports { get; }
 
-        public readonly IDictionary<Port, Port> CallsWaitingToBeAnswered;
+        public IDictionary<Port, Port> CallsWaitingToBeAnswered { get; private set; }
+
+        public ICollection<Call> CallsInProgress { get; private set; }
 
         public BaseStation(IList<Port> ports)
         {
             CallsWaitingToBeAnswered = new Dictionary<Port, Port>();
+            CallsInProgress = new List<Call>();
             Ports = ports;
         }
 
@@ -40,6 +44,17 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             {
                 OnNotifyPortOfFailure(new FailureEventArguments(e.ReceiverPhoneNumber), senderPort);
             }
+        }
+
+        public void AnswerCall(object sender, AnsweredCallEventArgs e)
+        {
+            var receiverPort = (Port) sender;
+            var senderPort = CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == receiverPort).Key;
+
+            CallsWaitingToBeAnswered.Remove(senderPort);
+
+            CallsInProgress.Add(new Call(senderPort.PhoneNumber, receiverPort.PhoneNumber)
+                {CallStartTime = e.CallStartTime});
         }
 
         public void RejectCall(object sender, RejectedCallEventArgs e)

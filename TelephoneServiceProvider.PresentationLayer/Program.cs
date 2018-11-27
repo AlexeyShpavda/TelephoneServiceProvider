@@ -33,6 +33,8 @@ namespace TelephoneServiceProvider.PresentationLayer
             baseStation.NotifyPortOfRejectionOfCall += port1.InformTerminalAboutRejectionOfCall;
             port1.NotifyTerminalOfRejectionOfCall += terminal1.NotifyUserAboutRejectedCall;
 
+            terminal1.NotifyPortAboutAnsweredCall += port1.AnswerCall;
+            port1.NotifyStationOfAnsweredCall += baseStation.AnswerCall;
 
             terminal2.ConnectedToPort += port2.ConnectToTerminal;
             terminal2.DisconnectedFromPort += port2.DisconnectFromTerminal;
@@ -50,9 +52,12 @@ namespace TelephoneServiceProvider.PresentationLayer
             baseStation.NotifyPortOfRejectionOfCall += port2.InformTerminalAboutRejectionOfCall;
             port2.NotifyTerminalOfRejectionOfCall += terminal2.NotifyUserAboutRejectedCall;
 
+            terminal2.NotifyPortAboutAnsweredCall += port2.AnswerCall;
+            port2.NotifyStationOfAnsweredCall += baseStation.AnswerCall;
+
             terminal1.Call("2");
 
-            terminal2.Reject();
+            terminal2.Answer();
 
             Console.ReadKey();
         }

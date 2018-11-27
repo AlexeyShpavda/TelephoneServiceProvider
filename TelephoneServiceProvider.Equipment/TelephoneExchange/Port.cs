@@ -10,6 +10,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public event EventHandler<RejectedCallEventArgs> NotifyStationOfRejectionOfCall;
 
+        public event EventHandler<AnsweredCallEventArgs> NotifyStationOfAnsweredCall;
+
         public event EventHandler<RejectedCallEventArgs> NotifyTerminalOfRejectionOfCall;
 
         public event EventHandler<FailureEventArguments> NotifyTerminalOfFailure;
@@ -49,6 +51,11 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             PortStatus = PortStatus.Busy;
 
             OnNotifyTerminalOfIncomingCall(e);
+        }
+
+        public void AnswerCall(object sender, AnsweredCallEventArgs e)
+        {
+            OnNotifyStationOfAnsweredOfCall(new AnsweredCallEventArgs(PhoneNumber) {CallStartTime = e.CallStartTime});
         }
 
         public void RejectCall(object sender, RejectedCallEventArgs e)
@@ -95,6 +102,11 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         protected virtual void OnNotifyTerminalOfRejectionOfCall(RejectedCallEventArgs e)
         {
             NotifyTerminalOfRejectionOfCall?.Invoke(this, e);
+        }
+
+        protected virtual void OnNotifyStationOfAnsweredOfCall(AnsweredCallEventArgs e)
+        {
+            NotifyStationOfAnsweredCall?.Invoke(this, e);
         }
     }
 }

@@ -39,11 +39,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TelephoneExchange\BaseStation.cs" />
     <Compile Include="TelephoneExchange\Enums\PortStatus.cs" />
+    <Compile Include="TelephoneExchange\EventsArgs\AnsweredCallEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\FailureEventArguments.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\IncomingCallEventArguments.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\OutgoingCallEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\RejectedCallEventArgs.cs" />
     <Compile Include="TelephoneExchange\Port.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TelephoneServiceProvider.BillingSystem\TelephoneServiceProvider.BillingSystem.csproj">
+      <Project>{30fd13a9-55fc-4d25-a2b9-a10ecadc860a}</Project>
+      <Name>TelephoneServiceProvider.BillingSystem</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

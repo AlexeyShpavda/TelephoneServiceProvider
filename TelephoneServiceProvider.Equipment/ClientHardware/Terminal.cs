@@ -12,6 +12,8 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public event EventHandler<RejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
 
+        public event EventHandler<AnsweredCallEventArgs> NotifyPortAboutAnsweredCall;
+
         public bool IsConnectedWithPort { get; private set; }
 
         public bool IsThereUnansweredCall;
@@ -49,6 +51,20 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             }
         }
 
+        public void Answer()
+        {
+            if (IsThereUnansweredCall)
+            {
+                Console.WriteLine("You Answered Call");
+                IsThereUnansweredCall = false;
+                OnNotifyPortAboutAnsweredCall(new AnsweredCallEventArgs("") {CallStartTime = DateTime.Now});
+            }
+            else
+            {
+                Console.WriteLine("Nobody Calls You");
+            }
+        }
+
         public void Reject()
         {
             if (IsThereUnansweredCall)
@@ -61,7 +77,6 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             {
                 Console.WriteLine("Nobody Calls You");
             }
-
         }
 
         public void NotifyUserAboutError(object sender, FailureEventArguments e)
@@ -93,6 +108,11 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
         protected virtual void OnNotifyPortAboutRejectionOfCall(RejectedCallEventArgs e)
         {
             NotifyPortAboutRejectionOfCall?.Invoke(this, e);
+        }
+
+        protected virtual void OnNotifyPortAboutAnsweredCall(AnsweredCallEventArgs e)
+        {
+            NotifyPortAboutAnsweredCall?.Invoke(this, e);
         }
     }
 }
