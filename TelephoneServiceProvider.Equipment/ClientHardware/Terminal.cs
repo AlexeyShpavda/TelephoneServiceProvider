@@ -16,14 +16,11 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public bool IsConnectedWithPort { get; private set; }
 
-        public bool IsThereUnansweredCall;
-
         private Port Port { get; set; }
 
         public Terminal()
         {
             IsConnectedWithPort = false;
-            IsThereUnansweredCall = false;
             Port = null;
         }
 
@@ -53,30 +50,16 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void Answer()
         {
-            if (IsThereUnansweredCall)
-            {
-                Console.WriteLine("You Answered Call");
-                IsThereUnansweredCall = false;
-                OnNotifyPortAboutAnsweredCall(new AnsweredCallEventArgs("") {CallStartTime = DateTime.Now});
-            }
-            else
-            {
-                Console.WriteLine("Nobody Calls You");
-            }
+            Console.WriteLine("You Answered Call");
+
+            OnNotifyPortAboutAnsweredCall(new AnsweredCallEventArgs("") {CallStartTime = DateTime.Now});
         }
 
         public void Reject()
         {
-            if (IsThereUnansweredCall)
-            {
-                Console.WriteLine("You Rejected Call");
-                IsThereUnansweredCall = false;
-                OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs(""));
-            }
-            else
-            {
-                Console.WriteLine("Nobody Calls You");
-            }
+            Console.WriteLine("You Rejected Call");
+
+            OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs("") {CallRejectionTime = DateTime.Now});
         }
 
         public void NotifyUserAboutError(object sender, FailureEventArgs e)
@@ -86,7 +69,6 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void NotifyUserAboutIncomingCall(object sender, IncomingCallEventArgs e)
         {
-            IsThereUnansweredCall = true;
             Console.WriteLine($"{e.SenderPhoneNumber} - is calling you");
         }
 

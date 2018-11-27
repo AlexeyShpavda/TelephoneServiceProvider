@@ -59,6 +59,8 @@ namespace TelephoneServiceProvider.PresentationLayer
 
             terminal2.Answer();
 
+            terminal1.Reject();
+
             Console.ReadKey();
         }
     }

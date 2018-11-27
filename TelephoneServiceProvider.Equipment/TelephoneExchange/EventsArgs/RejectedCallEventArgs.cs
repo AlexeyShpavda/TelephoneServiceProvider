@@ -6,6 +6,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs
     {
         public string PhoneNumberOfPersonRejectedCall { get; set; }
 
+        public DateTime CallRejectionTime { get; set; }
+
         public RejectedCallEventArgs(string phoneNumberOfPersonRejectedCall)
         {
             PhoneNumberOfPersonRejectedCall = phoneNumberOfPersonRejectedCall;

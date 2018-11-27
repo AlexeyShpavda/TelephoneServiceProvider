@@ -62,7 +62,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         {
             PortStatus = PortStatus.Free;
 
-            OnNotifyStationAboutRejectionOfCall(new RejectedCallEventArgs(PhoneNumber));
+            OnNotifyStationAboutRejectionOfCall(new RejectedCallEventArgs(PhoneNumber)
+                {CallRejectionTime = e.CallRejectionTime});
         }
 
         public void InformTerminalAboutRejectionOfCall(object sender, RejectedCallEventArgs e)
