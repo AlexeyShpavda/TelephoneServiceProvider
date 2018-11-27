@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelephoneServiceProvider.Bi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelephoneServiceProvider.Equipment", "TelephoneServiceProvider.Equipment\TelephoneServiceProvider.Equipment.csproj", "{C1767C8A-C025-4FA2-957B-9F8724E3C583}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelephoneServiceProvider.Core", "TelephoneServiceProvider.Core\TelephoneServiceProvider.Core.csproj", "{80D8667C-A2F7-44EB-9C92-FDD1BAB4B554}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C1767C8A-C025-4FA2-957B-9F8724E3C583}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1767C8A-C025-4FA2-957B-9F8724E3C583}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1767C8A-C025-4FA2-957B-9F8724E3C583}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80D8667C-A2F7-44EB-9C92-FDD1BAB4B554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80D8667C-A2F7-44EB-9C92-FDD1BAB4B554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80D8667C-A2F7-44EB-9C92-FDD1BAB4B554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80D8667C-A2F7-44EB-9C92-FDD1BAB4B554}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
