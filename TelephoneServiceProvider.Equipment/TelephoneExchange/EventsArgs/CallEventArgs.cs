@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TelephoneServiceProvider.BillingSystem
+namespace TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs
 {
-    public class Call
+    public class CallEventArgs
     {
         public string SenderPhoneNumber { get; set; }
 
@@ -14,11 +14,15 @@ namespace TelephoneServiceProvider.BillingSystem
 
         public TimeSpan Duration => CallEndTime - CallStartTime;
 
-        public Call(string senderPhoneNumber, string receiverPhoneNumber)
+        public CallEventArgs(string senderPhoneNumber, string receiverPhoneNumber, DateTime callStartTime, DateTime callEndTime)
         {
             SenderPhoneNumber = senderPhoneNumber;
 
             ReceiverPhoneNumber = receiverPhoneNumber;
+
+            CallStartTime = callStartTime;
+
+            CallEndTime = callEndTime;
         }
     }
 }

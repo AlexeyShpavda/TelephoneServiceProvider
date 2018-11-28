@@ -48,6 +48,10 @@
       <Project>{30fd13a9-55fc-4d25-a2b9-a10ecadc860a}</Project>
       <Name>TelephoneServiceProvider.BillingSystem</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TelephoneServiceProvider.Core.Contracts\TelephoneServiceProvider.Core.Contracts.csproj">
+      <Project>{d2ba9543-94d3-4dfb-8b7e-7f150ba6f9d9}</Project>
+      <Name>TelephoneServiceProvider.Core.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TelephoneServiceProvider.Core\TelephoneServiceProvider.Core.csproj">
       <Project>{80d8667c-a2f7-44eb-9c92-fdd1bab4b554}</Project>
       <Name>TelephoneServiceProvider.Core</Name>

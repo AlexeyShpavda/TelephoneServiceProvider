@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TelephoneServiceProvider.BillingSystem.Tariffs.Abstract;
 using TelephoneServiceProvider.Core.Clients;
+using TelephoneServiceProvider.Core.Contracts.EventArgs;
+using TelephoneServiceProvider.Core.EventArgs;
 using TelephoneServiceProvider.Equipment.ClientHardware;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
@@ -10,6 +12,8 @@ namespace TelephoneServiceProvider.Core
 {
     public class Company
     {
+        public event EventHandler<IBillingSystemEventArgs> ReportBillingSystemOfNewClient;
+
         public string Name { get; private set; }
 
         public ICollection<Client> Clients { get; set; }
@@ -41,6 +45,8 @@ namespace TelephoneServiceProvider.Core
                 Clients.Add(client);
             }
 
+            OnReportBillingSystemOfNewClient(new BillingSystemEventArgs(phoneNumber));
+
             return newContract;
         }
 
@@ -56,6 +62,11 @@ namespace TelephoneServiceProvider.Core
             } while (Contracts.Select(x => x.ClientEquipment.Port.PhoneNumber).Contains(generatedPhoneNumber));
 
             return generatedPhoneNumber;
+        }
+
+        protected virtual void OnReportBillingSystemOfNewClient(BillingSystemEventArgs e)
+        {
+            ReportBillingSystemOfNewClient?.Invoke(this, e);
         }
     }
 }

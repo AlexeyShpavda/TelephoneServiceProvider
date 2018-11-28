@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C1767C8A-C025-4FA2-957B-9F8724E3C583}</ProjectGuid>
+    <ProjectGuid>{D2BA9543-94D3-4DFB-8B7E-7F150BA6F9D9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TelephoneServiceProvider.Equipment</RootNamespace>
-    <AssemblyName>TelephoneServiceProvider.Equipment</AssemblyName>
+    <RootNamespace>TelephoneServiceProvider.Core.Contracts</RootNamespace>
+    <AssemblyName>TelephoneServiceProvider.Core.Contracts</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -35,23 +35,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientHardware\Terminal.cs" />
+    <Compile Include="EventArgs\IBillingSystemEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TelephoneExchange\BaseStation.cs" />
-    <Compile Include="TelephoneExchange\Enums\PortStatus.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\AnsweredCallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\CallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\FailureEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\IncomingCallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\OutgoingCallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\RejectedCallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\Port.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TelephoneServiceProvider.BillingSystem\TelephoneServiceProvider.BillingSystem.csproj">
-      <Project>{30fd13a9-55fc-4d25-a2b9-a10ecadc860a}</Project>
-      <Name>TelephoneServiceProvider.BillingSystem</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

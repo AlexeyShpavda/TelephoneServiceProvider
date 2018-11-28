@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TelephoneServiceProvider.BillingSystem;
 using TelephoneServiceProvider.BillingSystem.Tariffs;
 using TelephoneServiceProvider.Core;
 using TelephoneServiceProvider.Core.Clients;
@@ -12,6 +13,9 @@ namespace TelephoneServiceProvider.PresentationLayer
         private static void Main()
         {
             var company = new Company("AS");
+            var billing = new Billing();
+
+            company.ReportBillingSystemOfNewClient += billing.PutPhoneOnRecord;
 
             var tariff = new Homebody();
 
@@ -28,6 +32,9 @@ namespace TelephoneServiceProvider.PresentationLayer
             var port2 = client2.Contract.ClientEquipment.Port;
 
             var baseStation = new BaseStation(new List<Port> {port1, port2});
+
+            baseStation.NotifyBillingSystemAboutCallEnd += billing.PutCallOnRecord;
+
 
             terminal1.ConnectedToPort += port1.ConnectToTerminal;
             terminal1.DisconnectedFromPort += port1.DisconnectFromTerminal;

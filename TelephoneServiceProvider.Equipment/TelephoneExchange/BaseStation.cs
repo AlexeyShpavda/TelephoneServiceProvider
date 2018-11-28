@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TelephoneServiceProvider.BillingSystem;
+using TelephoneServiceProvider.BillingSystem.Repositories.Entities;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
@@ -14,6 +14,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         public event EventHandler<RejectedCallEventArgs> NotifyPortOfRejectionOfCall;
 
         public event EventHandler<FailureEventArgs> NotifyPortOfFailure;
+
+        public event EventHandler<Call> NotifyBillingSystemAboutCallEnd;
 
         public IList<Port> Ports { get; }
 
@@ -79,6 +81,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
                 CallsInProgress.Remove(canceledCall);
 
                 canceledCall.CallEndTime = e.CallRejectionTime;
+
+                OnNotifyBillingSystemAboutCallEnd(canceledCall);
             }
             else
             {
@@ -124,6 +128,11 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         {
             (NotifyPortOfRejectionOfCall?.GetInvocationList().First(x => x.Target == port) as
                 EventHandler<RejectedCallEventArgs>)?.Invoke(this, e);
+        }
+
+        protected virtual void OnNotifyBillingSystemAboutCallEnd(Call e)
+        {
+            NotifyBillingSystemAboutCallEnd?.Invoke(this, e);
         }
     }
 }
