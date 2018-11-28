@@ -30,8 +30,6 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             SerialNumber = Guid.NewGuid();
             IsConnectedWithPort = false;
             Port = null;
-
-            //Mapping.SubscribeToSyncWithTerminal(this, Port);
         }
 
         public void SetDisplayMethod(Action<string> action)
@@ -44,6 +42,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             if (port == null) return;
 
             Port = port;
+            Mapping.LinkTerminalAndPort(this, Port);
             IsConnectedWithPort = true;
             OnConnectedToPort();
         }

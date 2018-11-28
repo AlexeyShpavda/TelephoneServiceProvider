@@ -115,6 +115,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public void AddPort(IPort port)
         {
+            Mapping.LinkPortAndStation(port, this);
+
             Ports.Add(port);
         }
 
