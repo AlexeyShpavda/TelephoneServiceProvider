@@ -9,6 +9,7 @@ using TelephoneServiceProvider.Core.Contracts;
 using TelephoneServiceProvider.Core.Contracts.Clients;
 using TelephoneServiceProvider.Core.EventArgs;
 using TelephoneServiceProvider.Equipment.ClientHardware;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
 namespace TelephoneServiceProvider.Core
@@ -81,7 +82,7 @@ namespace TelephoneServiceProvider.Core
             BaseStation.NotifyBillingSystemAboutCallEnd += Billing.PutCallOnRecord;
         }
 
-        protected virtual void OnReportBillingSystemOfNewClient(BillingSystemEventArgs e)
+        protected virtual void OnReportBillingSystemOfNewClient(IBillingSystemEventArgs e)
         {
             ReportBillingSystemOfNewClient?.Invoke(this, e);
         }

@@ -1,4 +1,7 @@
-﻿namespace TelephoneServiceProvider.Core.Contracts.Clients
+﻿using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+
+namespace TelephoneServiceProvider.Core.Contracts.Clients
 {
     public interface IClientEquipment
     {

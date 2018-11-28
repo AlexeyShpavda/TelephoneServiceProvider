@@ -1,4 +1,5 @@
 ﻿using System;
+using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 
 namespace TelephoneServiceProvider.Core.Contracts.Clients
 {

@@ -14,7 +14,7 @@ namespace TelephoneServiceProvider.BillingSystem
         public BillingUnitOfWork()
         {
             Phones = new GenericRepository<IPhone>();
-            
+
             Calls = new GenericRepository<ICall>();
         }
     }

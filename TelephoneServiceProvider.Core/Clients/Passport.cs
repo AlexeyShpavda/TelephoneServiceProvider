@@ -1,8 +1,9 @@
 ﻿using System;
+using TelephoneServiceProvider.Core.Contracts.Clients;
 
 namespace TelephoneServiceProvider.Core.Clients
 {
-    public class Passport
+    public class Passport : IPassport
     {
         public Guid IdentificationNumber { get; private set; }
 

@@ -1,4 +1,4 @@
-﻿namespace TelephoneServiceProvider.Equipment.TelephoneExchange.Enums
+﻿namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums
 {
     public enum PortStatus
     {

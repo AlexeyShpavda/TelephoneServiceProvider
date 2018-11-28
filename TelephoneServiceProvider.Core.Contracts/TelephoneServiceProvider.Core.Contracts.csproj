@@ -47,6 +47,10 @@
       <Project>{ACB0B733-6837-49D3-AE13-D59CBCC9009E}</Project>
       <Name>TelephoneServiceProvider.BillingSystem.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TelephoneServiceProvider.Equipment.Contracts\TelephoneServiceProvider.Equipment.Contracts.csproj">
+      <Project>{4BFF2F4C-DA82-4DFC-A497-AA81C1DBDC8B}</Project>
+      <Name>TelephoneServiceProvider.Equipment.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

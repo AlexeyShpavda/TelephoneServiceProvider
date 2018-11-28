@@ -1,4 +1,6 @@
 ﻿using TelephoneServiceProvider.Core.Contracts.Clients;
+using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 
 namespace TelephoneServiceProvider.Core.Clients
 {

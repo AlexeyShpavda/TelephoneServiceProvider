@@ -1,43 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 using TelephoneServiceProvider.BillingSystem.Repositories.Entities;
-using TelephoneServiceProvider.Equipment.TelephoneExchange.Enums;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 {
-    public class BaseStation
+    public class BaseStation : IBaseStation
     {
-        public event EventHandler<IncomingCallEventArgs> NotifyPortOfIncomingCall;
+        public event EventHandler<IIncomingCallEventArgs> NotifyPortOfIncomingCall;
 
-        public event EventHandler<RejectedCallEventArgs> NotifyPortOfRejectionOfCall;
+        public event EventHandler<IRejectedCallEventArgs> NotifyPortOfRejectionOfCall;
 
-        public event EventHandler<FailureEventArgs> NotifyPortOfFailure;
+        public event EventHandler<IFailureEventArgs> NotifyPortOfFailure;
 
-        public event EventHandler<Call> NotifyBillingSystemAboutCallEnd;
+        public event EventHandler<ICall> NotifyBillingSystemAboutCallEnd;
 
-        public IList<Port> Ports { get; }
+        public IList<IPort> Ports { get; }
 
-        public IDictionary<Port, Port> CallsWaitingToBeAnswered { get; private set; }
+        public IDictionary<IPort, IPort> CallsWaitingToBeAnswered { get; private set; }
 
-        public IList<Call> CallsInProgress { get; private set; }
+        public IList<ICall> CallsInProgress { get; private set; }
 
         public BaseStation()
         {
-            CallsWaitingToBeAnswered = new Dictionary<Port, Port>();
-            CallsInProgress = new List<Call>();
-            Ports = new List<Port>();
+            CallsWaitingToBeAnswered = new Dictionary<IPort, IPort>();
+            CallsInProgress = new List<ICall>();
+            Ports = new List<IPort>();
         }
 
-        public BaseStation(IList<Port> ports) : this()
+        public BaseStation(IList<IPort> ports) : this()
         {
             Ports = ports;
         }
 
-        public void NotifyIncomingCallPort(object sender, OutgoingCallEventArgs e)
+        public void NotifyIncomingCallPort(object sender, IOutgoingCallEventArgs e)
         {
-            var senderPort = (Port) sender;
+            var senderPort = (IPort)sender;
             var receiverPort = Ports.FirstOrDefault(x => x.PhoneNumber == e.ReceiverPhoneNumber);
 
             if (receiverPort != null && receiverPort.PortStatus == PortStatus.Free)
@@ -53,24 +56,24 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        public void AnswerCall(object sender, AnsweredCallEventArgs e)
+        public void AnswerCall(object sender, IAnsweredCallEventArgs e)
         {
-            var receiverPort = (Port) sender;
+            var receiverPort = (IPort)sender;
             var senderPort = CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == receiverPort).Key;
 
-            if(senderPort == null) return;
+            if (senderPort == null) return;
 
             CallsWaitingToBeAnswered.Remove(senderPort);
 
             CallsInProgress.Add(new Call(senderPort.PhoneNumber, receiverPort.PhoneNumber)
-                {CallStartTime = e.CallStartTime});
+            { CallStartTime = e.CallStartTime });
         }
 
-        public void RejectCall(object sender, RejectedCallEventArgs e)
+        public void RejectCall(object sender, IRejectedCallEventArgs e)
         {
-            var portRejectedCall = (Port) sender;
+            var portRejectedCall = (IPort)sender;
 
-            Port portWhichNeedToSendNotification;
+            IPort portWhichNeedToSendNotification;
 
             var canceledCall =
                 CallsInProgress.FirstOrDefault(x =>
@@ -110,17 +113,17 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             OnNotifyPortAboutRejectionOfCall(e, portWhichNeedToSendNotification);
         }
 
-        public void AddPort(Port port)
+        public void AddPort(IPort port)
         {
             Ports.Add(port);
         }
 
-        protected virtual void OnNotifyPortOfIncomingCall(IncomingCallEventArgs e, Port senderPort, Port receiverPort)
+        protected virtual void OnNotifyPortOfIncomingCall(IIncomingCallEventArgs e, IPort senderPort, IPort receiverPort)
         {
             try
             {
                 (NotifyPortOfIncomingCall?.GetInvocationList().First(x => x.Target == receiverPort) as
-                    EventHandler<IncomingCallEventArgs>)?.Invoke(this, e);
+                    EventHandler<IIncomingCallEventArgs>)?.Invoke(this, e);
             }
             catch (Exception)
             {
@@ -128,19 +131,19 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        protected virtual void OnNotifyPortOfFailure(FailureEventArgs e, Port port)
+        protected virtual void OnNotifyPortOfFailure(IFailureEventArgs e, IPort port)
         {
             (NotifyPortOfFailure?.GetInvocationList().First(x => x.Target == port) as
-                EventHandler<FailureEventArgs>)?.Invoke(this, e);
+                EventHandler<IFailureEventArgs>)?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyPortAboutRejectionOfCall(RejectedCallEventArgs e, Port port)
+        protected virtual void OnNotifyPortAboutRejectionOfCall(IRejectedCallEventArgs e, IPort port)
         {
             (NotifyPortOfRejectionOfCall?.GetInvocationList().First(x => x.Target == port) as
-                EventHandler<RejectedCallEventArgs>)?.Invoke(this, e);
+                EventHandler<IRejectedCallEventArgs>)?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyBillingSystemAboutCallEnd(Call e)
+        protected virtual void OnNotifyBillingSystemAboutCallEnd(ICall e)
         {
             NotifyBillingSystemAboutCallEnd?.Invoke(this, e);
         }

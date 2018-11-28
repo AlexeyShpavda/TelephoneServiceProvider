@@ -1,8 +1,9 @@
 ﻿using System;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs
 {
-    public class AnsweredCallEventArgs
+    public class AnsweredCallEventArgs : IAnsweredCallEventArgs
     {
         public string PhoneNumberOfPersonAnsweredCall { get; set; }
 

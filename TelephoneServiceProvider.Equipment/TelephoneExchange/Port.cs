@@ -1,31 +1,33 @@
 ﻿using System;
-using TelephoneServiceProvider.BillingSystem.Tariffs.Abstract;
-using TelephoneServiceProvider.Equipment.TelephoneExchange.Enums;
+using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 {
-    public class Port
+    public class Port : IPort
     {
-        public event EventHandler<OutgoingCallEventArgs> NotifyStationOfOutgoingCall;
+        public event EventHandler<IOutgoingCallEventArgs> NotifyStationOfOutgoingCall;
 
-        public event EventHandler<RejectedCallEventArgs> NotifyStationOfRejectionOfCall;
+        public event EventHandler<IRejectedCallEventArgs> NotifyStationOfRejectionOfCall;
 
-        public event EventHandler<AnsweredCallEventArgs> NotifyStationOfAnsweredCall;
+        public event EventHandler<IAnsweredCallEventArgs> NotifyStationOfAnsweredCall;
 
-        public event EventHandler<RejectedCallEventArgs> NotifyTerminalOfRejectionOfCall;
+        public event EventHandler<IRejectedCallEventArgs> NotifyTerminalOfRejectionOfCall;
 
-        public event EventHandler<FailureEventArgs> NotifyTerminalOfFailure;
+        public event EventHandler<IFailureEventArgs> NotifyTerminalOfFailure;
 
-        public event EventHandler<IncomingCallEventArgs> NotifyTerminalOfIncomingCall;
+        public event EventHandler<IIncomingCallEventArgs> NotifyTerminalOfIncomingCall;
 
         public string PhoneNumber { get; private set; }
 
-        public Tariff Tariff { get; private set; }
+        public ITariff Tariff { get; private set; }
 
         public PortStatus PortStatus { get; private set; }
 
-        public Port(string phoneNumber, Tariff tariff)
+        public Port(string phoneNumber, ITariff tariff)
         {
             PortStatus = PortStatus.SwitchedOff;
             PhoneNumber = phoneNumber;
@@ -50,66 +52,66 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             OnNotifyStationOfOutgoingCall(new OutgoingCallEventArgs(PhoneNumber, receiverPhoneNumber));
         }
 
-        public void IncomingCall(object sender, IncomingCallEventArgs e)
+        public void IncomingCall(object sender, IIncomingCallEventArgs e)
         {
             PortStatus = PortStatus.Busy;
 
             OnNotifyTerminalOfIncomingCall(e);
         }
 
-        public void AnswerCall(object sender, AnsweredCallEventArgs e)
+        public void AnswerCall(object sender, IAnsweredCallEventArgs e)
         {
-            OnNotifyStationOfAnsweredOfCall(new AnsweredCallEventArgs(PhoneNumber) {CallStartTime = e.CallStartTime});
+            OnNotifyStationOfAnsweredOfCall(new AnsweredCallEventArgs(PhoneNumber) { CallStartTime = e.CallStartTime });
         }
 
-        public void RejectCall(object sender, RejectedCallEventArgs e)
+        public void RejectCall(object sender, IRejectedCallEventArgs e)
         {
             PortStatus = PortStatus.Free;
 
             OnNotifyStationAboutRejectionOfCall(new RejectedCallEventArgs(PhoneNumber)
-                {CallRejectionTime = e.CallRejectionTime});
+            { CallRejectionTime = e.CallRejectionTime });
         }
 
-        public void InformTerminalAboutRejectionOfCall(object sender, RejectedCallEventArgs e)
+        public void InformTerminalAboutRejectionOfCall(object sender, IRejectedCallEventArgs e)
         {
             PortStatus = PortStatus.Free;
 
             OnNotifyTerminalOfRejectionOfCall(e);
         }
 
-        public void ReportError(object sender, FailureEventArgs e)
+        public void ReportError(object sender, IFailureEventArgs e)
         {
             PortStatus = PortStatus.Free;
 
             OnNotifyTerminalOfFailure(e);
         }
 
-        protected virtual void OnNotifyStationOfOutgoingCall(OutgoingCallEventArgs e)
+        protected virtual void OnNotifyStationOfOutgoingCall(IOutgoingCallEventArgs e)
         {
             NotifyStationOfOutgoingCall?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyTerminalOfFailure(FailureEventArgs e)
+        protected virtual void OnNotifyTerminalOfFailure(IFailureEventArgs e)
         {
             NotifyTerminalOfFailure?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyTerminalOfIncomingCall(IncomingCallEventArgs e)
+        protected virtual void OnNotifyTerminalOfIncomingCall(IIncomingCallEventArgs e)
         {
             NotifyTerminalOfIncomingCall?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyStationAboutRejectionOfCall(RejectedCallEventArgs e)
+        protected virtual void OnNotifyStationAboutRejectionOfCall(IRejectedCallEventArgs e)
         {
             NotifyStationOfRejectionOfCall?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyTerminalOfRejectionOfCall(RejectedCallEventArgs e)
+        protected virtual void OnNotifyTerminalOfRejectionOfCall(IRejectedCallEventArgs e)
         {
             NotifyTerminalOfRejectionOfCall?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyStationOfAnsweredOfCall(AnsweredCallEventArgs e)
+        public virtual void OnNotifyStationOfAnsweredOfCall(IAnsweredCallEventArgs e)
         {
             NotifyStationOfAnsweredCall?.Invoke(this, e);
         }

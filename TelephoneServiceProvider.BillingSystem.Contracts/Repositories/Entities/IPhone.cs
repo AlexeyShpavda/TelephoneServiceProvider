@@ -6,5 +6,4 @@
 
         decimal Balance { get; set; }
     }
-
 }

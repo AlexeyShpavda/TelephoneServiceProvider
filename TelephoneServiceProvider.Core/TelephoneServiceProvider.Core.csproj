@@ -56,6 +56,10 @@
       <Project>{d2ba9543-94d3-4dfb-8b7e-7f150ba6f9d9}</Project>
       <Name>TelephoneServiceProvider.Core.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TelephoneServiceProvider.Equipment.Contracts\TelephoneServiceProvider.Equipment.Contracts.csproj">
+      <Project>{4BFF2F4C-DA82-4DFC-A497-AA81C1DBDC8B}</Project>
+      <Name>TelephoneServiceProvider.Equipment.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TelephoneServiceProvider.Equipment\TelephoneServiceProvider.Equipment.csproj">
       <Project>{c1767c8a-c025-4fa2-957b-9f8724e3c583}</Project>
       <Name>TelephoneServiceProvider.Equipment</Name>

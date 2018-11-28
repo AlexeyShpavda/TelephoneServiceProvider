@@ -1,10 +1,12 @@
 ﻿using System;
-using TelephoneServiceProvider.Equipment.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.ClientHardware
 {
-    public class Terminal
+    public class Terminal : ITerminal
     {
         public Action<string> DisplayMethod { get; private set; }
 
@@ -12,15 +14,15 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public event EventHandler DisconnectedFromPort;
 
-        public event EventHandler<RejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
+        public event EventHandler<IRejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
 
-        public event EventHandler<AnsweredCallEventArgs> NotifyPortAboutAnsweredCall;
+        public event EventHandler<IAnsweredCallEventArgs> NotifyPortAboutAnsweredCall;
 
         public Guid SerialNumber { get; }
 
         public bool IsConnectedWithPort { get; private set; }
 
-        private Port Port { get; set; }
+        public IPort Port { get; set; }
 
         public Terminal()
         {
@@ -37,7 +39,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             DisplayMethod = action;
         }
 
-        public void ConnectToPort(Port port)
+        public void ConnectToPort(IPort port)
         {
             if (port == null) return;
 
@@ -65,27 +67,27 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
         {
             DisplayMethod?.Invoke("You Answered Call");
 
-            OnNotifyPortAboutAnsweredCall(new AnsweredCallEventArgs("") {CallStartTime = DateTime.Now});
+            OnNotifyPortAboutAnsweredCall(new AnsweredCallEventArgs("") { CallStartTime = DateTime.Now });
         }
 
         public void Reject()
         {
             DisplayMethod?.Invoke("You Rejected Call");
 
-            OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs("") {CallRejectionTime = DateTime.Now});
+            OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs("") { CallRejectionTime = DateTime.Now });
         }
 
-        public void NotifyUserAboutError(object sender, FailureEventArgs e)
+        public void NotifyUserAboutError(object sender, IFailureEventArgs e)
         {
             DisplayMethod?.Invoke($"{e.ReceiverPhoneNumber} - Subscriber Doesn't Exist or He is Busy");
         }
 
-        public void NotifyUserAboutIncomingCall(object sender, IncomingCallEventArgs e)
+        public void NotifyUserAboutIncomingCall(object sender, IIncomingCallEventArgs e)
         {
             DisplayMethod?.Invoke($"{e.SenderPhoneNumber} - is calling you");
         }
 
-        public void NotifyUserAboutRejectedCall(object sender, RejectedCallEventArgs e)
+        public void NotifyUserAboutRejectedCall(object sender, IRejectedCallEventArgs e)
         {
             DisplayMethod?.Invoke($"{e.PhoneNumberOfPersonRejectedCall} - canceled the call");
         }
@@ -100,12 +102,12 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             DisconnectedFromPort?.Invoke(this, EventArgs.Empty);
         }
 
-        protected virtual void OnNotifyPortAboutRejectionOfCall(RejectedCallEventArgs e)
+        protected virtual void OnNotifyPortAboutRejectionOfCall(IRejectedCallEventArgs e)
         {
             NotifyPortAboutRejectionOfCall?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyPortAboutAnsweredCall(AnsweredCallEventArgs e)
+        protected virtual void OnNotifyPortAboutAnsweredCall(IAnsweredCallEventArgs e)
         {
             NotifyPortAboutAnsweredCall?.Invoke(this, e);
         }

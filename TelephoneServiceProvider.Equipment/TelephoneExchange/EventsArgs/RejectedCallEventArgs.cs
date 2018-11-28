@@ -1,8 +1,9 @@
 ﻿using System;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs
 {
-    public class RejectedCallEventArgs : EventArgs
+    public class RejectedCallEventArgs : EventArgs, IRejectedCallEventArgs
     {
         public string PhoneNumberOfPersonRejectedCall { get; set; }
 
