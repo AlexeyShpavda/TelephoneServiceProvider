@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TelephoneServiceProvider.BillingSystem;
 using TelephoneServiceProvider.BillingSystem.Tariffs.Abstract;
 using TelephoneServiceProvider.Core.Clients;
 using TelephoneServiceProvider.Core.Contracts.EventArgs;
@@ -16,15 +17,23 @@ namespace TelephoneServiceProvider.Core
 
         public string Name { get; private set; }
 
-        public ICollection<Client> Clients { get; set; }
+        public ICollection<Client> Clients { get; private set; }
 
-        public ICollection<Contract> Contracts { get; set; }
+        public ICollection<Contract> Contracts { get; private set; }
 
-        public Company(string name)
+        public Billing Billing { get; private set; }
+
+        public BaseStation BaseStation { get; private set; }
+
+        public Company(string name, Billing billing, BaseStation baseStation)
         {
             Name = name;
             Clients = new List<Client>();
             Contracts = new List<Contract>();
+            Billing = billing;
+            BaseStation = baseStation;
+
+            SubscribeToEvents();
         }
 
         public Contract EnterIntoContract(Client client, Tariff selectedTariff)
@@ -62,6 +71,11 @@ namespace TelephoneServiceProvider.Core
             } while (Contracts.Select(x => x.ClientEquipment.Port.PhoneNumber).Contains(generatedPhoneNumber));
 
             return generatedPhoneNumber;
+        }
+
+        private void SubscribeToEvents()
+        {
+            ReportBillingSystemOfNewClient += Billing.PutPhoneOnRecord;
         }
 
         protected virtual void OnReportBillingSystemOfNewClient(BillingSystemEventArgs e)

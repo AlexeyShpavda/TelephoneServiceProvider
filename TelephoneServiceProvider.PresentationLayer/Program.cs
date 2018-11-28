@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using TelephoneServiceProvider.BillingSystem;
 using TelephoneServiceProvider.BillingSystem.Tariffs;
 using TelephoneServiceProvider.Core;
@@ -12,10 +11,7 @@ namespace TelephoneServiceProvider.PresentationLayer
     {
         private static void Main()
         {
-            var company = new Company("AS");
-            var billing = new Billing();
-
-            company.ReportBillingSystemOfNewClient += billing.PutPhoneOnRecord;
+            var company = new Company("AS", new Billing(), new BaseStation());
 
             var tariff = new Homebody();
 
@@ -31,9 +27,10 @@ namespace TelephoneServiceProvider.PresentationLayer
             var terminal2 = client2.Contract.ClientEquipment.Terminal;
             var port2 = client2.Contract.ClientEquipment.Port;
 
-            var baseStation = new BaseStation(new List<Port> {port1, port2});
+            company.BaseStation.AddPort(port1);
+            company.BaseStation.AddPort(port2);
 
-            baseStation.NotifyBillingSystemAboutCallEnd += billing.PutCallOnRecord;
+            company.BaseStation.NotifyBillingSystemAboutCallEnd += company.Billing.PutCallOnRecord;
 
 
             terminal1.ConnectedToPort += port1.ConnectToTerminal;
@@ -41,38 +38,38 @@ namespace TelephoneServiceProvider.PresentationLayer
 
             terminal1.ConnectToPort(port1);
 
-            port1.NotifyStationOfOutgoingCall += baseStation.NotifyIncomingCallPort;
-            baseStation.NotifyPortOfFailure += port1.ReportError;
+            port1.NotifyStationOfOutgoingCall += company.BaseStation.NotifyIncomingCallPort;
+            company.BaseStation.NotifyPortOfFailure += port1.ReportError;
             port1.NotifyTerminalOfFailure += terminal1.NotifyUserAboutError;
-            baseStation.NotifyPortOfIncomingCall += port1.IncomingCall;
+            company.BaseStation.NotifyPortOfIncomingCall += port1.IncomingCall;
             port1.NotifyTerminalOfIncomingCall += terminal1.NotifyUserAboutIncomingCall;
 
             terminal1.NotifyPortAboutRejectionOfCall += port1.RejectCall;
-            port1.NotifyStationOfRejectionOfCall += baseStation.RejectCall;
-            baseStation.NotifyPortOfRejectionOfCall += port1.InformTerminalAboutRejectionOfCall;
+            port1.NotifyStationOfRejectionOfCall += company.BaseStation.RejectCall;
+            company.BaseStation.NotifyPortOfRejectionOfCall += port1.InformTerminalAboutRejectionOfCall;
             port1.NotifyTerminalOfRejectionOfCall += terminal1.NotifyUserAboutRejectedCall;
 
             terminal1.NotifyPortAboutAnsweredCall += port1.AnswerCall;
-            port1.NotifyStationOfAnsweredCall += baseStation.AnswerCall;
+            port1.NotifyStationOfAnsweredCall += company.BaseStation.AnswerCall;
 
             terminal2.ConnectedToPort += port2.ConnectToTerminal;
             terminal2.DisconnectedFromPort += port2.DisconnectFromTerminal;
 
             terminal2.ConnectToPort(port2);
 
-            port2.NotifyStationOfOutgoingCall += baseStation.NotifyIncomingCallPort;
-            baseStation.NotifyPortOfFailure += port2.ReportError;
+            port2.NotifyStationOfOutgoingCall += company.BaseStation.NotifyIncomingCallPort;
+            company.BaseStation.NotifyPortOfFailure += port2.ReportError;
             port2.NotifyTerminalOfFailure += terminal2.NotifyUserAboutError;
-            baseStation.NotifyPortOfIncomingCall += port2.IncomingCall;
+            company.BaseStation.NotifyPortOfIncomingCall += port2.IncomingCall;
             port2.NotifyTerminalOfIncomingCall += terminal2.NotifyUserAboutIncomingCall;
 
             terminal2.NotifyPortAboutRejectionOfCall += port2.RejectCall;
-            port2.NotifyStationOfRejectionOfCall += baseStation.RejectCall;
-            baseStation.NotifyPortOfRejectionOfCall += port2.InformTerminalAboutRejectionOfCall;
+            port2.NotifyStationOfRejectionOfCall += company.BaseStation.RejectCall;
+            company.BaseStation.NotifyPortOfRejectionOfCall += port2.InformTerminalAboutRejectionOfCall;
             port2.NotifyTerminalOfRejectionOfCall += terminal2.NotifyUserAboutRejectedCall;
 
             terminal2.NotifyPortAboutAnsweredCall += port2.AnswerCall;
-            port2.NotifyStationOfAnsweredCall += baseStation.AnswerCall;
+            port2.NotifyStationOfAnsweredCall += company.BaseStation.AnswerCall;
 
             terminal1.Call(port2.PhoneNumber);
 

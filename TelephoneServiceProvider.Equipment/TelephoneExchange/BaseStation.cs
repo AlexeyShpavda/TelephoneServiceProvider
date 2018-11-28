@@ -23,10 +23,15 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public IList<Call> CallsInProgress { get; private set; }
 
-        public BaseStation(IList<Port> ports)
+        public BaseStation()
         {
             CallsWaitingToBeAnswered = new Dictionary<Port, Port>();
             CallsInProgress = new List<Call>();
+            Ports = new List<Port>();
+        }
+
+        public BaseStation(IList<Port> ports) : this()
+        {
             Ports = ports;
         }
 
@@ -103,6 +108,11 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
 
             OnNotifyPortAboutRejectionOfCall(e, portWhichNeedToSendNotification);
+        }
+
+        public void AddPort(Port port)
+        {
+            Ports.Add(port);
         }
 
         protected virtual void OnNotifyPortOfIncomingCall(IncomingCallEventArgs e, Port senderPort, Port receiverPort)
