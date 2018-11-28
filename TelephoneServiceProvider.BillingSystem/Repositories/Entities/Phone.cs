@@ -1,6 +1,8 @@
-﻿namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
+﻿using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
+
+namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 {
-    public class Phone
+    public class Phone : IPhone
     {
         public string PhoneNumber { get; set; }
 

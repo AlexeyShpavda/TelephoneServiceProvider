@@ -4,6 +4,7 @@ using System.Linq;
 using TelephoneServiceProvider.BillingSystem;
 using TelephoneServiceProvider.BillingSystem.Tariffs.Abstract;
 using TelephoneServiceProvider.Core.Clients;
+using TelephoneServiceProvider.Core.Contracts;
 using TelephoneServiceProvider.Core.Contracts.EventArgs;
 using TelephoneServiceProvider.Core.EventArgs;
 using TelephoneServiceProvider.Equipment.ClientHardware;
@@ -11,7 +12,7 @@ using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
 namespace TelephoneServiceProvider.Core
 {
-    public class Company
+    public class Company : ICompany
     {
         public event EventHandler<IBillingSystemEventArgs> ReportBillingSystemOfNewClient;
 

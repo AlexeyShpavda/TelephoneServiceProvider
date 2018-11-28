@@ -1,8 +1,9 @@
 ﻿using System;
+using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 
 namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 {
-    public class Call
+    public class Call : ICall
     {
         public string SenderPhoneNumber { get; set; }
 
@@ -27,6 +28,11 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
             CallStartTime = callStartTime;
 
             CallEndTime = callEndTime;
+        }
+
+        public override string ToString()
+        {
+            return $"{SenderPhoneNumber} | {ReceiverPhoneNumber} | {CallStartTime} | {CallEndTime} | {Duration}";
         }
     }
 }

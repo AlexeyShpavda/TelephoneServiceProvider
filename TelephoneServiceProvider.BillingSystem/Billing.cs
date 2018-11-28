@@ -1,19 +1,23 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Text;
+using TelephoneServiceProvider.BillingSystem.Contracts;
+using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 using TelephoneServiceProvider.BillingSystem.Repositories.Entities;
 using TelephoneServiceProvider.Core.Contracts.EventArgs;
 
 namespace TelephoneServiceProvider.BillingSystem
 {
-    public class Billing
+    public class Billing : IBilling
     {
-        private BillingUnitOfWork Data { get; set; }
+        private IBillingUnitOfWork Data { get; set; }
 
         public Billing()
         {
             Data = new BillingUnitOfWork();
         }
 
-        public void PutCallOnRecord(object sender, Call e)
+        public void PutCallOnRecord(object sender, ICall e)
         {
             Data.Calls.Add(new Call(e.SenderPhoneNumber, e.ReceiverPhoneNumber, e.CallStartTime, e.CallEndTime));
         }
@@ -41,7 +45,27 @@ namespace TelephoneServiceProvider.BillingSystem
             }
         }
 
-        public Phone GetPhoneOnNumber(string phoneNumber)
+        public string GetReport(string phoneNumber, Func<ICall, bool> selector = null)
+        {
+            var report = new StringBuilder();
+
+            var subscriberCalls = selector != null
+                ? Data.Calls.GetAll()
+                    .Where(x => x.SenderPhoneNumber == phoneNumber || x.ReceiverPhoneNumber == phoneNumber)
+                    .Where(selector).ToList()
+                : Data.Calls.GetAll()
+                    .Where(x => x.SenderPhoneNumber == phoneNumber || x.ReceiverPhoneNumber == phoneNumber)
+                    .ToList();
+
+            foreach (var item in subscriberCalls)
+            {
+                report.Append(item + "\n");
+            }
+
+            return report.ToString();
+        }
+
+        public IPhone GetPhoneOnNumber(string phoneNumber)
         {
             return Data.Phones.GetAll().FirstOrDefault(x => x.PhoneNumber == phoneNumber);
         }

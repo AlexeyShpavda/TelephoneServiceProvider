@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using TelephoneServiceProvider.BillingSystem.Contracts.Repositories;
 
 namespace TelephoneServiceProvider.BillingSystem.Repositories
 {
-    public class GenericRepository<T>  where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly IList<T> _entitiesList;
 
@@ -11,7 +12,7 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories
             _entitiesList = new List<T>();
         }
 
-        public GenericRepository(IList<T> entities) : base()
+        public GenericRepository(IList<T> entities) : this()
         {
             _entitiesList = entities;
         }
