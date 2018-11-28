@@ -1,10 +1,12 @@
-﻿namespace TelephoneServiceProvider.Core.Clients
-{
-    public class Client
-    {
-        public Passport Passport;
+﻿using TelephoneServiceProvider.Core.Contracts.Clients;
 
-        public Contract Contract { get; set; }
+namespace TelephoneServiceProvider.Core.Clients
+{
+    public class Client : IClient
+    {
+        public IPassport Passport { get; set; }
+
+        public IContract Contract { get; set; }
 
         public string Codeword { get; private set; }
     }

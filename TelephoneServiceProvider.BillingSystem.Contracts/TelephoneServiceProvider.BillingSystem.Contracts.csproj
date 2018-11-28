@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventArgs\IBillingSystemEventArgs.cs" />
     <Compile Include="IBilling.cs" />
     <Compile Include="IBillingUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

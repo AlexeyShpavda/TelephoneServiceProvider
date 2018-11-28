@@ -1,4 +1,4 @@
-﻿using TelephoneServiceProvider.Core.Contracts.EventArgs;
+﻿using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 
 namespace TelephoneServiceProvider.Core.EventArgs
 {

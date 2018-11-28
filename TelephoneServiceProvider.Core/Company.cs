@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TelephoneServiceProvider.BillingSystem;
-using TelephoneServiceProvider.BillingSystem.Tariffs.Abstract;
+using TelephoneServiceProvider.BillingSystem.Contracts;
+using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
+using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 using TelephoneServiceProvider.Core.Clients;
 using TelephoneServiceProvider.Core.Contracts;
-using TelephoneServiceProvider.Core.Contracts.EventArgs;
+using TelephoneServiceProvider.Core.Contracts.Clients;
 using TelephoneServiceProvider.Core.EventArgs;
 using TelephoneServiceProvider.Equipment.ClientHardware;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
@@ -18,26 +19,26 @@ namespace TelephoneServiceProvider.Core
 
         public string Name { get; private set; }
 
-        public ICollection<Client> Clients { get; private set; }
+        public ICollection<IClient> Clients { get; private set; }
 
-        public ICollection<Contract> Contracts { get; private set; }
+        public ICollection<IContract> Contracts { get; private set; }
 
-        public Billing Billing { get; private set; }
+        public IBilling Billing { get; private set; }
 
-        public BaseStation BaseStation { get; private set; }
+        public IBaseStation BaseStation { get; private set; }
 
-        public Company(string name, Billing billing, BaseStation baseStation)
+        public Company(string name, IBilling billing, IBaseStation baseStation)
         {
             Name = name;
-            Clients = new List<Client>();
-            Contracts = new List<Contract>();
+            Clients = new List<IClient>();
+            Contracts = new List<IContract>();
             Billing = billing;
             BaseStation = baseStation;
 
             SubscribeToEvents();
         }
 
-        public Contract EnterIntoContract(Client client, Tariff selectedTariff)
+        public IContract EnterIntoContract(IClient client, ITariff selectedTariff)
         {
             var company = this;
             var passport = client.Passport;

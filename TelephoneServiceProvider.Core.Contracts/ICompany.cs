@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using TelephoneServiceProvider.BillingSystem.Contracts;
+using TelephoneServiceProvider.Core.Contracts.Clients;
 
 namespace TelephoneServiceProvider.Core.Contracts
 {
@@ -7,13 +8,13 @@ namespace TelephoneServiceProvider.Core.Contracts
     {
         string Name { get; }
 
-        ICollection<Client> Clients { get; }
+        ICollection<IClient> Clients { get; }
 
-        ICollection<Contract> Contracts { get; }
+        ICollection<IContract> Contracts { get; }
 
-        Billing Billing { get; }
+        IBilling Billing { get; }
 
-        BaseStation BaseStation { get; }
+        IBaseStation BaseStation { get; }
 
     }
 }

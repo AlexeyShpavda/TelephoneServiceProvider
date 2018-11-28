@@ -1,15 +1,14 @@
-﻿using TelephoneServiceProvider.Equipment.ClientHardware;
-using TelephoneServiceProvider.Equipment.TelephoneExchange;
+﻿using TelephoneServiceProvider.Core.Contracts.Clients;
 
 namespace TelephoneServiceProvider.Core.Clients
 {
-    public class ClientEquipment
+    public class ClientEquipment : IClientEquipment
     {
-        public Terminal Terminal { get; private set; }
+        public ITerminal Terminal { get; private set; }
 
-        public Port Port { get; private set; }
+        public IPort Port { get; private set; }
 
-        public ClientEquipment(Terminal terminal, Port port)
+        public ClientEquipment(ITerminal terminal, IPort port)
         {
             Terminal = terminal;
             Port = port;

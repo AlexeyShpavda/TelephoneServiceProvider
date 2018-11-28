@@ -1,4 +1,4 @@
-﻿namespace TelephoneServiceProvider.Core.Contracts.EventArgs
+﻿namespace TelephoneServiceProvider.BillingSystem.Contracts.EventArgs
 {
     public interface IBillingSystemEventArgs
     {

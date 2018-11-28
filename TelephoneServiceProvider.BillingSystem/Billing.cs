@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Text;
 using TelephoneServiceProvider.BillingSystem.Contracts;
+using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 using TelephoneServiceProvider.BillingSystem.Repositories.Entities;
-using TelephoneServiceProvider.Core.Contracts.EventArgs;
 
 namespace TelephoneServiceProvider.BillingSystem
 {

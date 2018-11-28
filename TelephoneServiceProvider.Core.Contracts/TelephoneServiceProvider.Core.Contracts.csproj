@@ -35,9 +35,18 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventArgs\IBillingSystemEventArgs.cs" />
+    <Compile Include="Clients\IClient.cs" />
+    <Compile Include="Clients\IClientEquipment.cs" />
+    <Compile Include="Clients\IContract.cs" />
+    <Compile Include="Clients\IPassport.cs" />
     <Compile Include="ICompany.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TelephoneServiceProvider.BillingSystem.Contracts\TelephoneServiceProvider.BillingSystem.Contracts.csproj">
+      <Project>{ACB0B733-6837-49D3-AE13-D59CBCC9009E}</Project>
+      <Name>TelephoneServiceProvider.BillingSystem.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

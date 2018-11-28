@@ -2,7 +2,6 @@
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 using TelephoneServiceProvider.BillingSystem.Repositories;
-using TelephoneServiceProvider.BillingSystem.Repositories.Entities;
 
 namespace TelephoneServiceProvider.BillingSystem
 {
