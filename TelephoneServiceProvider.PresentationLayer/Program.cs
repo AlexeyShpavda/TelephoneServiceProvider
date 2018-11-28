@@ -11,6 +11,8 @@ namespace TelephoneServiceProvider.PresentationLayer
     {
         private static void Main()
         {
+            Action<string> displayMethod = Console.WriteLine;
+
             var company = new Company("AS", new Billing(), new BaseStation());
 
             var tariff = new Homebody();
@@ -22,16 +24,15 @@ namespace TelephoneServiceProvider.PresentationLayer
             client2.Contract = company.EnterIntoContract(client2, tariff);
 
             var terminal1 = client1.Contract.ClientEquipment.Terminal;
+            terminal1.SetDisplayMethod(displayMethod);
             var port1 = client1.Contract.ClientEquipment.Port;
 
             var terminal2 = client2.Contract.ClientEquipment.Terminal;
+            terminal2.SetDisplayMethod(displayMethod);
             var port2 = client2.Contract.ClientEquipment.Port;
 
             company.BaseStation.AddPort(port1);
             company.BaseStation.AddPort(port2);
-
-            company.BaseStation.NotifyBillingSystemAboutCallEnd += company.Billing.PutCallOnRecord;
-
 
             terminal1.ConnectedToPort += port1.ConnectToTerminal;
             terminal1.DisconnectedFromPort += port1.DisconnectFromTerminal;
@@ -70,6 +71,7 @@ namespace TelephoneServiceProvider.PresentationLayer
 
             terminal2.NotifyPortAboutAnsweredCall += port2.AnswerCall;
             port2.NotifyStationOfAnsweredCall += company.BaseStation.AnswerCall;
+
 
             terminal1.Call(port2.PhoneNumber);
 

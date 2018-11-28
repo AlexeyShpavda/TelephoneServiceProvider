@@ -6,6 +6,8 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 {
     public class Terminal
     {
+        public Action<string> DisplayMethod { get; private set; }
+
         public event EventHandler ConnectedToPort;
 
         public event EventHandler DisconnectedFromPort;
@@ -22,9 +24,17 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public Terminal()
         {
+            DisplayMethod = null;
             SerialNumber = Guid.NewGuid();
             IsConnectedWithPort = false;
             Port = null;
+
+            //Mapping.SubscribeToSyncWithTerminal(this, Port);
+        }
+
+        public void SetDisplayMethod(Action<string> action)
+        {
+            DisplayMethod = action;
         }
 
         public void ConnectToPort(Port port)
@@ -53,31 +63,31 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void Answer()
         {
-            Console.WriteLine("You Answered Call");
+            DisplayMethod?.Invoke("You Answered Call");
 
             OnNotifyPortAboutAnsweredCall(new AnsweredCallEventArgs("") {CallStartTime = DateTime.Now});
         }
 
         public void Reject()
         {
-            Console.WriteLine("You Rejected Call");
+            DisplayMethod?.Invoke("You Rejected Call");
 
             OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs("") {CallRejectionTime = DateTime.Now});
         }
 
         public void NotifyUserAboutError(object sender, FailureEventArgs e)
         {
-            Console.WriteLine($"{e.ReceiverPhoneNumber} - Subscriber Doesn't Exist or He is Busy");
+            DisplayMethod?.Invoke($"{e.ReceiverPhoneNumber} - Subscriber Doesn't Exist or He is Busy");
         }
 
         public void NotifyUserAboutIncomingCall(object sender, IncomingCallEventArgs e)
         {
-            Console.WriteLine($"{e.SenderPhoneNumber} - is calling you");
+            DisplayMethod?.Invoke($"{e.SenderPhoneNumber} - is calling you");
         }
 
         public void NotifyUserAboutRejectedCall(object sender, RejectedCallEventArgs e)
         {
-            Console.WriteLine($"{e.PhoneNumberOfPersonRejectedCall} - canceled the call");
+            DisplayMethod?.Invoke($"{e.PhoneNumberOfPersonRejectedCall} - canceled the call");
         }
 
         protected virtual void OnConnectedToPort()

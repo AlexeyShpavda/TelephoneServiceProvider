@@ -76,6 +76,7 @@ namespace TelephoneServiceProvider.Core
         private void SubscribeToEvents()
         {
             ReportBillingSystemOfNewClient += Billing.PutPhoneOnRecord;
+            BaseStation.NotifyBillingSystemAboutCallEnd += Billing.PutCallOnRecord;
         }
 
         protected virtual void OnReportBillingSystemOfNewClient(BillingSystemEventArgs e)
