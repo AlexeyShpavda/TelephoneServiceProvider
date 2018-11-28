@@ -79,6 +79,8 @@ namespace TelephoneServiceProvider.PresentationLayer
 
             terminal2.Reject();
 
+            Console.WriteLine(company.Billing.GetReport(port1.PhoneNumber));
+
             Console.ReadKey();
         }
     }
