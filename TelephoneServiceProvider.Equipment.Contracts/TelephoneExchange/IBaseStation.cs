@@ -27,6 +27,12 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 
         void RejectCall(object sender, IRejectedCallEventArgs e);
 
+        void AddPorts(IEnumerable<IPort> ports);
+
+        void RemovePorts(IEnumerable<IPort> ports);
+
         void AddPort(IPort port);
+
+        void RemovePort(IPort port);
     }
 }

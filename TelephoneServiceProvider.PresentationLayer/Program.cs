@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using TelephoneServiceProvider.BillingSystem;
 using TelephoneServiceProvider.BillingSystem.Tariffs;
 using TelephoneServiceProvider.Core;
 using TelephoneServiceProvider.Core.Clients;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
 namespace TelephoneServiceProvider.PresentationLayer
@@ -34,8 +36,7 @@ namespace TelephoneServiceProvider.PresentationLayer
             terminal1.SetDisplayMethod(displayMethod);
 
 
-            company.BaseStation.AddPort(port1);
-            company.BaseStation.AddPort(port2);
+            company.BaseStation.AddPorts(new List<IPort> {port1, port2});
 
 
             terminal1.ConnectToPort(port1);

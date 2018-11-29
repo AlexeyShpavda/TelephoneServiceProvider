@@ -26,5 +26,15 @@ namespace TelephoneServiceProvider.Equipment
             baseStation.NotifyPortOfRejectionOfCall += port.InformTerminalAboutRejectionOfCall;
             port.NotifyStationOfAnsweredCall += baseStation.AnswerCall;
         }
+
+        public static void DisconnectPortAndStation(IPort port, IBaseStation baseStation)
+        {
+            port.NotifyStationOfOutgoingCall -= baseStation.NotifyIncomingCallPort;
+            baseStation.NotifyPortOfFailure -= port.ReportError;
+            baseStation.NotifyPortOfIncomingCall -= port.IncomingCall;
+            port.NotifyStationOfRejectionOfCall -= baseStation.RejectCall;
+            baseStation.NotifyPortOfRejectionOfCall -= port.InformTerminalAboutRejectionOfCall;
+            port.NotifyStationOfAnsweredCall -= baseStation.AnswerCall;
+        }
     }
 }

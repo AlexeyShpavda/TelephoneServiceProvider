@@ -35,10 +35,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public BaseStation(IEnumerable<IPort> ports) : this()
         {
-            foreach (var port in ports)
-            {
-                AddPort(port);
-            }
+            AddPorts(ports);
         }
 
         public void NotifyIncomingCallPort(object sender, IOutgoingCallEventArgs e)
@@ -91,11 +88,34 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             OnNotifyPortAboutRejectionOfCall(e, portWhichNeedToSendNotification);
         }
 
+        public void AddPorts(IEnumerable<IPort> ports)
+        {
+            foreach (var port in ports)
+            {
+                AddPort(port);
+            }
+        }
+
+        public void RemovePorts(IEnumerable<IPort> ports)
+        {
+            foreach (var port in ports)
+            {
+                RemovePort(port);
+            }
+        }
+
         public void AddPort(IPort port)
         {
             Mapping.LinkPortAndStation(port, this);
 
             Ports.Add(port);
+        }
+
+        public void RemovePort(IPort port)
+        {
+            Mapping.DisconnectPortAndStation(port, this);
+
+            Ports.Remove(port);
         }
 
         private IPort CompleteCallInProgress(IPort portRejectedCall, IAnsweredCall canceledCall, IRejectedCallEventArgs e)
