@@ -73,42 +73,13 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         {
             var portRejectedCall = (IPort)sender;
 
-            IPort portWhichNeedToSendNotification;
+            var canceledCall = CallsInProgress.FirstOrDefault(x =>
+                x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
+                x.SenderPhoneNumber == portRejectedCall.PhoneNumber);
 
-            var canceledCall =
-                CallsInProgress.FirstOrDefault(x =>
-                    x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
-                    x.SenderPhoneNumber == portRejectedCall.PhoneNumber);
-
-            if (canceledCall != null)
-            {
-                portWhichNeedToSendNotification = canceledCall.SenderPhoneNumber == portRejectedCall.PhoneNumber
-                    ? Ports.FirstOrDefault(x => x.PhoneNumber == canceledCall.ReceiverPhoneNumber)
-                    : Ports.FirstOrDefault(x => x.PhoneNumber == canceledCall.SenderPhoneNumber);
-
-                CallsInProgress.Remove(canceledCall);
-
-                canceledCall.CallEndTime = e.CallRejectionTime;
-
-                OnNotifyBillingSystemAboutCallEnd(canceledCall);
-            }
-            else
-            {
-                if (CallsWaitingToBeAnswered.ContainsKey(portRejectedCall))
-                {
-                    portWhichNeedToSendNotification = CallsWaitingToBeAnswered[portRejectedCall];
-
-                    CallsWaitingToBeAnswered.Remove(portRejectedCall);
-                }
-                else
-                {
-                    portWhichNeedToSendNotification =
-                        CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == portRejectedCall).Key;
-
-                    if (portWhichNeedToSendNotification != null)
-                        CallsWaitingToBeAnswered.Remove(portWhichNeedToSendNotification);
-                }
-            }
+            var portWhichNeedToSendNotification = canceledCall != null
+                ? CompleteCallInProgress(portRejectedCall, canceledCall, e)
+                : CancelNotStartedCall(portRejectedCall);
 
             OnNotifyPortAboutRejectionOfCall(e, portWhichNeedToSendNotification);
         }
@@ -118,6 +89,43 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             Mapping.LinkPortAndStation(port, this);
 
             Ports.Add(port);
+        }
+
+        private IPort CompleteCallInProgress(IPort portRejectedCall, ICall canceledCall, IRejectedCallEventArgs e)
+        {
+            var portWhichNeedToSendNotification = canceledCall.SenderPhoneNumber == portRejectedCall.PhoneNumber
+                ? Ports.FirstOrDefault(x => x.PhoneNumber == canceledCall.ReceiverPhoneNumber)
+                : Ports.FirstOrDefault(x => x.PhoneNumber == canceledCall.SenderPhoneNumber);
+
+            CallsInProgress.Remove(canceledCall);
+
+            canceledCall.CallEndTime = e.CallRejectionTime;
+
+            OnNotifyBillingSystemAboutCallEnd(canceledCall);
+
+            return portWhichNeedToSendNotification;
+        }
+
+        private IPort CancelNotStartedCall(IPort portRejectedCall)
+        {
+            IPort portWhichNeedToSendNotification;
+
+            if (CallsWaitingToBeAnswered.ContainsKey(portRejectedCall))
+            {
+                portWhichNeedToSendNotification = CallsWaitingToBeAnswered[portRejectedCall];
+
+                CallsWaitingToBeAnswered.Remove(portRejectedCall);
+            }
+            else
+            {
+                portWhichNeedToSendNotification =
+                    CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == portRejectedCall).Key;
+
+                if (portWhichNeedToSendNotification != null)
+                    CallsWaitingToBeAnswered.Remove(portWhichNeedToSendNotification);
+            }
+
+            return portWhichNeedToSendNotification;
         }
 
         protected virtual void OnNotifyPortOfIncomingCall(IIncomingCallEventArgs e, IPort senderPort, IPort receiverPort)
