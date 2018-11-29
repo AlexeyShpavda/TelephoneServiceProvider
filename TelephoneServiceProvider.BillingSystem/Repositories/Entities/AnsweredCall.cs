@@ -24,5 +24,10 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 
             CallEndTime = callEndTime;
         }
+
+        public override string ToString()
+        {
+            return $"{base.ToString()} | {CallStartTime} | {CallEndTime} | {Duration}";
+        }
     }
 }

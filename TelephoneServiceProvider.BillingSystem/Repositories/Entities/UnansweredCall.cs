@@ -13,5 +13,10 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
         {
             CallResetTime = callResetTime;
         }
+
+        public override string ToString()
+        {
+            return $"{base.ToString()} | {CallResetTime}";
+        }
     }
 }
