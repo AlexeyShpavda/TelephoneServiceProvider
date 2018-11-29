@@ -20,7 +20,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public event EventHandler<ICall> NotifyBillingSystemAboutCallEnd;
 
-        public IList<IPort> Ports { get; }
+        public IList<IPort> Ports { get; private set; }
 
         public IDictionary<IPort, IPort> CallsWaitingToBeAnswered { get; private set; }
 
@@ -36,56 +36,6 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         public BaseStation(IEnumerable<IPort> ports) : this()
         {
             AddPorts(ports);
-        }
-
-        public void NotifyIncomingCallPort(object sender, IOutgoingCallEventArgs e)
-        {
-            var senderPort = sender as IPort;
-
-            var receiverPort = Ports.FirstOrDefault(x => x.PhoneNumber == e.ReceiverPhoneNumber);
-
-            if (receiverPort != null && senderPort != null && receiverPort.PortStatus == PortStatus.Free)
-            {
-                CallsWaitingToBeAnswered.Add(senderPort, receiverPort);
-
-                OnNotifyPortOfIncomingCall(new IncomingCallEventArgs(senderPort.PhoneNumber), senderPort,
-                    receiverPort);
-            }
-            else
-            {
-                OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber), senderPort);
-            }
-        }
-
-        public void AnswerCall(object sender, IAnsweredCallEventArgs e)
-        {
-            var receiverPort = sender as IPort;
-
-            var senderPort = CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == receiverPort).Key;
-
-            if (senderPort == null) return;
-
-            CallsWaitingToBeAnswered.Remove(senderPort);
-
-            if (receiverPort != null)
-            {
-                CallsInProgress.Add(new AnsweredCall(senderPort.PhoneNumber, receiverPort.PhoneNumber)
-                    {CallStartTime = e.CallStartTime});
-            }
-        }
-
-        public void RejectCall(object sender, IRejectedCallEventArgs e)
-        {
-            var portRejectedCall = sender as IPort;
-
-            var portWhichNeedToSendNotification = CallsInProgress.FirstOrDefault(x =>
-                portRejectedCall != null && (
-                x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
-                x.SenderPhoneNumber == portRejectedCall.PhoneNumber)) is IAnsweredCall canceledCall
-                ? CompleteCallInProgress(portRejectedCall, canceledCall, e)
-                : CancelNotStartedCall(portRejectedCall);
-
-            OnNotifyPortAboutRejectionOfCall(e, portWhichNeedToSendNotification);
         }
 
         public void AddPorts(IEnumerable<IPort> ports)
@@ -106,16 +56,66 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public void AddPort(IPort port)
         {
-            Mapping.ConnectPortToStation(port, this);
+            Mapping.ConnectPortToStation(port as Port, this);
 
             Ports.Add(port);
         }
 
         public void RemovePort(IPort port)
         {
-            Mapping.DisconnectPortFromStation(port, this);
+            Mapping.DisconnectPortFromStation(port as Port, this);
 
             Ports.Remove(port);
+        }
+
+        internal void NotifyIncomingCallPort(object sender, IOutgoingCallEventArgs e)
+        {
+            var senderPort = sender as IPort;
+
+            var receiverPort = Ports.FirstOrDefault(x => x.PhoneNumber == e.ReceiverPhoneNumber);
+
+            if (receiverPort != null && senderPort != null && receiverPort.PortStatus == PortStatus.Free)
+            {
+                CallsWaitingToBeAnswered.Add(senderPort, receiverPort);
+
+                OnNotifyPortOfIncomingCall(new IncomingCallEventArgs(senderPort.PhoneNumber), senderPort,
+                    receiverPort);
+            }
+            else
+            {
+                OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber), senderPort);
+            }
+        }
+
+        internal void AnswerCall(object sender, IAnsweredCallEventArgs e)
+        {
+            var receiverPort = sender as IPort;
+
+            var senderPort = CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == receiverPort).Key;
+
+            if (senderPort == null) return;
+
+            CallsWaitingToBeAnswered.Remove(senderPort);
+
+            if (receiverPort != null)
+            {
+                CallsInProgress.Add(new AnsweredCall(senderPort.PhoneNumber, receiverPort.PhoneNumber)
+                    {CallStartTime = e.CallStartTime});
+            }
+        }
+
+        internal void RejectCall(object sender, IRejectedCallEventArgs e)
+        {
+            var portRejectedCall = sender as IPort;
+
+            var portWhichNeedToSendNotification = CallsInProgress.FirstOrDefault(x =>
+                portRejectedCall != null && (
+                x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
+                x.SenderPhoneNumber == portRejectedCall.PhoneNumber)) is IAnsweredCall canceledCall
+                ? CompleteCallInProgress(portRejectedCall, canceledCall, e)
+                : CancelNotStartedCall(portRejectedCall);
+
+            OnNotifyPortAboutRejectionOfCall(e, portWhichNeedToSendNotification);
         }
 
         private IPort CompleteCallInProgress(IPort portRejectedCall, IAnsweredCall canceledCall, IRejectedCallEventArgs e)
@@ -155,7 +155,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             return portWhichNeedToSendNotification;
         }
 
-        protected virtual void OnNotifyPortOfIncomingCall(IIncomingCallEventArgs e, IPort senderPort, IPort receiverPort)
+        private void OnNotifyPortOfIncomingCall(IIncomingCallEventArgs e, IPort senderPort, IPort receiverPort)
         {
             try
             {
@@ -168,19 +168,19 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        protected virtual void OnNotifyPortOfFailure(IFailureEventArgs e, IPort port)
+        private void OnNotifyPortOfFailure(IFailureEventArgs e, IPort port)
         {
             (NotifyPortOfFailure?.GetInvocationList().First(x => x.Target == port) as
                 EventHandler<IFailureEventArgs>)?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyPortAboutRejectionOfCall(IRejectedCallEventArgs e, IPort port)
+        private void OnNotifyPortAboutRejectionOfCall(IRejectedCallEventArgs e, IPort port)
         {
             (NotifyPortOfRejectionOfCall?.GetInvocationList().First(x => x.Target == port) as
                 EventHandler<IRejectedCallEventArgs>)?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyBillingSystemAboutCallEnd(ICall e)
+        private void OnNotifyBillingSystemAboutCallEnd(ICall e)
         {
             NotifyBillingSystemAboutCallEnd?.Invoke(this, e);
         }

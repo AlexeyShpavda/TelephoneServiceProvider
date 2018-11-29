@@ -13,8 +13,6 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs
 
         public DateTime CallEndTime { get; set; }
 
-        public TimeSpan Duration => CallEndTime - CallStartTime;
-
         public CallEventArgs(string senderPhoneNumber, string receiverPhoneNumber, DateTime callStartTime, DateTime callEndTime)
         {
             SenderPhoneNumber = senderPhoneNumber;

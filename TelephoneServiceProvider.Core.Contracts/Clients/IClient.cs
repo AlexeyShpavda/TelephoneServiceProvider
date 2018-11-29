@@ -2,7 +2,7 @@
 {
     public interface IClient
     {
-        IPassport Passport { get; set; }
+        IPassport Passport { get; }
 
         IContract Contract { get; set; }
 

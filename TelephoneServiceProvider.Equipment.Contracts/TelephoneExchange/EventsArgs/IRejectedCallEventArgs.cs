@@ -5,6 +5,7 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsA
     public interface IRejectedCallEventArgs
     {
         string PhoneNumberOfPersonRejectedCall { get; set; }
+
         DateTime CallRejectionTime { get; set; }
     }
 }

@@ -4,9 +4,9 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities.Abstract
 {
     public abstract class Call : ICall
     {
-        public string SenderPhoneNumber { get; private set; }
+        public string SenderPhoneNumber { get; }
 
-        public string ReceiverPhoneNumber { get; private set; }
+        public string ReceiverPhoneNumber { get; }
 
         protected Call(string senderPhoneNumber, string receiverPhoneNumber)
         {

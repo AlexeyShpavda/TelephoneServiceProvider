@@ -82,7 +82,7 @@ namespace TelephoneServiceProvider.Core
             BaseStation.NotifyBillingSystemAboutCallEnd += Billing.PutCallOnRecord;
         }
 
-        protected virtual void OnReportBillingSystemOfNewClient(IBillingSystemEventArgs e)
+        private void OnReportBillingSystemOfNewClient(IBillingSystemEventArgs e)
         {
             ReportBillingSystemOfNewClient?.Invoke(this, e);
         }

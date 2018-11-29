@@ -13,7 +13,7 @@ namespace TelephoneServiceProvider.Equipment.Contracts.ClientHardware
 
         Guid SerialNumber { get; }
 
-        IPort Port { get; set; }
+        IPort Port { get; }
 
         TerminalStatus TerminalStatus { get; }
 
@@ -28,11 +28,5 @@ namespace TelephoneServiceProvider.Equipment.Contracts.ClientHardware
         void Answer();
 
         void Reject();
-
-        void NotifyUserAboutError(object sender, IFailureEventArgs e);
-
-        void NotifyUserAboutIncomingCall(object sender, IIncomingCallEventArgs e);
-
-        void NotifyUserAboutRejectedCall(object sender, IRejectedCallEventArgs e);
     }
 }

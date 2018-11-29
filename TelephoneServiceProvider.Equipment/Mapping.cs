@@ -1,11 +1,11 @@
-﻿using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+﻿using TelephoneServiceProvider.Equipment.ClientHardware;
+using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
 namespace TelephoneServiceProvider.Equipment
 {
-    public static class Mapping
+    internal static class Mapping
     {
-        public static void ConnectTerminalToPort(ITerminal terminal, IPort port)
+        internal static void ConnectTerminalToPort(Terminal terminal, Port port)
         {
             port.NotifyTerminalOfFailure += terminal.NotifyUserAboutError;
             port.NotifyTerminalOfIncomingCall += terminal.NotifyUserAboutIncomingCall;
@@ -14,7 +14,7 @@ namespace TelephoneServiceProvider.Equipment
             terminal.NotifyPortAboutAnsweredCall += port.AnswerCall;
         }
 
-        public static void ConnectPortToStation(IPort port, IBaseStation baseStation)
+        internal static void ConnectPortToStation(Port port, BaseStation baseStation)
         {
             port.NotifyStationOfOutgoingCall += baseStation.NotifyIncomingCallPort;
             baseStation.NotifyPortOfFailure += port.ReportError;
@@ -24,7 +24,7 @@ namespace TelephoneServiceProvider.Equipment
             port.NotifyStationOfAnsweredCall += baseStation.AnswerCall;
         }
 
-        public static void DisconnectTerminalFromPort(ITerminal terminal, IPort port)
+        internal static void DisconnectTerminalFromPort(Terminal terminal, Port port)
         {
             port.NotifyTerminalOfFailure -= terminal.NotifyUserAboutError;
             port.NotifyTerminalOfIncomingCall -= terminal.NotifyUserAboutIncomingCall;
@@ -33,7 +33,7 @@ namespace TelephoneServiceProvider.Equipment
             terminal.NotifyPortAboutAnsweredCall -= port.AnswerCall;
         }
 
-        public static void DisconnectPortFromStation(IPort port, IBaseStation baseStation)
+        internal static void DisconnectPortFromStation(Port port, BaseStation baseStation)
         {
             port.NotifyStationOfOutgoingCall -= baseStation.NotifyIncomingCallPort;
             baseStation.NotifyPortOfFailure -= port.ReportError;

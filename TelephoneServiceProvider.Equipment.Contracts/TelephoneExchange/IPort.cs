@@ -30,17 +30,5 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
         void DisconnectFromTerminal();
 
         void OutgoingCall(string receiverPhoneNumber);
-
-        void IncomingCall(object sender, IIncomingCallEventArgs e);
-
-        void AnswerCall(object sender, IAnsweredCallEventArgs e);
-
-        void RejectCall(object sender, IRejectedCallEventArgs e);
-
-        void InformTerminalAboutRejectionOfCall(object sender, IRejectedCallEventArgs e);
-
-        void ReportError(object sender, IFailureEventArgs e);
-
-        void OnNotifyStationOfAnsweredOfCall(IAnsweredCallEventArgs e);
     }
 }

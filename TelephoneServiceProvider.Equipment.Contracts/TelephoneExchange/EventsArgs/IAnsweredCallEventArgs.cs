@@ -5,6 +5,7 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsA
     public interface IAnsweredCallEventArgs
     {
         string PhoneNumberOfPersonAnsweredCall { get; set; }
+
         DateTime CallStartTime { get; set; }
     }
 }

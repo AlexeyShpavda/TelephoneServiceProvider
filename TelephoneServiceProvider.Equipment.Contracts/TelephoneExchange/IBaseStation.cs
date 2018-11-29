@@ -21,12 +21,6 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 
         IList<ICall> CallsInProgress { get; }
 
-        void NotifyIncomingCallPort(object sender, IOutgoingCallEventArgs e);
-
-        void AnswerCall(object sender, IAnsweredCallEventArgs e);
-
-        void RejectCall(object sender, IRejectedCallEventArgs e);
-
         void AddPorts(IEnumerable<IPort> ports);
 
         void RemovePorts(IEnumerable<IPort> ports);

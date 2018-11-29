@@ -4,6 +4,7 @@ using TelephoneServiceProvider.Equipment.Contracts.ClientHardware.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
+using TelephoneServiceProvider.Equipment.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.ClientHardware
@@ -18,15 +19,15 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public Guid SerialNumber { get; }
 
-        public IPort Port { get; set; }
+        public IPort Port { get; private set; }
 
         public TerminalStatus TerminalStatus { get; private set; }
 
-        public Terminal()
+        public Terminal(IPort port = null, Action<string> displayMethod = null)
         {
-            DisplayMethod = null;
+            DisplayMethod = displayMethod;
             SerialNumber = Guid.NewGuid();
-            Port = null;
+            Port = port;
             TerminalStatus = TerminalStatus.Inaction;
         }
 
@@ -41,12 +42,12 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
             Port = port;
             Port.ConnectToTerminal();
-            Mapping.ConnectTerminalToPort(this, Port);
+            Mapping.ConnectTerminalToPort(this, Port as Port);
         }
 
         public void DisconnectFromPort()
         {
-            Mapping.DisconnectTerminalFromPort(this, Port);
+            Mapping.DisconnectTerminalFromPort(this, Port as Port);
             Port.DisconnectFromTerminal();
             Port = null;
         }
@@ -85,33 +86,33 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs("") { CallRejectionTime = DateTime.Now });
         }
 
-        public void NotifyUserAboutError(object sender, IFailureEventArgs e)
+        internal void NotifyUserAboutError(object sender, IFailureEventArgs e)
         {
             TerminalStatus = TerminalStatus.Inaction;
 
             DisplayMethod?.Invoke($"{e.ReceiverPhoneNumber} - Subscriber Doesn't Exist or He is Busy");
         }
 
-        public void NotifyUserAboutIncomingCall(object sender, IIncomingCallEventArgs e)
+        internal void NotifyUserAboutIncomingCall(object sender, IIncomingCallEventArgs e)
         {
             TerminalStatus = TerminalStatus.IncomingCall;
 
             DisplayMethod?.Invoke($"{e.SenderPhoneNumber} - is calling you");
         }
 
-        public void NotifyUserAboutRejectedCall(object sender, IRejectedCallEventArgs e)
+        internal void NotifyUserAboutRejectedCall(object sender, IRejectedCallEventArgs e)
         {
             TerminalStatus = TerminalStatus.Inaction;
 
             DisplayMethod?.Invoke($"{e.PhoneNumberOfPersonRejectedCall} - canceled the call");
         }
 
-        protected virtual void OnNotifyPortAboutRejectionOfCall(IRejectedCallEventArgs e)
+        private void OnNotifyPortAboutRejectionOfCall(IRejectedCallEventArgs e)
         {
             NotifyPortAboutRejectionOfCall?.Invoke(this, e);
         }
 
-        protected virtual void OnNotifyPortAboutAnsweredCall(IAnsweredCallEventArgs e)
+        private void OnNotifyPortAboutAnsweredCall(IAnsweredCallEventArgs e)
         {
             NotifyPortAboutAnsweredCall?.Invoke(this, e);
         }

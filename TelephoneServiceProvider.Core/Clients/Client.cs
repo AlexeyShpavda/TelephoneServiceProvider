@@ -4,7 +4,7 @@ namespace TelephoneServiceProvider.Core.Clients
 {
     public class Client : IClient
     {
-        public IPassport Passport { get; set; }
+        public IPassport Passport { get; private set; }
 
         public IContract Contract { get; set; }
 
