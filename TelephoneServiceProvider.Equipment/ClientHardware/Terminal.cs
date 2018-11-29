@@ -18,15 +18,12 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public Guid SerialNumber { get; }
 
-        public bool IsConnectedWithPort { get; private set; }
-
         public IPort Port { get; set; }
 
         public Terminal()
         {
             DisplayMethod = null;
             SerialNumber = Guid.NewGuid();
-            IsConnectedWithPort = false;
             Port = null;
         }
 
@@ -42,7 +39,6 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             Port = port;
             Port.ConnectToTerminal();
             Mapping.ConnectTerminalToPort(this, Port);
-            IsConnectedWithPort = true;
         }
 
         public void DisconnectFromPort()
@@ -50,12 +46,11 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             Mapping.DisconnectTerminalFromPort(this, Port);
             Port.DisconnectFromTerminal();
             Port = null;
-            IsConnectedWithPort = false;
         }
 
         public void Call(string receiverPhoneNumber)
         {
-            if (IsConnectedWithPort)
+            if (Port != null && Port.PortStatus == PortStatus.Free)
             {
                 Port.OutgoingCall(receiverPhoneNumber);
             }
@@ -63,6 +58,8 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void Answer()
         {
+            if (Port == null || Port.PortStatus != PortStatus.Busy) return;
+
             DisplayMethod?.Invoke("You Answered Call");
 
             OnNotifyPortAboutAnsweredCall(new AnsweredCallEventArgs("") { CallStartTime = DateTime.Now });
@@ -70,6 +67,8 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void Reject()
         {
+            if (Port == null || Port.PortStatus != PortStatus.Busy) return;
+
             DisplayMethod?.Invoke("You Rejected Call");
 
             OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs("") { CallRejectionTime = DateTime.Now });

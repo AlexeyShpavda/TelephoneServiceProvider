@@ -12,8 +12,6 @@ namespace TelephoneServiceProvider.Equipment.Contracts.ClientHardware
 
         Guid SerialNumber { get; }
 
-        bool IsConnectedWithPort { get; }
-
         IPort Port { get; set; }
 
         void SetDisplayMethod(Action<string> action);
