@@ -31,19 +31,13 @@ namespace TelephoneServiceProvider.PresentationLayer
             var port1 = client1.Contract.ClientEquipment.Port;
             var port2 = client2.Contract.ClientEquipment.Port;
 
-
             terminal2.SetDisplayMethod(displayMethod);
             terminal1.SetDisplayMethod(displayMethod);
 
-
             company.BaseStation.AddPorts(new List<IPort> {port1, port2});
-
 
             terminal1.ConnectToPort(port1);
             terminal2.ConnectToPort(port2);
-
-            //terminal2.DisconnectFromPort();
-
 
             terminal1.Call(port2.PhoneNumber);
 

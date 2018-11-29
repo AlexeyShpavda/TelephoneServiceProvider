@@ -1,9 +1,9 @@
 ﻿using System;
 using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
+using TelephoneServiceProvider.Equipment.Contracts.ClientHardware.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
-using TelephoneServiceProvider.Equipment.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.ClientHardware
@@ -20,11 +20,14 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public IPort Port { get; set; }
 
+        public TerminalStatus TerminalStatus { get; private set; }
+
         public Terminal()
         {
             DisplayMethod = null;
             SerialNumber = Guid.NewGuid();
             Port = null;
+            TerminalStatus = TerminalStatus.Inaction;
         }
 
         public void SetDisplayMethod(Action<string> action)
@@ -50,15 +53,20 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void Call(string receiverPhoneNumber)
         {
-            if (Port != null && Port.PortStatus == PortStatus.Free)
-            {
-                Port.OutgoingCall(receiverPhoneNumber);
-            }
+            if (Port == null || Port.PortStatus != PortStatus.Free ||
+                TerminalStatus != TerminalStatus.Inaction) return;
+
+            Port.OutgoingCall(receiverPhoneNumber);
+
+            TerminalStatus = TerminalStatus.OutgoingCall;
         }
 
         public void Answer()
         {
-            if (Port == null || Port.PortStatus != PortStatus.Busy) return;
+            if (Port == null || Port.PortStatus != PortStatus.Busy ||
+                TerminalStatus != TerminalStatus.IncomingCall) return;
+
+            TerminalStatus = TerminalStatus.Conversation;
 
             DisplayMethod?.Invoke("You Answered Call");
 
@@ -67,7 +75,10 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void Reject()
         {
-            if (Port == null || Port.PortStatus != PortStatus.Busy) return;
+            if (Port == null || Port.PortStatus != PortStatus.Busy ||
+                TerminalStatus != TerminalStatus.Conversation) return;
+
+            TerminalStatus = TerminalStatus.Inaction;
 
             DisplayMethod?.Invoke("You Rejected Call");
 
@@ -76,16 +87,22 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void NotifyUserAboutError(object sender, IFailureEventArgs e)
         {
+            TerminalStatus = TerminalStatus.Inaction;
+
             DisplayMethod?.Invoke($"{e.ReceiverPhoneNumber} - Subscriber Doesn't Exist or He is Busy");
         }
 
         public void NotifyUserAboutIncomingCall(object sender, IIncomingCallEventArgs e)
         {
+            TerminalStatus = TerminalStatus.IncomingCall;
+
             DisplayMethod?.Invoke($"{e.SenderPhoneNumber} - is calling you");
         }
 
         public void NotifyUserAboutRejectedCall(object sender, IRejectedCallEventArgs e)
         {
+            TerminalStatus = TerminalStatus.Inaction;
+
             DisplayMethod?.Invoke($"{e.PhoneNumberOfPersonRejectedCall} - canceled the call");
         }
 
