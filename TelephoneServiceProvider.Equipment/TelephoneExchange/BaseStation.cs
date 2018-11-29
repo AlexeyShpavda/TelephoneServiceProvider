@@ -33,14 +33,18 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             Ports = new List<IPort>();
         }
 
-        public BaseStation(IList<IPort> ports) : this()
+        public BaseStation(IEnumerable<IPort> ports) : this()
         {
-            Ports = ports;
+            foreach (var port in ports)
+            {
+                AddPort(port);
+            }
         }
 
         public void NotifyIncomingCallPort(object sender, IOutgoingCallEventArgs e)
         {
             var senderPort = sender as IPort;
+
             var receiverPort = Ports.FirstOrDefault(x => x.PhoneNumber == e.ReceiverPhoneNumber);
 
             if (receiverPort != null && senderPort != null && receiverPort.PortStatus == PortStatus.Free)
@@ -59,6 +63,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         public void AnswerCall(object sender, IAnsweredCallEventArgs e)
         {
             var receiverPort = sender as IPort;
+
             var senderPort = CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == receiverPort).Key;
 
             if (senderPort == null) return;
