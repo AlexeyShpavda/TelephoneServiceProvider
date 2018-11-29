@@ -1,7 +1,9 @@
 ﻿using System;
 using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
+using TelephoneServiceProvider.Equipment.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.ClientHardware
@@ -9,10 +11,6 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
     public class Terminal : ITerminal
     {
         public Action<string> DisplayMethod { get; private set; }
-
-        public event EventHandler ConnectedToPort;
-
-        public event EventHandler DisconnectedFromPort;
 
         public event EventHandler<IRejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
 
@@ -42,16 +40,17 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             if (port == null) return;
 
             Port = port;
-            Mapping.LinkTerminalAndPort(this, Port);
+            Port.ConnectToTerminal();
+            Mapping.ConnectTerminalToPort(this, Port);
             IsConnectedWithPort = true;
-            OnConnectedToPort();
         }
 
         public void DisconnectFromPort()
         {
+            Mapping.DisconnectTerminalFromPort(this, Port);
+            Port.DisconnectFromTerminal();
             Port = null;
             IsConnectedWithPort = false;
-            OnDisconnectedFromPort();
         }
 
         public void Call(string receiverPhoneNumber)
@@ -89,16 +88,6 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
         public void NotifyUserAboutRejectedCall(object sender, IRejectedCallEventArgs e)
         {
             DisplayMethod?.Invoke($"{e.PhoneNumberOfPersonRejectedCall} - canceled the call");
-        }
-
-        protected virtual void OnConnectedToPort()
-        {
-            ConnectedToPort?.Invoke(this, EventArgs.Empty);
-        }
-
-        protected virtual void OnDisconnectedFromPort()
-        {
-            DisconnectedFromPort?.Invoke(this, EventArgs.Empty);
         }
 
         protected virtual void OnNotifyPortAboutRejectionOfCall(IRejectedCallEventArgs e)

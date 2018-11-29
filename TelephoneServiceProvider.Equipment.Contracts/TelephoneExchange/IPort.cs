@@ -25,9 +25,9 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 
         PortStatus PortStatus { get; }
 
-        void ConnectToTerminal(object sender, EventArgs e);
+        void ConnectToTerminal();
 
-        void DisconnectFromTerminal(object sender, EventArgs e);
+        void DisconnectFromTerminal();
 
         void OutgoingCall(string receiverPhoneNumber);
 

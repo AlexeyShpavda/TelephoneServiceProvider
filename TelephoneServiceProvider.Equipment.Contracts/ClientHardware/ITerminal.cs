@@ -6,10 +6,6 @@ namespace TelephoneServiceProvider.Equipment.Contracts.ClientHardware
 {
     public interface ITerminal
     {
-        event EventHandler ConnectedToPort;
-
-        event EventHandler DisconnectedFromPort;
-
         event EventHandler<IRejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
 
         event EventHandler<IAnsweredCallEventArgs> NotifyPortAboutAnsweredCall;

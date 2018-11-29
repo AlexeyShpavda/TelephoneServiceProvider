@@ -5,11 +5,8 @@ namespace TelephoneServiceProvider.Equipment
 {
     public static class Mapping
     {
-        public static void LinkTerminalAndPort(ITerminal terminal, IPort port)
+        public static void ConnectTerminalToPort(ITerminal terminal, IPort port)
         {
-            terminal.ConnectedToPort += port.ConnectToTerminal;
-            terminal.DisconnectedFromPort += port.DisconnectFromTerminal;
-
             port.NotifyTerminalOfFailure += terminal.NotifyUserAboutError;
             port.NotifyTerminalOfIncomingCall += terminal.NotifyUserAboutIncomingCall;
             terminal.NotifyPortAboutRejectionOfCall += port.RejectCall;
@@ -17,7 +14,7 @@ namespace TelephoneServiceProvider.Equipment
             terminal.NotifyPortAboutAnsweredCall += port.AnswerCall;
         }
 
-        public static void LinkPortAndStation(IPort port, IBaseStation baseStation)
+        public static void ConnectPortToStation(IPort port, IBaseStation baseStation)
         {
             port.NotifyStationOfOutgoingCall += baseStation.NotifyIncomingCallPort;
             baseStation.NotifyPortOfFailure += port.ReportError;
@@ -27,7 +24,16 @@ namespace TelephoneServiceProvider.Equipment
             port.NotifyStationOfAnsweredCall += baseStation.AnswerCall;
         }
 
-        public static void DisconnectPortAndStation(IPort port, IBaseStation baseStation)
+        public static void DisconnectTerminalFromPort(ITerminal terminal, IPort port)
+        {
+            port.NotifyTerminalOfFailure -= terminal.NotifyUserAboutError;
+            port.NotifyTerminalOfIncomingCall -= terminal.NotifyUserAboutIncomingCall;
+            terminal.NotifyPortAboutRejectionOfCall -= port.RejectCall;
+            port.NotifyTerminalOfRejectionOfCall -= terminal.NotifyUserAboutRejectedCall;
+            terminal.NotifyPortAboutAnsweredCall -= port.AnswerCall;
+        }
+
+        public static void DisconnectPortFromStation(IPort port, IBaseStation baseStation)
         {
             port.NotifyStationOfOutgoingCall -= baseStation.NotifyIncomingCallPort;
             baseStation.NotifyPortOfFailure -= port.ReportError;

@@ -34,12 +34,12 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             Tariff = tariff;
         }
 
-        public void ConnectToTerminal(object sender, EventArgs e)
+        public void ConnectToTerminal()
         {
             PortStatus = PortStatus.Free;
         }
 
-        public void DisconnectFromTerminal(object sender, EventArgs e)
+        public void DisconnectFromTerminal()
         {
             PortStatus = PortStatus.SwitchedOff;
         }

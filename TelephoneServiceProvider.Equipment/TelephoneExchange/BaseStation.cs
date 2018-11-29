@@ -106,14 +106,14 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public void AddPort(IPort port)
         {
-            Mapping.LinkPortAndStation(port, this);
+            Mapping.ConnectPortToStation(port, this);
 
             Ports.Add(port);
         }
 
         public void RemovePort(IPort port)
         {
-            Mapping.DisconnectPortAndStation(port, this);
+            Mapping.DisconnectPortFromStation(port, this);
 
             Ports.Remove(port);
         }

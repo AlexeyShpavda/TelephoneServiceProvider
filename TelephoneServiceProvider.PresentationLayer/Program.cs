@@ -42,6 +42,8 @@ namespace TelephoneServiceProvider.PresentationLayer
             terminal1.ConnectToPort(port1);
             terminal2.ConnectToPort(port2);
 
+            terminal2.DisconnectFromPort();
+
 
             terminal1.Call(port2.PhoneNumber);
 
