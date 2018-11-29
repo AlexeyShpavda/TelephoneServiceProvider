@@ -39,8 +39,10 @@
     <Compile Include="IBilling.cs" />
     <Compile Include="IBillingUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Entities\IAnsweredCall.cs" />
     <Compile Include="Repositories\Entities\ICall.cs" />
     <Compile Include="Repositories\Entities\IPhone.cs" />
+    <Compile Include="Repositories\Entities\IUnansweredCall.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />
     <Compile Include="Tariffs\Abstract\ITariff.cs" />
   </ItemGroup>

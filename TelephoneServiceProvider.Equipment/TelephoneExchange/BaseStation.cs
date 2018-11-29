@@ -65,7 +65,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
             CallsWaitingToBeAnswered.Remove(senderPort);
 
-            CallsInProgress.Add(new Call(senderPort.PhoneNumber, receiverPort.PhoneNumber)
+            CallsInProgress.Add(new AnsweredCall(senderPort.PhoneNumber, receiverPort.PhoneNumber)
             { CallStartTime = e.CallStartTime });
         }
 
@@ -73,11 +73,9 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         {
             var portRejectedCall = (IPort)sender;
 
-            var canceledCall = CallsInProgress.FirstOrDefault(x =>
+            var portWhichNeedToSendNotification = CallsInProgress.FirstOrDefault(x =>
                 x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
-                x.SenderPhoneNumber == portRejectedCall.PhoneNumber);
-
-            var portWhichNeedToSendNotification = canceledCall != null
+                x.SenderPhoneNumber == portRejectedCall.PhoneNumber) is IAnsweredCall canceledCall
                 ? CompleteCallInProgress(portRejectedCall, canceledCall, e)
                 : CancelNotStartedCall(portRejectedCall);
 
@@ -91,7 +89,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             Ports.Add(port);
         }
 
-        private IPort CompleteCallInProgress(IPort portRejectedCall, ICall canceledCall, IRejectedCallEventArgs e)
+        private IPort CompleteCallInProgress(IPort portRejectedCall, IAnsweredCall canceledCall, IRejectedCallEventArgs e)
         {
             var portWhichNeedToSendNotification = canceledCall.SenderPhoneNumber == portRejectedCall.PhoneNumber
                 ? Ports.FirstOrDefault(x => x.PhoneNumber == canceledCall.ReceiverPhoneNumber)

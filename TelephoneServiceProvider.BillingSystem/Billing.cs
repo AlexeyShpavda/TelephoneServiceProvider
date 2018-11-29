@@ -19,7 +19,27 @@ namespace TelephoneServiceProvider.BillingSystem
 
         public void PutCallOnRecord(object sender, ICall e)
         {
-            Data.Calls.Add(new Call(e.SenderPhoneNumber, e.ReceiverPhoneNumber, e.CallStartTime, e.CallEndTime));
+            switch (e)
+            {
+                case IAnsweredCall answeredCall:
+                {
+                    Data.Calls.Add(new AnsweredCall(
+                        answeredCall.SenderPhoneNumber,
+                        answeredCall.ReceiverPhoneNumber,
+                        answeredCall.CallStartTime,
+                        answeredCall.CallEndTime));
+                }
+                    break;
+
+                case IUnansweredCall unansweredCall:
+                {
+                    Data.Calls.Add(new UnansweredCall(
+                        unansweredCall.SenderPhoneNumber,
+                        unansweredCall.ReceiverPhoneNumber,
+                        unansweredCall.CallResetTime));
+                }
+                    break;
+            }
         }
 
         public void PutPhoneOnRecord(object sender, IBillingSystemEventArgs e)
@@ -39,10 +59,7 @@ namespace TelephoneServiceProvider.BillingSystem
         {
             var phone = GetPhoneOnNumber(phoneNumber);
 
-            if (phone != null)
-            {
-                phone.Balance += amountOfMoney;
-            }
+            phone?.ChangeBalanceToAmount(amountOfMoney);
         }
 
         public string GetReport(string phoneNumber, Func<ICall, bool> selector = null)

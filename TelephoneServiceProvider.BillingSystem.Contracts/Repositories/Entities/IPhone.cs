@@ -2,8 +2,10 @@
 {
     public interface IPhone
     {
-        string PhoneNumber { get; set; }
+        string PhoneNumber { get; }
 
-        decimal Balance { get; set; }
+        decimal Balance { get; }
+
+        void ChangeBalanceToAmount(decimal amountOfMoney);
     }
 }
