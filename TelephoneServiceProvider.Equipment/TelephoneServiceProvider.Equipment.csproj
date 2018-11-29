@@ -40,7 +40,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TelephoneExchange\BaseStation.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\AnsweredCallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\CallEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\FailureEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\IncomingCallEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\OutgoingCallEventArgs.cs" />

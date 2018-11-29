@@ -40,7 +40,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TelephoneExchange\Enums\PortStatus.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\IAnsweredCallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\ICallEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\IFailureEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\IIncomingCallEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\IOutgoingCallEventArgs.cs" />
