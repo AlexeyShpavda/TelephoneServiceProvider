@@ -40,10 +40,10 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public void NotifyIncomingCallPort(object sender, IOutgoingCallEventArgs e)
         {
-            var senderPort = (IPort)sender;
+            var senderPort = sender as IPort;
             var receiverPort = Ports.FirstOrDefault(x => x.PhoneNumber == e.ReceiverPhoneNumber);
 
-            if (receiverPort != null && receiverPort.PortStatus == PortStatus.Free)
+            if (receiverPort != null && senderPort != null && receiverPort.PortStatus == PortStatus.Free)
             {
                 CallsWaitingToBeAnswered.Add(senderPort, receiverPort);
 
@@ -58,24 +58,28 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public void AnswerCall(object sender, IAnsweredCallEventArgs e)
         {
-            var receiverPort = (IPort)sender;
+            var receiverPort = sender as IPort;
             var senderPort = CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == receiverPort).Key;
 
             if (senderPort == null) return;
 
             CallsWaitingToBeAnswered.Remove(senderPort);
 
-            CallsInProgress.Add(new AnsweredCall(senderPort.PhoneNumber, receiverPort.PhoneNumber)
-            { CallStartTime = e.CallStartTime });
+            if (receiverPort != null)
+            {
+                CallsInProgress.Add(new AnsweredCall(senderPort.PhoneNumber, receiverPort.PhoneNumber)
+                    {CallStartTime = e.CallStartTime});
+            }
         }
 
         public void RejectCall(object sender, IRejectedCallEventArgs e)
         {
-            var portRejectedCall = (IPort)sender;
+            var portRejectedCall = sender as IPort;
 
             var portWhichNeedToSendNotification = CallsInProgress.FirstOrDefault(x =>
+                portRejectedCall != null && (
                 x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
-                x.SenderPhoneNumber == portRejectedCall.PhoneNumber) is IAnsweredCall canceledCall
+                x.SenderPhoneNumber == portRejectedCall.PhoneNumber)) is IAnsweredCall canceledCall
                 ? CompleteCallInProgress(portRejectedCall, canceledCall, e)
                 : CancelNotStartedCall(portRejectedCall);
 
