@@ -24,29 +24,40 @@ namespace TelephoneServiceProvider.PresentationLayer
 
             var client1 = new Client();
             var client2 = new Client();
+            var client3 = new Client();
 
             client1.Contract = company.EnterIntoContract(client1, tariff);
             client2.Contract = company.EnterIntoContract(client2, tariff);
+            client3.Contract = company.EnterIntoContract(client3, tariff);
 
             var terminal1 = client1.Contract.ClientEquipment.Terminal;
             var terminal2 = client2.Contract.ClientEquipment.Terminal;
+            var terminal3 = client3.Contract.ClientEquipment.Terminal;
 
             var port1 = client1.Contract.ClientEquipment.Port;
             var port2 = client2.Contract.ClientEquipment.Port;
+            var port3 = client3.Contract.ClientEquipment.Port;
 
             terminal2.SetDisplayMethod(displayMethod);
             terminal1.SetDisplayMethod(displayMethod);
+            terminal3.SetDisplayMethod(displayMethod);
 
-            company.BaseStation.AddPorts(new List<IPort> { port1, port2 });
+            company.BaseStation.AddPorts(new List<IPort> {port1, port2, port3});
 
             terminal1.ConnectToPort(port1);
             terminal2.ConnectToPort(port2);
+            terminal3.ConnectToPort(port3);
 
             terminal1.Call(port2.PhoneNumber);
+
+            terminal3.Call(port2.PhoneNumber);
 
             terminal2.Answer();
             Thread.Sleep(5000);
             terminal2.Reject();
+
+
+            terminal3.Call("123");
 
             Console.WriteLine($"Balance at 1 terminal after call: {company.Billing.GetBalance(terminal1.Port.PhoneNumber)}");
             Console.WriteLine($"Balance at 2 terminal after call: {company.Billing.GetBalance(terminal2.Port.PhoneNumber)}");
