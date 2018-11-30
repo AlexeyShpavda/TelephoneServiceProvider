@@ -38,7 +38,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void ConnectToPort(IPort port)
         {
-            if (port == null) return;
+            if (port == null || port.PortStatus != PortStatus.SwitchedOff) return;
 
             Port = port;
             Port.ConnectToTerminal();
