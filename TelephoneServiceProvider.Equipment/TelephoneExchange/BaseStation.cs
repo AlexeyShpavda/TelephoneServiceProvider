@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 using TelephoneServiceProvider.BillingSystem.Repositories.Entities;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
@@ -19,6 +20,10 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         public event EventHandler<IFailureEventArgs> NotifyPortOfFailure;
 
         public event EventHandler<ICall> NotifyBillingSystemAboutCallEnd;
+
+        public event EventHandler<ICheckBalanceEventArgs> CheckBalanceInBillingSystem;
+
+        public event EventHandler<ICheckBalanceEventArgs> NotifyPortAboutLackOfMoneyInAccount;
 
         public IList<IPort> Ports { get; private set; }
 
@@ -72,6 +77,21 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         {
             var senderPort = sender as IPort;
 
+            var checkBalanceEventArgs = new CheckBalanceEventArgs(e.SenderPhoneNumber);
+            OnCheckBalanceInBillingSystem(checkBalanceEventArgs);
+
+            if (checkBalanceEventArgs.IsAllowedCall)
+            {
+                ConnectPorts(senderPort, e);
+            }
+            else
+            {
+                OnNotifyPortAboutLackOfMoneyInAccount(checkBalanceEventArgs, senderPort);
+            }
+        }
+
+        private void ConnectPorts(IPort senderPort, IOutgoingCallEventArgs e)
+        {
             var receiverPort = Ports.FirstOrDefault(x => x.PhoneNumber == e.ReceiverPhoneNumber);
 
             if (receiverPort != null && senderPort != null && receiverPort.PortStatus == PortStatus.Free)
@@ -196,9 +216,23 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
+        private void OnNotifyPortAboutLackOfMoneyInAccount(ICheckBalanceEventArgs e, IPort port)
+        {
+            if (NotifyPortAboutLackOfMoneyInAccount?.GetInvocationList().FirstOrDefault(x => x.Target == port) != null)
+            {
+                (NotifyPortAboutLackOfMoneyInAccount?.GetInvocationList().First(x => x.Target == port) as
+                    EventHandler<ICheckBalanceEventArgs>)?.Invoke(this, e);
+            }
+        }
+
         private void OnNotifyBillingSystemAboutCallEnd(ICall e)
         {
             NotifyBillingSystemAboutCallEnd?.Invoke(this, e);
+        }
+
+        private void OnCheckBalanceInBillingSystem(ICheckBalanceEventArgs e)
+        {
+            CheckBalanceInBillingSystem?.Invoke(this, e);
         }
     }
 }

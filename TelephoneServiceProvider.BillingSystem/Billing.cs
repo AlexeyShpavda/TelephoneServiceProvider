@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using TelephoneServiceProvider.BillingSystem.Contracts;
 using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
@@ -60,7 +58,7 @@ namespace TelephoneServiceProvider.BillingSystem
         {
             var phone = GetPhoneOnNumber(phoneNumber);
 
-            return phone?.Balance ?? throw new Exception("Phone number don't exist");
+            return phone.Balance;
         }
 
         private void ReduceBalance(string phoneNumber, decimal amountOfMoney)
@@ -75,6 +73,13 @@ namespace TelephoneServiceProvider.BillingSystem
             var phone = GetPhoneOnNumber(phoneNumber);
 
             phone?.IncreaseBalance(amountOfMoney);
+        }
+
+        public void CheckPossibilityOfCall(object sender, ICheckBalanceEventArgs e)
+        {
+            var phone = GetPhoneOnNumber(e.PhoneNumber);
+
+            e.IsAllowedCall = phone.Balance >= 0;
         }
 
         public ICallReport GetCallReport(string phoneNumber, Func<ICall, bool> selector = null)
@@ -101,12 +106,12 @@ namespace TelephoneServiceProvider.BillingSystem
             var callCost = callDurationInSeconds * pricePerSecond;
 
             return callCost;
-
         }
 
         public IPhone GetPhoneOnNumber(string phoneNumber)
         {
-            return Data.Phones.GetAll().FirstOrDefault(x => x.PhoneNumber == phoneNumber);
+            return Data.Phones.GetAll().FirstOrDefault(x => x.PhoneNumber == phoneNumber) ??
+                   throw new Exception("Phone number don't exist");
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract
+﻿namespace TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract
 {
     public interface ITariff
     {

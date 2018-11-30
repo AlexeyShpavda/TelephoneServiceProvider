@@ -1,5 +1,4 @@
-﻿using System;
-using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
+﻿using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 
 namespace TelephoneServiceProvider.BillingSystem.Tariffs.Abstract
 {

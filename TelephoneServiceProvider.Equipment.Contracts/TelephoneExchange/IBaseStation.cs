@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 
@@ -14,6 +15,8 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
         event EventHandler<IFailureEventArgs> NotifyPortOfFailure;
 
         event EventHandler<ICall> NotifyBillingSystemAboutCallEnd;
+
+        event EventHandler<ICheckBalanceEventArgs> CheckBalanceInBillingSystem;
 
         IList<IPort> Ports { get; }
 

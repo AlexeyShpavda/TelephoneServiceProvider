@@ -1,4 +1,5 @@
 ﻿using System;
+using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
 using TelephoneServiceProvider.Equipment.Contracts.ClientHardware.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
@@ -57,9 +58,9 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             if (Port == null || Port.PortStatus != PortStatus.Free ||
                 TerminalStatus != TerminalStatus.Inaction) return;
 
-            Port.OutgoingCall(receiverPhoneNumber);
-
             TerminalStatus = TerminalStatus.OutgoingCall;
+
+            Port.OutgoingCall(receiverPhoneNumber);
         }
 
         public void Answer()
@@ -84,6 +85,13 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             DisplayMethod?.Invoke("You Rejected Call");
 
             OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs("") { CallRejectionTime = DateTime.Now });
+        }
+
+        internal void NotifyUserAboutLackOfMoneyInAccount(object sender, ICheckBalanceEventArgs e)
+        {
+            TerminalStatus = TerminalStatus.Inaction;
+
+            DisplayMethod?.Invoke("You don't have enough funds to make a call");
         }
 
         internal void NotifyUserAboutError(object sender, IFailureEventArgs e)

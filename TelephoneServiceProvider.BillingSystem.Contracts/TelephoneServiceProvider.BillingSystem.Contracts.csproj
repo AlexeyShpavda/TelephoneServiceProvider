@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventArgs\IBillingSystemEventArgs.cs" />
+    <Compile Include="EventArgs\ICheckBalanceEventArgs.cs" />
     <Compile Include="IBilling.cs" />
     <Compile Include="IBillingUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

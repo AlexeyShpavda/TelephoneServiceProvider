@@ -42,9 +42,6 @@ namespace TelephoneServiceProvider.PresentationLayer
             terminal1.ConnectToPort(port1);
             terminal2.ConnectToPort(port2);
 
-            company.Billing.IncreaseBalance(port1.PhoneNumber, 10);
-            company.Billing.IncreaseBalance(port2.PhoneNumber, 10);
-
             terminal1.Call(port2.PhoneNumber);
 
             terminal2.Answer();
@@ -53,6 +50,17 @@ namespace TelephoneServiceProvider.PresentationLayer
 
             Console.WriteLine($"Balance at 1 terminal after call: {company.Billing.GetBalance(terminal1.Port.PhoneNumber)}");
             Console.WriteLine($"Balance at 2 terminal after call: {company.Billing.GetBalance(terminal2.Port.PhoneNumber)}");
+
+            terminal1.Call(port2.PhoneNumber);
+
+            company.Billing.IncreaseBalance(port1.PhoneNumber, 10);
+            company.Billing.IncreaseBalance(port2.PhoneNumber, 10);
+
+            terminal1.Call(port2.PhoneNumber);
+
+            terminal2.Answer();
+            Thread.Sleep(3000);
+            terminal2.Reject();
 
             Console.WriteLine(company.Billing.GetCallReport(port1.PhoneNumber));
 

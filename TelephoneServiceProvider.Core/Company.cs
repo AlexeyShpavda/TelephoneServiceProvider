@@ -80,6 +80,7 @@ namespace TelephoneServiceProvider.Core
         {
             ReportBillingSystemOfNewClient += Billing.PutPhoneOnRecord;
             BaseStation.NotifyBillingSystemAboutCallEnd += Billing.PutCallOnRecord;
+            BaseStation.CheckBalanceInBillingSystem += Billing.CheckPossibilityOfCall;
         }
 
         private void OnReportBillingSystemOfNewClient(IBillingSystemEventArgs e)

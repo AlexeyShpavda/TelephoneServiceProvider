@@ -12,6 +12,7 @@ namespace TelephoneServiceProvider.Equipment
             terminal.NotifyPortAboutRejectionOfCall += port.RejectCall;
             port.NotifyTerminalOfRejectionOfCall += terminal.NotifyUserAboutRejectedCall;
             terminal.NotifyPortAboutAnsweredCall += port.AnswerCall;
+            port.NotifyTerminalOfLackOfMoneyInAccount += terminal.NotifyUserAboutLackOfMoneyInAccount;
         }
 
         internal static void ConnectPortToStation(Port port, BaseStation baseStation)
@@ -22,6 +23,7 @@ namespace TelephoneServiceProvider.Equipment
             port.NotifyStationOfRejectionOfCall += baseStation.RejectCall;
             baseStation.NotifyPortOfRejectionOfCall += port.InformTerminalAboutRejectionOfCall;
             port.NotifyStationOfAnsweredCall += baseStation.AnswerCall;
+            baseStation.NotifyPortAboutLackOfMoneyInAccount += port.InformTerminalAboutLackOfMoneyInAccount;
         }
 
         internal static void DisconnectTerminalFromPort(Terminal terminal, Port port)
@@ -31,6 +33,7 @@ namespace TelephoneServiceProvider.Equipment
             terminal.NotifyPortAboutRejectionOfCall -= port.RejectCall;
             port.NotifyTerminalOfRejectionOfCall -= terminal.NotifyUserAboutRejectedCall;
             terminal.NotifyPortAboutAnsweredCall -= port.AnswerCall;
+            port.NotifyTerminalOfLackOfMoneyInAccount -= terminal.NotifyUserAboutLackOfMoneyInAccount;
         }
 
         internal static void DisconnectPortFromStation(Port port, BaseStation baseStation)
@@ -41,6 +44,7 @@ namespace TelephoneServiceProvider.Equipment
             port.NotifyStationOfRejectionOfCall -= baseStation.RejectCall;
             baseStation.NotifyPortOfRejectionOfCall -= port.InformTerminalAboutRejectionOfCall;
             port.NotifyStationOfAnsweredCall -= baseStation.AnswerCall;
+            baseStation.NotifyPortAboutLackOfMoneyInAccount -= port.InformTerminalAboutLackOfMoneyInAccount;
         }
     }
 }
