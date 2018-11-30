@@ -18,7 +18,7 @@ namespace TelephoneServiceProvider.PresentationLayer
         {
             Action<string> displayMethod = Console.WriteLine;
 
-            var company = new Company("AS", new Billing(new List<ITariff> {new Homebody()}), new BaseStation());
+            var company = new Company("AS", new Billing(new List<ITariff> { new Homebody() }), new BaseStation());
 
             var tariff = company.Billing.Tariffs.First();
 
@@ -37,7 +37,7 @@ namespace TelephoneServiceProvider.PresentationLayer
             terminal2.SetDisplayMethod(displayMethod);
             terminal1.SetDisplayMethod(displayMethod);
 
-            company.BaseStation.AddPorts(new List<IPort> {port1, port2});
+            company.BaseStation.AddPorts(new List<IPort> { port1, port2 });
 
             terminal1.ConnectToPort(port1);
             terminal2.ConnectToPort(port2);

@@ -7,7 +7,7 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
     {
         public string PhoneNumber { get; private set; }
 
-        public ITariff Tariff { get; private set;  }
+        public ITariff Tariff { get; private set; }
 
         public decimal Balance { get; private set; }
 

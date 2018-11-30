@@ -4,7 +4,7 @@ using TelephoneServiceProvider.BillingSystem.Repositories.Entities.Abstract;
 
 namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 {
-    public class UnansweredCall : Call , IUnansweredCall
+    public class UnansweredCall : Call, IUnansweredCall
     {
         public DateTime CallResetTime { get; set; }
 

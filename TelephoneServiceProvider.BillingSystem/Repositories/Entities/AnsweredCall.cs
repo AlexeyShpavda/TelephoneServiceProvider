@@ -12,7 +12,7 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 
         public TimeSpan Duration => CallEndTime - CallStartTime;
 
-        public AnsweredCall(string senderPhoneNumber, string receiverPhoneNumber) 
+        public AnsweredCall(string senderPhoneNumber, string receiverPhoneNumber)
             : base(senderPhoneNumber, receiverPhoneNumber)
         {
         }

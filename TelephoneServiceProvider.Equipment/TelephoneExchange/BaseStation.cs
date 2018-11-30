@@ -120,7 +120,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             if (receiverPort != null)
             {
                 CallsInProgress.Add(new AnsweredCall(senderPort.PhoneNumber, receiverPort.PhoneNumber)
-                    {CallStartTime = e.CallStartTime});
+                { CallStartTime = e.CallStartTime });
             }
         }
 

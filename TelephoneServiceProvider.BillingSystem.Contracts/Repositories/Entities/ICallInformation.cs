@@ -3,6 +3,7 @@
     public interface ICallInformation
     {
         ICall Call { get; }
+
         decimal CallCost { get; }
     }
 }
