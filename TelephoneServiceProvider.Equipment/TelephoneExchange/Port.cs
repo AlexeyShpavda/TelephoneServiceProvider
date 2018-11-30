@@ -1,5 +1,4 @@
 ﻿using System;
-using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
@@ -20,8 +19,6 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         public event EventHandler<IFailureEventArgs> NotifyTerminalOfFailure;
 
         public event EventHandler<IIncomingCallEventArgs> NotifyTerminalOfIncomingCall;
-
-        public event EventHandler<ICheckBalanceEventArgs> NotifyTerminalOfLackOfMoneyInAccount;
 
         public string PhoneNumber { get; private set; }
 
@@ -78,13 +75,6 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             OnNotifyTerminalOfRejectionOfCall(e);
         }
 
-        internal void InformTerminalAboutLackOfMoneyInAccount(object sender, ICheckBalanceEventArgs e)
-        {
-            PortStatus = PortStatus.Free;
-
-            OnNotifyTerminalOfLackOfMoneyInAccount(e);
-        }
-
         internal void ReportError(object sender, IFailureEventArgs e)
         {
             PortStatus = PortStatus.Free;
@@ -120,11 +110,6 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         private void OnNotifyStationOfAnsweredOfCall(IAnsweredCallEventArgs e)
         {
             NotifyStationOfAnsweredCall?.Invoke(this, e);
-        }
-
-        protected virtual void OnNotifyTerminalOfLackOfMoneyInAccount(ICheckBalanceEventArgs e)
-        {
-            NotifyTerminalOfLackOfMoneyInAccount?.Invoke(this, e);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
 using TelephoneServiceProvider.Equipment.Contracts.ClientHardware.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
@@ -87,18 +86,25 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs("") { CallRejectionTime = DateTime.Now });
         }
 
-        internal void NotifyUserAboutLackOfMoneyInAccount(object sender, ICheckBalanceEventArgs e)
-        {
-            TerminalStatus = TerminalStatus.Inaction;
-
-            DisplayMethod?.Invoke("You don't have enough funds to make a call");
-        }
-
         internal void NotifyUserAboutError(object sender, IFailureEventArgs e)
         {
             TerminalStatus = TerminalStatus.Inaction;
 
-            DisplayMethod?.Invoke($"{e.ReceiverPhoneNumber} - Subscriber Doesn't Exist or He is Busy");
+            switch (e.FailureType)
+            {
+                case FailureType.InsufficientFunds:
+                    DisplayMethod?.Invoke("You don't have enough funds to make a call");
+                    break;
+                case FailureType.SubscriberIsBusy:
+                    DisplayMethod?.Invoke($"{e.ReceiverPhoneNumber} - Subscriber is Busy");
+                    break;
+                case FailureType.SubscriberDoesNotExist:
+                    DisplayMethod?.Invoke($"{e.ReceiverPhoneNumber} - Subscriber Doesn't Exist");
+                    break;
+                default:
+                    DisplayMethod?.Invoke("Unknown error");
+                    break;
+            }
         }
 
         internal void NotifyUserAboutIncomingCall(object sender, IIncomingCallEventArgs e)

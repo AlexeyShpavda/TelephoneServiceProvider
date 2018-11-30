@@ -23,8 +23,6 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public event EventHandler<ICheckBalanceEventArgs> CheckBalanceInBillingSystem;
 
-        public event EventHandler<ICheckBalanceEventArgs> NotifyPortAboutLackOfMoneyInAccount;
-
         public IList<IPort> Ports { get; private set; }
 
         public IDictionary<IPort, IPort> CallsWaitingToBeAnswered { get; private set; }
@@ -86,7 +84,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
             else
             {
-                OnNotifyPortAboutLackOfMoneyInAccount(checkBalanceEventArgs, senderPort);
+                OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber, FailureType.InsufficientFunds),
+                    senderPort);
             }
         }
 
@@ -94,16 +93,21 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         {
             var receiverPort = Ports.FirstOrDefault(x => x.PhoneNumber == e.ReceiverPhoneNumber);
 
-            if (receiverPort != null && senderPort != null && receiverPort.PortStatus == PortStatus.Free)
+            if (receiverPort == null || senderPort == null)
             {
-                CallsWaitingToBeAnswered.Add(senderPort, receiverPort);
-
-                OnNotifyPortOfIncomingCall(new IncomingCallEventArgs(senderPort.PhoneNumber), senderPort,
-                    receiverPort);
+                OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber, FailureType.SubscriberDoesNotExist),
+                    senderPort);
+            }
+            else if(receiverPort.PortStatus != PortStatus.Free)
+            {
+                OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber, FailureType.SubscriberIsBusy),
+                    senderPort);
             }
             else
             {
-                OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber), senderPort);
+                CallsWaitingToBeAnswered.Add(senderPort, receiverPort);
+
+                OnNotifyPortOfIncomingCall(new IncomingCallEventArgs(senderPort.PhoneNumber), receiverPort);
             }
         }
 
@@ -185,16 +189,12 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             return portWhichNeedToSendNotification;
         }
 
-        private void OnNotifyPortOfIncomingCall(IIncomingCallEventArgs e, IPort senderPort, IPort receiverPort)
+        private void OnNotifyPortOfIncomingCall(IIncomingCallEventArgs e, IPort receiverPort)
         {
             if (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == receiverPort) != null)
             {
                 (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == receiverPort) as
                     EventHandler<IIncomingCallEventArgs>)?.Invoke(this, e);
-            }
-            else
-            {
-                OnNotifyPortOfFailure(new FailureEventArgs(receiverPort.PhoneNumber), senderPort);
             }
         }
 
@@ -213,15 +213,6 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             {
                 (NotifyPortOfRejectionOfCall?.GetInvocationList().First(x => x.Target == port) as
                     EventHandler<IRejectedCallEventArgs>)?.Invoke(this, e);
-            }
-        }
-
-        private void OnNotifyPortAboutLackOfMoneyInAccount(ICheckBalanceEventArgs e, IPort port)
-        {
-            if (NotifyPortAboutLackOfMoneyInAccount?.GetInvocationList().FirstOrDefault(x => x.Target == port) != null)
-            {
-                (NotifyPortAboutLackOfMoneyInAccount?.GetInvocationList().First(x => x.Target == port) as
-                    EventHandler<ICheckBalanceEventArgs>)?.Invoke(this, e);
             }
         }
 
