@@ -1,7 +1,9 @@
-﻿namespace TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract
+﻿using System;
+
+namespace TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract
 {
     public interface ITariff
     {
-        decimal CostPerMonth { get; }
+        decimal PricePerMinute { get; }
     }
 }

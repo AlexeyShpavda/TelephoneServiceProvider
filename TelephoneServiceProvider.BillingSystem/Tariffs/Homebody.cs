@@ -1,13 +1,10 @@
-﻿using TelephoneServiceProvider.BillingSystem.Tariffs.Abstract;
+﻿using System;
+using TelephoneServiceProvider.BillingSystem.Tariffs.Abstract;
 
 namespace TelephoneServiceProvider.BillingSystem.Tariffs
 {
     public class Homebody : Tariff
     {
-        public override decimal CostPerMonth { get; } = 15m;
-
-        public int FreeMinutes { get; } = 1000;
-
-        public double Megabytes { get; } = 3000;
+        public override decimal PricePerMinute { get; } = 0.05m;
     }
 }

@@ -1,25 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TelephoneServiceProvider.BillingSystem.Contracts;
 using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
+using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 using TelephoneServiceProvider.BillingSystem.Repositories.Entities;
 
 namespace TelephoneServiceProvider.BillingSystem
 {
     public class Billing : IBilling
     {
+        public IEnumerable<ITariff> Tariffs { get; private set; }
+
         private IBillingUnitOfWork Data { get; set; }
 
-        public Billing()
+        public Billing(IEnumerable<ITariff> tariffs)
         {
             Data = new BillingUnitOfWork();
+            Tariffs = tariffs;
         }
 
-        public void PutCallOnRecord(object sender, ICall e)
+        public void PutCallOnRecord(object sender, ICall call)
         {
-            switch (e)
+            switch (call)
             {
                 case IAnsweredCall answeredCall:
                 {
@@ -28,6 +33,8 @@ namespace TelephoneServiceProvider.BillingSystem
                         answeredCall.ReceiverPhoneNumber,
                         answeredCall.CallStartTime,
                         answeredCall.CallEndTime));
+
+                    ReduceBalance(call.SenderPhoneNumber, CalculateCostOfCall(call));
                 }
                     break;
 
@@ -52,14 +59,21 @@ namespace TelephoneServiceProvider.BillingSystem
         {
             var phone = GetPhoneOnNumber(phoneNumber);
 
-            return phone?.Balance ?? default(decimal);
+            return phone?.Balance ?? throw new Exception("Phone number don't exist");
         }
 
-        public void RechargeBalance(string phoneNumber, decimal amountOfMoney)
+        private void ReduceBalance(string phoneNumber, decimal amountOfMoney)
         {
             var phone = GetPhoneOnNumber(phoneNumber);
 
-            phone?.ChangeBalanceToAmount(amountOfMoney);
+            phone?.ReduceBalance(amountOfMoney);
+        }
+
+        public void IncreaseBalance(string phoneNumber, decimal amountOfMoney)
+        {
+            var phone = GetPhoneOnNumber(phoneNumber);
+
+            phone?.IncreaseBalance(amountOfMoney);
         }
 
         public string GetReport(string phoneNumber, Func<ICall, bool> selector = null)
@@ -74,12 +88,26 @@ namespace TelephoneServiceProvider.BillingSystem
                     .Where(x => x.SenderPhoneNumber == phoneNumber || x.ReceiverPhoneNumber == phoneNumber)
                     .ToList();
 
-            foreach (var item in subscriberCalls)
+            foreach (var call in subscriberCalls)
             {
-                report.Append(item + "\n");
+                report.Append($"{call} | cost: {CalculateCostOfCall(call)}\n");
             }
 
             return report.ToString();
+        }
+
+        public decimal CalculateCostOfCall(ICall call)
+        {
+            if (!(call is IAnsweredCall answeredCall)) return 0;
+
+            var phone = GetPhoneOnNumber(answeredCall.SenderPhoneNumber);
+            var duration = answeredCall.Duration;
+            var callDurationInSeconds = duration.Hours * 3600 + duration.Minutes * 60 + duration.Seconds;
+            var pricePerSecond = phone.Tariff.PricePerMinute / 60;
+            var callCost = callDurationInSeconds * pricePerSecond;
+
+            return callCost;
+
         }
 
         public IPhone GetPhoneOnNumber(string phoneNumber)

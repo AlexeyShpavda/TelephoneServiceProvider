@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using TelephoneServiceProvider.BillingSystem;
+using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 using TelephoneServiceProvider.BillingSystem.Tariffs;
 using TelephoneServiceProvider.Core;
 using TelephoneServiceProvider.Core.Clients;
@@ -15,9 +18,9 @@ namespace TelephoneServiceProvider.PresentationLayer
         {
             Action<string> displayMethod = Console.WriteLine;
 
-            var company = new Company("AS", new Billing(), new BaseStation());
+            var company = new Company("AS", new Billing(new List<ITariff> {new Homebody()}), new BaseStation());
 
-            var tariff = new Homebody();
+            var tariff = company.Billing.Tariffs.First();
 
             var client1 = new Client();
             var client2 = new Client();
@@ -39,11 +42,17 @@ namespace TelephoneServiceProvider.PresentationLayer
             terminal1.ConnectToPort(port1);
             terminal2.ConnectToPort(port2);
 
+            company.Billing.IncreaseBalance(port1.PhoneNumber, 10);
+            company.Billing.IncreaseBalance(port2.PhoneNumber, 10);
+
             terminal1.Call(port2.PhoneNumber);
 
             terminal2.Answer();
-
+            Thread.Sleep(5000);
             terminal2.Reject();
+
+            Console.WriteLine($"Balance at 1 terminal: {company.Billing.GetBalance(terminal1.Port.PhoneNumber)}");
+            Console.WriteLine($"Balance at 2 terminal: {company.Billing.GetBalance(terminal2.Port.PhoneNumber)}");
 
             Console.WriteLine(company.Billing.GetReport(port1.PhoneNumber));
 

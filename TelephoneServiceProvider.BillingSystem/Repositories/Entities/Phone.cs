@@ -18,9 +18,14 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
             Balance = balance;
         }
 
-        public void ChangeBalanceToAmount(decimal amountOfMoney)
+        public void IncreaseBalance(decimal amountOfMoney)
         {
             Balance += amountOfMoney;
+        }
+
+        public void ReduceBalance(decimal amountOfMoney)
+        {
+            Balance -= amountOfMoney;
         }
     }
 }

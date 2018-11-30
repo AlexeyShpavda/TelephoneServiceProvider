@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
+using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 
 namespace TelephoneServiceProvider.BillingSystem.Contracts
 {
     public interface IBilling
     {
+        IEnumerable<ITariff> Tariffs { get; }
+
         decimal GetBalance(string phoneNumber);
 
-        void RechargeBalance(string phoneNumber, decimal amountOfMoney);
+        void IncreaseBalance(string phoneNumber, decimal amountOfMoney);
 
         string GetReport(string phoneNumber, Func<ICall, bool> selector = null);
 

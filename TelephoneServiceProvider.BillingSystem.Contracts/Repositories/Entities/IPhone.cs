@@ -10,6 +10,8 @@ namespace TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities
 
         decimal Balance { get; }
 
-        void ChangeBalanceToAmount(decimal amountOfMoney);
+        void IncreaseBalance(decimal amountOfMoney);
+
+        void ReduceBalance(decimal amountOfMoney);
     }
 }

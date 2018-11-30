@@ -1,5 +1,4 @@
 ﻿using System;
-using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 
