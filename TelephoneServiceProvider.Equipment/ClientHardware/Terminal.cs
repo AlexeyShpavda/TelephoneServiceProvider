@@ -77,7 +77,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
         public void Reject()
         {
             if (Port == null || Port.PortStatus != PortStatus.Busy ||
-                TerminalStatus != TerminalStatus.Conversation) return;
+                TerminalStatus == TerminalStatus.Inaction) return;
 
             TerminalStatus = TerminalStatus.Inaction;
 

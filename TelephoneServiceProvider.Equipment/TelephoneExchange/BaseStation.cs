@@ -108,38 +108,43 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         {
             var portRejectedCall = sender as IPort;
 
-            var portWhichNeedToSendNotification = CallsInProgress.FirstOrDefault(x =>
-                portRejectedCall != null && (
-                x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
-                x.SenderPhoneNumber == portRejectedCall.PhoneNumber)) is IAnsweredCall canceledCall
-                ? CompleteCallInProgress(portRejectedCall, canceledCall, e)
-                : CancelNotStartedCall(portRejectedCall);
+            var suitableCall = CallsInProgress.FirstOrDefault(x =>
+                portRejectedCall != null && (x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
+                                             x.SenderPhoneNumber == portRejectedCall.PhoneNumber));
+
+            var portWhichNeedToSendNotification = suitableCall is IAnsweredCall answeredCall
+                ? CompleteCallInProgress(portRejectedCall, answeredCall, e)
+                : CancelNotStartedCall(portRejectedCall, e);
 
             OnNotifyPortAboutRejectionOfCall(e, portWhichNeedToSendNotification);
         }
 
-        private IPort CompleteCallInProgress(IPort portRejectedCall, IAnsweredCall canceledCall, IRejectedCallEventArgs e)
+        private IPort CompleteCallInProgress(IPort portRejectedCall, IAnsweredCall call, IRejectedCallEventArgs e)
         {
-            var portWhichNeedToSendNotification = canceledCall.SenderPhoneNumber == portRejectedCall.PhoneNumber
-                ? Ports.FirstOrDefault(x => x.PhoneNumber == canceledCall.ReceiverPhoneNumber)
-                : Ports.FirstOrDefault(x => x.PhoneNumber == canceledCall.SenderPhoneNumber);
+            var portWhichNeedToSendNotification = call.SenderPhoneNumber == portRejectedCall.PhoneNumber
+                ? Ports.FirstOrDefault(x => x.PhoneNumber == call.ReceiverPhoneNumber)
+                : Ports.FirstOrDefault(x => x.PhoneNumber == call.SenderPhoneNumber);
 
-            CallsInProgress.Remove(canceledCall);
+            CallsInProgress.Remove(call);
 
-            canceledCall.CallEndTime = e.CallRejectionTime;
-
-            OnNotifyBillingSystemAboutCallEnd(canceledCall);
+            OnNotifyBillingSystemAboutCallEnd(new AnsweredCall(call.SenderPhoneNumber, call.ReceiverPhoneNumber,
+                call.CallStartTime, e.CallRejectionTime));
 
             return portWhichNeedToSendNotification;
         }
 
-        private IPort CancelNotStartedCall(IPort portRejectedCall)
+        private IPort CancelNotStartedCall(IPort portRejectedCall, IRejectedCallEventArgs e)
         {
             IPort portWhichNeedToSendNotification;
+            string senderPhoneNumber;
+            string receiverPhoneNumber;
 
             if (CallsWaitingToBeAnswered.ContainsKey(portRejectedCall))
             {
                 portWhichNeedToSendNotification = CallsWaitingToBeAnswered[portRejectedCall];
+
+                senderPhoneNumber = portRejectedCall.PhoneNumber;
+                receiverPhoneNumber = portWhichNeedToSendNotification.PhoneNumber;
 
                 CallsWaitingToBeAnswered.Remove(portRejectedCall);
             }
@@ -148,21 +153,26 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
                 portWhichNeedToSendNotification =
                     CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == portRejectedCall).Key;
 
-                if (portWhichNeedToSendNotification != null)
-                    CallsWaitingToBeAnswered.Remove(portWhichNeedToSendNotification);
+                senderPhoneNumber = portWhichNeedToSendNotification.PhoneNumber;
+                receiverPhoneNumber = portRejectedCall.PhoneNumber;
+
+                CallsWaitingToBeAnswered.Remove(portWhichNeedToSendNotification);
             }
+
+            OnNotifyBillingSystemAboutCallEnd(new UnansweredCall(senderPhoneNumber, receiverPhoneNumber,
+                e.CallRejectionTime));
 
             return portWhichNeedToSendNotification;
         }
 
         private void OnNotifyPortOfIncomingCall(IIncomingCallEventArgs e, IPort senderPort, IPort receiverPort)
         {
-            try
+            if (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == receiverPort) != null)
             {
-                (NotifyPortOfIncomingCall?.GetInvocationList().First(x => x.Target == receiverPort) as
+                (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == receiverPort) as
                     EventHandler<IIncomingCallEventArgs>)?.Invoke(this, e);
             }
-            catch (Exception)
+            else
             {
                 OnNotifyPortOfFailure(new FailureEventArgs(receiverPort.PhoneNumber), senderPort);
             }
@@ -170,14 +180,20 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         private void OnNotifyPortOfFailure(IFailureEventArgs e, IPort port)
         {
-            (NotifyPortOfFailure?.GetInvocationList().First(x => x.Target == port) as
-                EventHandler<IFailureEventArgs>)?.Invoke(this, e);
+            if (NotifyPortOfFailure?.GetInvocationList().FirstOrDefault(x => x.Target == port) != null)
+            {
+                (NotifyPortOfFailure?.GetInvocationList().First(x => x.Target == port) as
+                    EventHandler<IFailureEventArgs>)?.Invoke(this, e);
+            }
         }
 
         private void OnNotifyPortAboutRejectionOfCall(IRejectedCallEventArgs e, IPort port)
         {
-            (NotifyPortOfRejectionOfCall?.GetInvocationList().First(x => x.Target == port) as
-                EventHandler<IRejectedCallEventArgs>)?.Invoke(this, e);
+            if (NotifyPortOfRejectionOfCall?.GetInvocationList().FirstOrDefault(x => x.Target == port) != null)
+            {
+                (NotifyPortOfRejectionOfCall?.GetInvocationList().First(x => x.Target == port) as
+                    EventHandler<IRejectedCallEventArgs>)?.Invoke(this, e);
+            }
         }
 
         private void OnNotifyBillingSystemAboutCallEnd(ICall e)
