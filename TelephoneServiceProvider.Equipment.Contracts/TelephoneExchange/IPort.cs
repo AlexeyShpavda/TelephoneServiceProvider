@@ -21,8 +21,6 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 
         string PhoneNumber { get; }
 
-        ITariff Tariff { get; }
-
         PortStatus PortStatus { get; }
 
         void ConnectToTerminal();

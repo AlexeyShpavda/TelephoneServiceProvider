@@ -1,4 +1,5 @@
 ﻿using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
+using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 
 namespace TelephoneServiceProvider.Core.EventArgs
 {
@@ -6,9 +7,13 @@ namespace TelephoneServiceProvider.Core.EventArgs
     {
         public string PhoneNumber { get; set; }
 
-        public BillingSystemEventArgs(string phoneNumber)
+        public ITariff Tariff { get; }
+
+        public BillingSystemEventArgs(string phoneNumber, ITariff tariff)
         {
             PhoneNumber = phoneNumber;
+
+            Tariff = tariff;
         }
     }
 }

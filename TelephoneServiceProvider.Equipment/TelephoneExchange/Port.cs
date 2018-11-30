@@ -23,15 +23,12 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public string PhoneNumber { get; private set; }
 
-        public ITariff Tariff { get; private set; }
-
         public PortStatus PortStatus { get; private set; }
 
-        public Port(string phoneNumber, ITariff tariff)
+        public Port(string phoneNumber)
         {
             PortStatus = PortStatus.SwitchedOff;
             PhoneNumber = phoneNumber;
-            Tariff = tariff;
         }
 
         public void ConnectToTerminal()

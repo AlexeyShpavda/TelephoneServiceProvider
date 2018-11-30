@@ -45,7 +45,7 @@ namespace TelephoneServiceProvider.Core
             var passport = client.Passport;
             var phoneNumber = GetUniquePhoneNumber();
             var tariff = selectedTariff;
-            var clientEquipment = new ClientEquipment(new Terminal(), new Port(phoneNumber, selectedTariff));
+            var clientEquipment = new ClientEquipment(new Terminal(), new Port(phoneNumber));
             var conditions = "Do not break equipment";
 
             var newContract = new Contract(company, passport, phoneNumber, tariff, clientEquipment, conditions);
@@ -57,7 +57,7 @@ namespace TelephoneServiceProvider.Core
                 Clients.Add(client);
             }
 
-            OnReportBillingSystemOfNewClient(new BillingSystemEventArgs(phoneNumber));
+            OnReportBillingSystemOfNewClient(new BillingSystemEventArgs(phoneNumber, tariff));
 
             return newContract;
         }

@@ -44,7 +44,7 @@ namespace TelephoneServiceProvider.BillingSystem
 
         public void PutPhoneOnRecord(object sender, IBillingSystemEventArgs e)
         {
-            var newPhone = new Phone(e.PhoneNumber);
+            var newPhone = new Phone(e.PhoneNumber, e.Tariff);
             Data.Phones.Add(newPhone);
         }
 
