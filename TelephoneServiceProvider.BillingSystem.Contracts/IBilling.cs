@@ -14,7 +14,7 @@ namespace TelephoneServiceProvider.BillingSystem.Contracts
 
         void IncreaseBalance(string phoneNumber, decimal amountOfMoney);
 
-        string GetReport(string phoneNumber, Func<ICall, bool> selector = null);
+        ICallReport GetCallReport(string phoneNumber, Func<ICall, bool> selector = null);
 
         void PutCallOnRecord(object sender, ICall e);
 

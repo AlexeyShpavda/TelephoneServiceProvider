@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,24 +77,17 @@ namespace TelephoneServiceProvider.BillingSystem
             phone?.IncreaseBalance(amountOfMoney);
         }
 
-        public string GetReport(string phoneNumber, Func<ICall, bool> selector = null)
+        public ICallReport GetCallReport(string phoneNumber, Func<ICall, bool> selector = null)
         {
-            var report = new StringBuilder();
-
             var subscriberCalls = selector != null
                 ? Data.Calls.GetAll()
                     .Where(x => x.SenderPhoneNumber == phoneNumber || x.ReceiverPhoneNumber == phoneNumber)
                     .Where(selector).ToList()
                 : Data.Calls.GetAll()
-                    .Where(x => x.SenderPhoneNumber == phoneNumber || x.ReceiverPhoneNumber == phoneNumber)
-                    .ToList();
+                    .Where(x => x.SenderPhoneNumber == phoneNumber || x.ReceiverPhoneNumber == phoneNumber);
 
-            foreach (var call in subscriberCalls)
-            {
-                report.Append($"{call} | cost: {CalculateCostOfCall(call)}\n");
-            }
-
-            return report.ToString();
+            return new CallReport(subscriberCalls.Select(call =>
+                new CallInformation(call, CalculateCostOfCall(call))));
         }
 
         public decimal CalculateCostOfCall(ICall call)

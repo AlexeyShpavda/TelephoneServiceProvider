@@ -41,6 +41,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Entities\IAnsweredCall.cs" />
     <Compile Include="Repositories\Entities\ICall.cs" />
+    <Compile Include="Repositories\Entities\ICallInformation.cs" />
+    <Compile Include="Repositories\Entities\ICallReport.cs" />
     <Compile Include="Repositories\Entities\IPhone.cs" />
     <Compile Include="Repositories\Entities\IUnansweredCall.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />

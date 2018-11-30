@@ -51,10 +51,10 @@ namespace TelephoneServiceProvider.PresentationLayer
             Thread.Sleep(5000);
             terminal2.Reject();
 
-            Console.WriteLine($"Balance at 1 terminal: {company.Billing.GetBalance(terminal1.Port.PhoneNumber)}");
-            Console.WriteLine($"Balance at 2 terminal: {company.Billing.GetBalance(terminal2.Port.PhoneNumber)}");
+            Console.WriteLine($"Balance at 1 terminal after call: {company.Billing.GetBalance(terminal1.Port.PhoneNumber)}");
+            Console.WriteLine($"Balance at 2 terminal after call: {company.Billing.GetBalance(terminal2.Port.PhoneNumber)}");
 
-            Console.WriteLine(company.Billing.GetReport(port1.PhoneNumber));
+            Console.WriteLine(company.Billing.GetCallReport(port1.PhoneNumber));
 
             Console.ReadKey();
         }
