@@ -13,14 +13,17 @@ namespace TelephoneServiceProvider.BillingSystem
     {
         public IEnumerable<ITariff> Tariffs { get; }
 
+        public IBalanceOperation BalanceOperation { get; }
+
         private IBillingUnitOfWork Data { get; }
 
-        public IBalanceOperation BalanceOperation { get; }
+        private IPhoneManagement PhoneManagement { get; }
 
         public Billing(IEnumerable<ITariff> tariffs)
         {
             Data = new BillingUnitOfWork();
-            BalanceOperation = new BalanceOperation(Data);
+            PhoneManagement = new PhoneManagement(Data);
+            BalanceOperation = new BalanceOperation(PhoneManagement);
             Tariffs = tariffs;
         }
 
@@ -60,7 +63,7 @@ namespace TelephoneServiceProvider.BillingSystem
 
         public void CheckPossibilityOfCall(object sender, CheckBalanceEventArgs e)
         {
-            var phone = GetPhoneOnNumber(e.PhoneNumber);
+            var phone = PhoneManagement.GetPhoneOnNumber(e.PhoneNumber);
 
             e.IsAllowedCall = phone.Balance >= 0;
         }
@@ -75,15 +78,7 @@ namespace TelephoneServiceProvider.BillingSystem
                     .Where(x => x.SenderPhoneNumber == phoneNumber || x.ReceiverPhoneNumber == phoneNumber);
 
             return new CallReport(subscriberCalls.Select(call =>
-                new CallInformation(call,
-                    BalanceOperation.CalculateCostOfCall(call))));
-        }
-
-        
-        public IPhone GetPhoneOnNumber(string phoneNumber)
-        {
-            return Data.Phones.GetAll().FirstOrDefault(x => x.PhoneNumber == phoneNumber) ??
-                   throw new Exception("Phone number don't exist");
+                new CallInformation(call, BalanceOperation.CalculateCostOfCall(call))));
         }
     }
 }

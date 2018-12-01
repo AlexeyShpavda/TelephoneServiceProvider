@@ -38,6 +38,7 @@
     <Compile Include="Billing.cs" />
     <Compile Include="BillingUnitOfWork.cs" />
     <Compile Include="BalanceOperation.cs" />
+    <Compile Include="PhoneManagement.cs" />
     <Compile Include="Repositories\Entities\HeldCall.cs" />
     <Compile Include="Repositories\Entities\Abstract\Call.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

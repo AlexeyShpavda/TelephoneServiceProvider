@@ -43,6 +43,7 @@
     <Compile Include="IBalanceOperation.cs" />
     <Compile Include="IBilling.cs" />
     <Compile Include="IBillingUnitOfWork.cs" />
+    <Compile Include="IPhoneManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Entities\IAnsweredCall.cs" />
     <Compile Include="Repositories\Entities\ICall.cs" />
