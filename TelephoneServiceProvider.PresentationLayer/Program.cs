@@ -59,13 +59,15 @@ namespace TelephoneServiceProvider.PresentationLayer
 
             terminal3.Call("123");
 
-            Console.WriteLine($"Balance at 1 terminal after call: {company.Billing.GetBalance(terminal1.Port.PhoneNumber)}");
-            Console.WriteLine($"Balance at 2 terminal after call: {company.Billing.GetBalance(terminal2.Port.PhoneNumber)}");
+            Console.WriteLine(
+                $"Balance at 1 terminal after call: {company.Billing.BalanceOperation.GetBalance(client1.Contract.PhoneNumber)}");
+            Console.WriteLine(
+                $"Balance at 2 terminal after call: {company.Billing.BalanceOperation.GetBalance(client2.Contract.PhoneNumber)}");
 
             terminal1.Call(port2.PhoneNumber);
 
-            company.Billing.IncreaseBalance(port1.PhoneNumber, 10);
-            company.Billing.IncreaseBalance(port2.PhoneNumber, 10);
+            company.Billing.BalanceOperation.IncreaseBalance(client1.Contract.PhoneNumber, 10);
+            company.Billing.BalanceOperation.IncreaseBalance(client2.Contract.PhoneNumber, 10);
 
             terminal1.Call(port2.PhoneNumber);
 

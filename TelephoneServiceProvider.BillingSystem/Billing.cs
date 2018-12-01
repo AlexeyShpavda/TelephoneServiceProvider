@@ -15,9 +15,12 @@ namespace TelephoneServiceProvider.BillingSystem
 
         private IBillingUnitOfWork Data { get; }
 
+        public IBalanceOperation BalanceOperation { get; }
+
         public Billing(IEnumerable<ITariff> tariffs)
         {
             Data = new BillingUnitOfWork();
+            BalanceOperation = new BalanceOperation(Data);
             Tariffs = tariffs;
         }
 
@@ -33,7 +36,8 @@ namespace TelephoneServiceProvider.BillingSystem
                             answeredCall.CallStartTime,
                             answeredCall.CallEndTime));
 
-                        ReduceBalance(call.SenderPhoneNumber, CalculateCostOfCall(call));
+                        BalanceOperation.ReduceBalance(call.SenderPhoneNumber,
+                            BalanceOperation.CalculateCostOfCall(call));
                     }
                     break;
 
@@ -54,27 +58,6 @@ namespace TelephoneServiceProvider.BillingSystem
             Data.Phones.Add(newPhone);
         }
 
-        public decimal GetBalance(string phoneNumber)
-        {
-            var phone = GetPhoneOnNumber(phoneNumber);
-
-            return phone.Balance;
-        }
-
-        private void ReduceBalance(string phoneNumber, decimal amountOfMoney)
-        {
-            var phone = GetPhoneOnNumber(phoneNumber);
-
-            phone?.ReduceBalance(amountOfMoney);
-        }
-
-        public void IncreaseBalance(string phoneNumber, decimal amountOfMoney)
-        {
-            var phone = GetPhoneOnNumber(phoneNumber);
-
-            phone?.IncreaseBalance(amountOfMoney);
-        }
-
         public void CheckPossibilityOfCall(object sender, CheckBalanceEventArgs e)
         {
             var phone = GetPhoneOnNumber(e.PhoneNumber);
@@ -92,22 +75,11 @@ namespace TelephoneServiceProvider.BillingSystem
                     .Where(x => x.SenderPhoneNumber == phoneNumber || x.ReceiverPhoneNumber == phoneNumber);
 
             return new CallReport(subscriberCalls.Select(call =>
-                new CallInformation(call, CalculateCostOfCall(call))));
+                new CallInformation(call,
+                    BalanceOperation.CalculateCostOfCall(call))));
         }
 
-        public decimal CalculateCostOfCall(ICall call)
-        {
-            if (!(call is IAnsweredCall answeredCall)) return 0;
-
-            var phone = GetPhoneOnNumber(answeredCall.SenderPhoneNumber);
-            var duration = answeredCall.Duration;
-            var callDurationInSeconds = duration.Hours * 3600 + duration.Minutes * 60 + duration.Seconds;
-            var pricePerSecond = phone.Tariff.PricePerMinute / 60;
-            var callCost = callDurationInSeconds * pricePerSecond;
-
-            return callCost;
-        }
-
+        
         public IPhone GetPhoneOnNumber(string phoneNumber)
         {
             return Data.Phones.GetAll().FirstOrDefault(x => x.PhoneNumber == phoneNumber) ??

@@ -10,9 +10,7 @@ namespace TelephoneServiceProvider.BillingSystem.Contracts
     {
         IEnumerable<ITariff> Tariffs { get; }
 
-        decimal GetBalance(string phoneNumber);
-
-        void IncreaseBalance(string phoneNumber, decimal amountOfMoney);
+        IBalanceOperation BalanceOperation { get; }
 
         ICallReport GetCallReport(string phoneNumber, Func<ICall, bool> selector = null);
 

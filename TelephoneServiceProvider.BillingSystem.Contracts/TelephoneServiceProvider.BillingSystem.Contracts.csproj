@@ -40,6 +40,7 @@
     <Compile Include="EventArgs\CheckBalanceEventArgs.cs" />
     <Compile Include="EventArgs\ContractConclusionEventArgs.cs" />
     <Compile Include="EventArgs\UnansweredCallEventArgs.cs" />
+    <Compile Include="IBalanceOperation.cs" />
     <Compile Include="IBilling.cs" />
     <Compile Include="IBillingUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
