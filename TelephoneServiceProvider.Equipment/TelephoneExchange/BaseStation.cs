@@ -7,21 +7,20 @@ using TelephoneServiceProvider.BillingSystem.Repositories.Entities;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
-using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 {
     public class BaseStation : IBaseStation
     {
-        public event EventHandler<IIncomingCallEventArgs> NotifyPortOfIncomingCall;
+        public event EventHandler<IncomingCallEventArgs> NotifyPortOfIncomingCall;
 
-        public event EventHandler<IRejectedCallEventArgs> NotifyPortOfRejectionOfCall;
+        public event EventHandler<RejectedCallEventArgs> NotifyPortOfRejectionOfCall;
 
-        public event EventHandler<IFailureEventArgs> NotifyPortOfFailure;
+        public event EventHandler<FailureEventArgs> NotifyPortOfFailure;
 
         public event EventHandler<ICall> NotifyBillingSystemAboutCallEnd;
 
-        public event EventHandler<ICheckBalanceEventArgs> CheckBalanceInBillingSystem;
+        public event EventHandler<CheckBalanceEventArgs> CheckBalanceInBillingSystem;
 
         public IList<IPort> Ports { get; private set; }
 
@@ -71,7 +70,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             Ports.Remove(port);
         }
 
-        internal void NotifyIncomingCallPort(object sender, IOutgoingCallEventArgs e)
+        internal void NotifyIncomingCallPort(object sender, OutgoingCallEventArgs e)
         {
             var senderPort = sender as IPort;
 
@@ -89,7 +88,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        private void ConnectPorts(IPort senderPort, IOutgoingCallEventArgs e)
+        private void ConnectPorts(IPort senderPort, OutgoingCallEventArgs e)
         {
             var receiverPort = Ports.FirstOrDefault(x => x.PhoneNumber == e.ReceiverPhoneNumber);
 
@@ -111,7 +110,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        internal void AnswerCall(object sender, IAnsweredCallEventArgs e)
+        internal void AnswerCall(object sender, AnsweredCallEventArgs e)
         {
             var receiverPort = sender as IPort;
 
@@ -128,7 +127,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        internal void RejectCall(object sender, IRejectedCallEventArgs e)
+        internal void RejectCall(object sender, RejectedCallEventArgs e)
         {
             var portRejectedCall = sender as IPort;
 
@@ -143,7 +142,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             OnNotifyPortAboutRejectionOfCall(e, portWhichNeedToSendNotification);
         }
 
-        private IPort CompleteCallInProgress(IPort portRejectedCall, IAnsweredCall call, IRejectedCallEventArgs e)
+        private IPort CompleteCallInProgress(IPort portRejectedCall, IAnsweredCall call, RejectedCallEventArgs e)
         {
             var portWhichNeedToSendNotification = call.SenderPhoneNumber == portRejectedCall.PhoneNumber
                 ? Ports.FirstOrDefault(x => x.PhoneNumber == call.ReceiverPhoneNumber)
@@ -157,7 +156,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             return portWhichNeedToSendNotification;
         }
 
-        private IPort CancelNotStartedCall(IPort portRejectedCall, IRejectedCallEventArgs e)
+        private IPort CancelNotStartedCall(IPort portRejectedCall, RejectedCallEventArgs e)
         {
             IPort portWhichNeedToSendNotification;
             string senderPhoneNumber;
@@ -189,30 +188,30 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             return portWhichNeedToSendNotification;
         }
 
-        private void OnNotifyPortOfIncomingCall(IIncomingCallEventArgs e, IPort receiverPort)
+        private void OnNotifyPortOfIncomingCall(IncomingCallEventArgs e, IPort receiverPort)
         {
             if (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == receiverPort) != null)
             {
                 (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == receiverPort) as
-                    EventHandler<IIncomingCallEventArgs>)?.Invoke(this, e);
+                    EventHandler<IncomingCallEventArgs>)?.Invoke(this, e);
             }
         }
 
-        private void OnNotifyPortOfFailure(IFailureEventArgs e, IPort port)
+        private void OnNotifyPortOfFailure(FailureEventArgs e, IPort port)
         {
             if (NotifyPortOfFailure?.GetInvocationList().FirstOrDefault(x => x.Target == port) != null)
             {
                 (NotifyPortOfFailure?.GetInvocationList().First(x => x.Target == port) as
-                    EventHandler<IFailureEventArgs>)?.Invoke(this, e);
+                    EventHandler<FailureEventArgs>)?.Invoke(this, e);
             }
         }
 
-        private void OnNotifyPortAboutRejectionOfCall(IRejectedCallEventArgs e, IPort port)
+        private void OnNotifyPortAboutRejectionOfCall(RejectedCallEventArgs e, IPort port)
         {
             if (NotifyPortOfRejectionOfCall?.GetInvocationList().FirstOrDefault(x => x.Target == port) != null)
             {
                 (NotifyPortOfRejectionOfCall?.GetInvocationList().First(x => x.Target == port) as
-                    EventHandler<IRejectedCallEventArgs>)?.Invoke(this, e);
+                    EventHandler<RejectedCallEventArgs>)?.Invoke(this, e);
             }
         }
 
@@ -221,7 +220,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             NotifyBillingSystemAboutCallEnd?.Invoke(this, e);
         }
 
-        private void OnCheckBalanceInBillingSystem(ICheckBalanceEventArgs e)
+        private void OnCheckBalanceInBillingSystem(CheckBalanceEventArgs e)
         {
             CheckBalanceInBillingSystem?.Invoke(this, e);
         }

@@ -1,10 +1,9 @@
 ﻿using System;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 
-namespace TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs
+namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs
 {
-    public class FailureEventArgs : EventArgs, IFailureEventArgs
+    public class FailureEventArgs : EventArgs
     {
         public string ReceiverPhoneNumber { get; set; }
 

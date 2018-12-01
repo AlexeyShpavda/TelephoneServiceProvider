@@ -35,8 +35,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventArgs\IBillingSystemEventArgs.cs" />
-    <Compile Include="EventArgs\ICheckBalanceEventArgs.cs" />
+    <Compile Include="EventArgs\CheckBalanceEventArgs.cs" />
+    <Compile Include="EventArgs\ContractConclusionEventArgs.cs" />
     <Compile Include="IBilling.cs" />
     <Compile Include="IBillingUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -49,5 +49,6 @@
     <Compile Include="Repositories\IGenericRepository.cs" />
     <Compile Include="Tariffs\Abstract\ITariff.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,9 +7,9 @@ namespace TelephoneServiceProvider.Equipment.Contracts.ClientHardware
 {
     public interface ITerminal
     {
-        event EventHandler<IRejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
+        event EventHandler<RejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
 
-        event EventHandler<IAnsweredCallEventArgs> NotifyPortAboutAnsweredCall;
+        event EventHandler<AnsweredCallEventArgs> NotifyPortAboutAnsweredCall;
 
         Guid SerialNumber { get; }
 

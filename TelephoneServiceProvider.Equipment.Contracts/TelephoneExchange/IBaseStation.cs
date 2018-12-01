@@ -8,15 +8,15 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 {
     public interface IBaseStation
     {
-        event EventHandler<IIncomingCallEventArgs> NotifyPortOfIncomingCall;
+        event EventHandler<IncomingCallEventArgs> NotifyPortOfIncomingCall;
 
-        event EventHandler<IRejectedCallEventArgs> NotifyPortOfRejectionOfCall;
+        event EventHandler<RejectedCallEventArgs> NotifyPortOfRejectionOfCall;
 
-        event EventHandler<IFailureEventArgs> NotifyPortOfFailure;
+        event EventHandler<FailureEventArgs> NotifyPortOfFailure;
 
         event EventHandler<ICall> NotifyBillingSystemAboutCallEnd;
 
-        event EventHandler<ICheckBalanceEventArgs> CheckBalanceInBillingSystem;
+        event EventHandler<CheckBalanceEventArgs> CheckBalanceInBillingSystem;
 
         IList<IPort> Ports { get; }
 

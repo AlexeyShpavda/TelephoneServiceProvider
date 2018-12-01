@@ -40,11 +40,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TelephoneExchange\Enums\FailureType.cs" />
     <Compile Include="TelephoneExchange\Enums\PortStatus.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\IAnsweredCallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\IFailureEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\IIncomingCallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\IOutgoingCallEventArgs.cs" />
-    <Compile Include="TelephoneExchange\EventsArgs\IRejectedCallEventArgs.cs" />
+    <Compile Include="TelephoneExchange\EventsArgs\AnsweredCallEventArgs.cs" />
+    <Compile Include="TelephoneExchange\EventsArgs\FailureEventArgs.cs" />
+    <Compile Include="TelephoneExchange\EventsArgs\IncomingCallEventArgs.cs" />
+    <Compile Include="TelephoneExchange\EventsArgs\OutgoingCallEventArgs.cs" />
+    <Compile Include="TelephoneExchange\EventsArgs\RejectedCallEventArgs.cs" />
     <Compile Include="TelephoneExchange\IBaseStation.cs" />
     <Compile Include="TelephoneExchange\IPort.cs" />
   </ItemGroup>

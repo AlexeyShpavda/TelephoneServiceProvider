@@ -7,7 +7,6 @@ using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 using TelephoneServiceProvider.Core.Clients;
 using TelephoneServiceProvider.Core.Contracts;
 using TelephoneServiceProvider.Core.Contracts.Clients;
-using TelephoneServiceProvider.Core.EventArgs;
 using TelephoneServiceProvider.Equipment.ClientHardware;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
@@ -16,7 +15,7 @@ namespace TelephoneServiceProvider.Core
 {
     public class Company : ICompany
     {
-        public event EventHandler<IBillingSystemEventArgs> ReportBillingSystemOfNewClient;
+        public event EventHandler<ContractConclusionEventArgs> ReportBillingSystemOfNewClient;
 
         public string Name { get; private set; }
 
@@ -57,7 +56,7 @@ namespace TelephoneServiceProvider.Core
                 Clients.Add(client);
             }
 
-            OnReportBillingSystemOfNewClient(new BillingSystemEventArgs(phoneNumber, tariff));
+            OnReportBillingSystemOfNewClient(new ContractConclusionEventArgs(phoneNumber, tariff));
 
             return newContract;
         }
@@ -83,7 +82,7 @@ namespace TelephoneServiceProvider.Core
             BaseStation.CheckBalanceInBillingSystem += Billing.CheckPossibilityOfCall;
         }
 
-        private void OnReportBillingSystemOfNewClient(IBillingSystemEventArgs e)
+        private void OnReportBillingSystemOfNewClient(ContractConclusionEventArgs e)
         {
             ReportBillingSystemOfNewClient?.Invoke(this, e);
         }

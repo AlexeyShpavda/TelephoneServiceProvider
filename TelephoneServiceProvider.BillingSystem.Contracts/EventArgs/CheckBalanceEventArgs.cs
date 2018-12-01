@@ -1,8 +1,6 @@
-﻿using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
-
-namespace TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs
+﻿namespace TelephoneServiceProvider.BillingSystem.Contracts.EventArgs
 {
-    public class CheckBalanceEventArgs : ICheckBalanceEventArgs
+    public class CheckBalanceEventArgs
     {
         public string PhoneNumber { get; set; }
 

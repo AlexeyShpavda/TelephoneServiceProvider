@@ -5,7 +5,6 @@ using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
-using TelephoneServiceProvider.Equipment.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.ClientHardware
 {
@@ -13,9 +12,9 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
     {
         public Action<string> DisplayMethod { get; private set; }
 
-        public event EventHandler<IRejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
+        public event EventHandler<RejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
 
-        public event EventHandler<IAnsweredCallEventArgs> NotifyPortAboutAnsweredCall;
+        public event EventHandler<AnsweredCallEventArgs> NotifyPortAboutAnsweredCall;
 
         public Guid SerialNumber { get; }
 
@@ -86,7 +85,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             OnNotifyPortAboutRejectionOfCall(new RejectedCallEventArgs("") { CallRejectionTime = DateTime.Now });
         }
 
-        internal void NotifyUserAboutError(object sender, IFailureEventArgs e)
+        internal void NotifyUserAboutError(object sender, FailureEventArgs e)
         {
             TerminalStatus = TerminalStatus.Inaction;
 
@@ -107,26 +106,26 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             }
         }
 
-        internal void NotifyUserAboutIncomingCall(object sender, IIncomingCallEventArgs e)
+        internal void NotifyUserAboutIncomingCall(object sender, IncomingCallEventArgs e)
         {
             TerminalStatus = TerminalStatus.IncomingCall;
 
             DisplayMethod?.Invoke($"{e.SenderPhoneNumber} - is calling you");
         }
 
-        internal void NotifyUserAboutRejectedCall(object sender, IRejectedCallEventArgs e)
+        internal void NotifyUserAboutRejectedCall(object sender, RejectedCallEventArgs e)
         {
             TerminalStatus = TerminalStatus.Inaction;
 
             DisplayMethod?.Invoke($"{e.PhoneNumberOfPersonRejectedCall} - canceled the call");
         }
 
-        private void OnNotifyPortAboutRejectionOfCall(IRejectedCallEventArgs e)
+        private void OnNotifyPortAboutRejectionOfCall(RejectedCallEventArgs e)
         {
             NotifyPortAboutRejectionOfCall?.Invoke(this, e);
         }
 
-        private void OnNotifyPortAboutAnsweredCall(IAnsweredCallEventArgs e)
+        private void OnNotifyPortAboutAnsweredCall(AnsweredCallEventArgs e)
         {
             NotifyPortAboutAnsweredCall?.Invoke(this, e);
         }

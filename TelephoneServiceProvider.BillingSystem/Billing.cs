@@ -48,7 +48,7 @@ namespace TelephoneServiceProvider.BillingSystem
             }
         }
 
-        public void PutPhoneOnRecord(object sender, IBillingSystemEventArgs e)
+        public void PutPhoneOnRecord(object sender, ContractConclusionEventArgs e)
         {
             var newPhone = new Phone(e.PhoneNumber, e.Tariff);
             Data.Phones.Add(newPhone);
@@ -75,7 +75,7 @@ namespace TelephoneServiceProvider.BillingSystem
             phone?.IncreaseBalance(amountOfMoney);
         }
 
-        public void CheckPossibilityOfCall(object sender, ICheckBalanceEventArgs e)
+        public void CheckPossibilityOfCall(object sender, CheckBalanceEventArgs e)
         {
             var phone = GetPhoneOnNumber(e.PhoneNumber);
 

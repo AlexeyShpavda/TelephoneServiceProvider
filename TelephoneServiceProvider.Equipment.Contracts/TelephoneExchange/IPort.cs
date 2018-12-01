@@ -6,17 +6,17 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 {
     public interface IPort
     {
-        event EventHandler<IOutgoingCallEventArgs> NotifyStationOfOutgoingCall;
+        event EventHandler<OutgoingCallEventArgs> NotifyStationOfOutgoingCall;
 
-        event EventHandler<IRejectedCallEventArgs> NotifyStationOfRejectionOfCall;
+        event EventHandler<RejectedCallEventArgs> NotifyStationOfRejectionOfCall;
 
-        event EventHandler<IAnsweredCallEventArgs> NotifyStationOfAnsweredCall;
+        event EventHandler<AnsweredCallEventArgs> NotifyStationOfAnsweredCall;
 
-        event EventHandler<IRejectedCallEventArgs> NotifyTerminalOfRejectionOfCall;
+        event EventHandler<RejectedCallEventArgs> NotifyTerminalOfRejectionOfCall;
 
-        event EventHandler<IFailureEventArgs> NotifyTerminalOfFailure;
+        event EventHandler<FailureEventArgs> NotifyTerminalOfFailure;
 
-        event EventHandler<IIncomingCallEventArgs> NotifyTerminalOfIncomingCall;
+        event EventHandler<IncomingCallEventArgs> NotifyTerminalOfIncomingCall;
 
         string PhoneNumber { get; }
 

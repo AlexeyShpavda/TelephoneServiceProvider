@@ -18,8 +18,8 @@ namespace TelephoneServiceProvider.BillingSystem.Contracts
 
         void PutCallOnRecord(object sender, ICall e);
 
-        void PutPhoneOnRecord(object sender, IBillingSystemEventArgs e);
+        void PutPhoneOnRecord(object sender, ContractConclusionEventArgs e);
 
-        void CheckPossibilityOfCall(object sender, ICheckBalanceEventArgs e);
+        void CheckPossibilityOfCall(object sender, CheckBalanceEventArgs e);
     }
 }
