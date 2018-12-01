@@ -56,7 +56,6 @@ namespace TelephoneServiceProvider.PresentationLayer
             Thread.Sleep(5000);
             terminal2.Reject();
 
-
             terminal3.Call("123");
 
             Console.WriteLine(

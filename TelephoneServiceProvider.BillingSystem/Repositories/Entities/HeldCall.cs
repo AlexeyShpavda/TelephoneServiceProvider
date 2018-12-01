@@ -12,11 +12,6 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 
         public TimeSpan Duration => CallEndTime - CallStartTime;
 
-        public HeldCall(string senderPhoneNumber, string receiverPhoneNumber)
-            : base(senderPhoneNumber, receiverPhoneNumber)
-        {
-        }
-
         public HeldCall(string senderPhoneNumber, string receiverPhoneNumber, DateTime callStartTime, DateTime callEndTime)
             : base(senderPhoneNumber, receiverPhoneNumber)
         {
