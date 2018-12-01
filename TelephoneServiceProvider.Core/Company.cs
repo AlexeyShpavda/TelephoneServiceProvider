@@ -38,14 +38,15 @@ namespace TelephoneServiceProvider.Core
             SubscribeToEvents();
         }
 
-        public IContract EnterIntoContract(IClient client, ITariff selectedTariff)
+        public IContract EnterIntoContract(IClient client, ITariff selectedTariff,
+            string agreementTerms = "Do not break equipment")
         {
             var company = this;
             var passport = client.Passport;
             var phoneNumber = GetUniquePhoneNumber();
             var tariff = selectedTariff;
             var clientEquipment = new ClientEquipment(new Terminal(), new Port(phoneNumber));
-            var conditions = "Do not break equipment";
+            var conditions = agreementTerms;
 
             var newContract = new Contract(company, passport, phoneNumber, tariff, clientEquipment, conditions);
 
