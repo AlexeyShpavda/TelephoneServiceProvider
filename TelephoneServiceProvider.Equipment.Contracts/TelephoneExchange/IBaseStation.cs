@@ -14,7 +14,7 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 
         event EventHandler<FailureEventArgs> NotifyPortOfFailure;
 
-        event EventHandler<ICall> NotifyBillingSystemAboutCallEnd;
+        event EventHandler<CallEventArgs> NotifyBillingSystemAboutCallEnd;
 
         event EventHandler<CheckBalanceEventArgs> CheckBalanceInBillingSystem;
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
-using TelephoneServiceProvider.BillingSystem.Repositories.Entities;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
@@ -18,7 +17,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public event EventHandler<FailureEventArgs> NotifyPortOfFailure;
 
-        public event EventHandler<ICall> NotifyBillingSystemAboutCallEnd;
+        public event EventHandler<CallEventArgs> NotifyBillingSystemAboutCallEnd;
 
         public event EventHandler<CheckBalanceEventArgs> CheckBalanceInBillingSystem;
 
@@ -122,7 +121,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
             if (receiverPort != null)
             {
-                CallsInProgress.Add(new AnsweredCall(senderPort.PhoneNumber, receiverPort.PhoneNumber)
+                CallsInProgress.Add(new HeldCallEventArgs(senderPort.PhoneNumber, receiverPort.PhoneNumber)
                 { CallStartTime = e.CallStartTime });
             }
         }
@@ -150,7 +149,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
             CallsInProgress.Remove(call);
 
-            OnNotifyBillingSystemAboutCallEnd(new AnsweredCall(call.SenderPhoneNumber, call.ReceiverPhoneNumber,
+            OnNotifyBillingSystemAboutCallEnd(new HeldCallEventArgs(call.SenderPhoneNumber, call.ReceiverPhoneNumber,
                 call.CallStartTime, e.CallRejectionTime));
 
             return portWhichNeedToSendNotification;
@@ -182,7 +181,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
                 CallsWaitingToBeAnswered.Remove(portWhichNeedToSendNotification);
             }
 
-            OnNotifyBillingSystemAboutCallEnd(new UnansweredCall(senderPhoneNumber, receiverPhoneNumber,
+            OnNotifyBillingSystemAboutCallEnd(new UnansweredCallEventArgs(senderPhoneNumber, receiverPhoneNumber,
                 e.CallRejectionTime));
 
             return portWhichNeedToSendNotification;
@@ -215,7 +214,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        private void OnNotifyBillingSystemAboutCallEnd(ICall e)
+        private void OnNotifyBillingSystemAboutCallEnd(CallEventArgs e)
         {
             NotifyBillingSystemAboutCallEnd?.Invoke(this, e);
         }

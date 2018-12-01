@@ -4,7 +4,7 @@ using TelephoneServiceProvider.BillingSystem.Repositories.Entities.Abstract;
 
 namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 {
-    public class AnsweredCall : Call, IAnsweredCall
+    public class HeldCall : Call, IAnsweredCall
     {
         public DateTime CallStartTime { get; set; }
 
@@ -12,12 +12,12 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 
         public TimeSpan Duration => CallEndTime - CallStartTime;
 
-        public AnsweredCall(string senderPhoneNumber, string receiverPhoneNumber)
+        public HeldCall(string senderPhoneNumber, string receiverPhoneNumber)
             : base(senderPhoneNumber, receiverPhoneNumber)
         {
         }
 
-        public AnsweredCall(string senderPhoneNumber, string receiverPhoneNumber, DateTime callStartTime, DateTime callEndTime)
+        public HeldCall(string senderPhoneNumber, string receiverPhoneNumber, DateTime callStartTime, DateTime callEndTime)
             : base(senderPhoneNumber, receiverPhoneNumber)
         {
             CallStartTime = callStartTime;

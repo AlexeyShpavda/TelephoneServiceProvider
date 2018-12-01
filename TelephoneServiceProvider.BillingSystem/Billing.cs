@@ -27,7 +27,7 @@ namespace TelephoneServiceProvider.BillingSystem
             {
                 case IAnsweredCall answeredCall:
                     {
-                        Data.Calls.Add(new AnsweredCall(
+                        Data.Calls.Add(new HeldCall(
                             answeredCall.SenderPhoneNumber,
                             answeredCall.ReceiverPhoneNumber,
                             answeredCall.CallStartTime,

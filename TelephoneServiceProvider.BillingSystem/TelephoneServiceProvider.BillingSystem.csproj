@@ -37,7 +37,7 @@
   <ItemGroup>
     <Compile Include="Billing.cs" />
     <Compile Include="BillingUnitOfWork.cs" />
-    <Compile Include="Repositories\Entities\AnsweredCall.cs" />
+    <Compile Include="Repositories\Entities\HeldCall.cs" />
     <Compile Include="Repositories\Entities\Abstract\Call.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Entities\CallInformation.cs" />

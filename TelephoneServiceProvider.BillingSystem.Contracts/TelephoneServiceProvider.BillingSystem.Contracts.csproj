@@ -35,8 +35,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventArgs\HeldCallEventArgs.cs" />
+    <Compile Include="EventArgs\CallEventArgs.cs" />
     <Compile Include="EventArgs\CheckBalanceEventArgs.cs" />
     <Compile Include="EventArgs\ContractConclusionEventArgs.cs" />
+    <Compile Include="EventArgs\UnansweredCallEventArgs.cs" />
     <Compile Include="IBilling.cs" />
     <Compile Include="IBillingUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
