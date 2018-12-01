@@ -7,7 +7,5 @@ namespace TelephoneServiceProvider.BillingSystem.Contracts.Repositories
         ICollection<T> GetAll();
 
         void Add(T entity);
-
-        void Remove(T entity);
     }
 }

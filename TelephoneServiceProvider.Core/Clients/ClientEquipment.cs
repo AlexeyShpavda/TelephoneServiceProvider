@@ -6,9 +6,9 @@ namespace TelephoneServiceProvider.Core.Clients
 {
     public class ClientEquipment : IClientEquipment
     {
-        public ITerminal Terminal { get; private set; }
+        public ITerminal Terminal { get; }
 
-        public IPort Port { get; private set; }
+        public IPort Port { get; }
 
         public ClientEquipment(ITerminal terminal, IPort port)
         {

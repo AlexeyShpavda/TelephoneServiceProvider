@@ -5,11 +5,11 @@ namespace TelephoneServiceProvider.Core.Clients
 {
     public class Passport : IPassport
     {
-        public Guid IdentificationNumber { get; private set; }
+        public Guid IdentificationNumber { get; }
 
-        public string FirstName { get; private set; }
+        public string FirstName { get; }
 
-        public string LastName { get; private set; }
+        public string LastName { get; }
 
         public Passport(string firstName, string lastName)
         {

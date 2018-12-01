@@ -17,15 +17,15 @@ namespace TelephoneServiceProvider.Core
     {
         public event EventHandler<ContractConclusionEventArgs> ReportBillingSystemOfNewClient;
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public ICollection<IClient> Clients { get; private set; }
+        public ICollection<IClient> Clients { get; }
 
-        public ICollection<IContract> Contracts { get; private set; }
+        public ICollection<IContract> Contracts { get; }
 
-        public IBilling Billing { get; private set; }
+        public IBilling Billing { get; }
 
-        public IBaseStation BaseStation { get; private set; }
+        public IBaseStation BaseStation { get; }
 
         public Company(string name, IBilling billing, IBaseStation baseStation)
         {

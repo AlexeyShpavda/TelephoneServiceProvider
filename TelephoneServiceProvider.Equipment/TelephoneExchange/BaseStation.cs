@@ -22,11 +22,11 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public event EventHandler<CheckBalanceEventArgs> CheckBalanceInBillingSystem;
 
-        public IList<IPort> Ports { get; private set; }
+        public IList<IPort> Ports { get; }
 
-        public IDictionary<IPort, IPort> CallsWaitingToBeAnswered { get; private set; }
+        public IDictionary<IPort, IPort> CallsWaitingToBeAnswered { get; }
 
-        public IList<ICall> CallsInProgress { get; private set; }
+        public IList<ICall> CallsInProgress { get; }
 
         public BaseStation()
         {
@@ -97,7 +97,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
                 OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber, FailureType.SubscriberDoesNotExist),
                     senderPort);
             }
-            else if(receiverPort.PortStatus != PortStatus.Free)
+            else if (receiverPort.PortStatus != PortStatus.Free)
             {
                 OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber, FailureType.SubscriberIsBusy),
                     senderPort);

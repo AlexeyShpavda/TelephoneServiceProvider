@@ -5,9 +5,9 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 {
     public class Phone : IPhone
     {
-        public string PhoneNumber { get; private set; }
+        public string PhoneNumber { get; }
 
-        public ITariff Tariff { get; private set; }
+        public ITariff Tariff { get; }
 
         public decimal Balance { get; private set; }
 

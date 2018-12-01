@@ -6,7 +6,7 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 {
     public class CallReport : ICallReport
     {
-        public IEnumerable<ICallInformation> CallInformation { get; private set; }
+        public IEnumerable<ICallInformation> CallInformation { get; }
 
         public CallReport(IEnumerable<ICallInformation> callInformation)
         {

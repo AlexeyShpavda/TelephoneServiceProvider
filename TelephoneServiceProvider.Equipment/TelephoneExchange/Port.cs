@@ -19,7 +19,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public event EventHandler<IncomingCallEventArgs> NotifyTerminalOfIncomingCall;
 
-        public string PhoneNumber { get; private set; }
+        public string PhoneNumber { get; }
 
         public PortStatus PortStatus { get; private set; }
 

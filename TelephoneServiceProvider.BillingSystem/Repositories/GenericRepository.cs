@@ -12,11 +12,6 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories
             _entitiesList = new List<T>();
         }
 
-        public GenericRepository(IList<T> entities) : this()
-        {
-            _entitiesList = entities;
-        }
-
         public ICollection<T> GetAll()
         {
             return _entitiesList;

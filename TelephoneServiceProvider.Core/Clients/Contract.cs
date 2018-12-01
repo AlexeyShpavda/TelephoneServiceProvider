@@ -7,19 +7,19 @@ namespace TelephoneServiceProvider.Core.Clients
 {
     public class Contract : IContract
     {
-        public Guid ContractNumber { get; private set; }
+        public Guid ContractNumber { get; }
 
-        public ICompany Company { get; private set; }
+        public ICompany Company { get; }
 
-        public IPassport IndividualPassport { get; private set; }
+        public IPassport IndividualPassport { get; }
 
-        public string PhoneNumber { get; private set; }
+        public string PhoneNumber { get; }
 
-        public ITariff Tariff { get; private set; }
+        public ITariff Tariff { get; }
 
-        public IClientEquipment ClientEquipment { get; private set; }
+        public IClientEquipment ClientEquipment { get; }
 
-        public string Conditions { get; private set; }
+        public string Conditions { get; }
 
         public Contract(ICompany company, IPassport individualPassport, string phoneNumber, ITariff tariff, IClientEquipment clientEquipment, string conditions)
         {

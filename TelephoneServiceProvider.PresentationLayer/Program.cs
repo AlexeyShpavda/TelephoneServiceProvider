@@ -42,7 +42,7 @@ namespace TelephoneServiceProvider.PresentationLayer
             terminal1.SetDisplayMethod(displayMethod);
             terminal3.SetDisplayMethod(displayMethod);
 
-            company.BaseStation.AddPorts(new List<IPort> {port1, port2, port3});
+            company.BaseStation.AddPorts(new List<IPort> { port1, port2, port3 });
 
             terminal1.ConnectToPort(port1);
             terminal2.ConnectToPort(port2);

@@ -5,9 +5,9 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 {
     public class CallInformation : ICallInformation
     {
-        public ICall Call { get; private set; }
+        public ICall Call { get; }
 
-        public decimal CallCost { get; private set; }
+        public decimal CallCost { get; }
 
         public CallInformation(ICall call, decimal callCost)
         {

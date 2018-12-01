@@ -11,9 +11,9 @@ namespace TelephoneServiceProvider.BillingSystem
 {
     public class Billing : IBilling
     {
-        public IEnumerable<ITariff> Tariffs { get; private set; }
+        public IEnumerable<ITariff> Tariffs { get; }
 
-        private IBillingUnitOfWork Data { get; set; }
+        private IBillingUnitOfWork Data { get; }
 
         public Billing(IEnumerable<ITariff> tariffs)
         {
