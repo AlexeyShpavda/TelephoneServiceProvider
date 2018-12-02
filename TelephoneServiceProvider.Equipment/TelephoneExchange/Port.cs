@@ -1,11 +1,11 @@
 ﻿using System;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
 
 namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 {
-    public class Port : IPort
+    public class Port : IPortCore, IPortEvents
     {
         public event EventHandler<OutgoingCallEventArgs> NotifyStationOfOutgoingCall;
 
@@ -59,19 +59,19 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             OnNotifyStationOfOutgoingCall(new OutgoingCallEventArgs(PhoneNumber, e.ReceiverPhoneNumber));
         }
 
-        internal void IncomingCall(object sender, IncomingCallEventArgs e)
+        public void IncomingCall(object sender, IncomingCallEventArgs e)
         {
             PortStatus = PortStatus.Busy;
 
             OnNotifyTerminalOfIncomingCall(e);
         }
 
-        internal void AnswerCall(object sender, AnsweredCallEventArgs e)
+        public void AnswerCall(object sender, AnsweredCallEventArgs e)
         {
             OnNotifyStationOfAnsweredOfCall(new AnsweredCallEventArgs(PhoneNumber) { CallStartTime = e.CallStartTime });
         }
 
-        internal void RejectCall(object sender, RejectedCallEventArgs e)
+        public void RejectCall(object sender, RejectedCallEventArgs e)
         {
             PortStatus = PortStatus.Free;
 
@@ -79,14 +79,14 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             { CallRejectionTime = e.CallRejectionTime });
         }
 
-        internal void InformTerminalAboutRejectionOfCall(object sender, RejectedCallEventArgs e)
+        public void InformTerminalAboutRejectionOfCall(object sender, RejectedCallEventArgs e)
         {
             PortStatus = PortStatus.Free;
 
             OnNotifyTerminalOfRejectionOfCall(e);
         }
 
-        internal void ReportError(object sender, FailureEventArgs e)
+        public void ReportError(object sender, FailureEventArgs e)
         {
             PortStatus = PortStatus.Free;
 

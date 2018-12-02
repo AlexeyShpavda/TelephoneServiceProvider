@@ -1,10 +1,9 @@
 ﻿using System;
 using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
 using TelephoneServiceProvider.Equipment.Contracts.ClientHardware.Enums;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
-using TelephoneServiceProvider.Equipment.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
 
 namespace TelephoneServiceProvider.Equipment.ClientHardware
 {
@@ -38,7 +37,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             DisplayMethod = action;
         }
 
-        public void ConnectToPort(IPort port)
+        public void ConnectToPort(IPortCore port)
         {
             if (!IsPossibleToConnect(port))
             {
@@ -46,7 +45,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
                 return;
             }
 
-            Mapping.MergeTerminalAndPortBehaviorWhenConnecting(this, port as Port);
+            Mapping.MergeTerminalAndPortBehaviorWhenConnecting(this, port as IPortEvents);
 
             var connectionEventArgs = new ConnectionEventArgs(port);
 
@@ -58,14 +57,14 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
                 return;
             }
 
-            Mapping.ConnectTerminalToPort(this, connectionEventArgs.Port as Port);
+            Mapping.ConnectTerminalToPort(this, connectionEventArgs.Port as IPortEvents);
 
             TerminalStatus = TerminalStatus.Inaction;
 
             DisplayMethod?.Invoke("SUCCESS! Terminal is Connected");
         }
 
-        private bool IsPossibleToConnect(IPort port)
+        private bool IsPossibleToConnect(IPortCore port)
         {
             return port != null && TerminalStatus == TerminalStatus.Disabled;
         }
@@ -82,9 +81,9 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
             OnDisconnectedFromPort(connectionEventArgs);
 
-            Mapping.SeparateTerminalAndPortBehaviorWhenConnecting(this, connectionEventArgs.Port as Port);
+            Mapping.SeparateTerminalAndPortBehaviorWhenConnecting(this, connectionEventArgs.Port as IPortEvents);
 
-            Mapping.DisconnectTerminalFromPort(this, connectionEventArgs.Port as Port);
+            Mapping.DisconnectTerminalFromPort(this, connectionEventArgs.Port as IPortEvents);
 
             TerminalStatus = TerminalStatus.Disabled;
 
@@ -138,7 +137,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
                     DisplayMethod?.Invoke($"{e.PhoneNumber} - Subscriber Doesn't Exist");
                     break;
                 case FailureType.SubscriberIsNotResponding:
-                    DisplayMethod?.Invoke(sender is IPort port && port.PhoneNumber == e.PhoneNumber
+                    DisplayMethod?.Invoke(sender is IPortCore port && port.PhoneNumber == e.PhoneNumber
                         ? "You Have Missed Call"
                         : $"{e.PhoneNumber} - Subscriber Is Not Responding");
                     break;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
 
 namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 {
@@ -20,18 +21,18 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 
         event EventHandler<CheckBalanceEventArgs> CheckBalanceInBillingSystem;
 
-        IList<IPort> Ports { get; }
+        IList<IPortCore> Ports { get; }
 
-        IDictionary<IPort, IPort> CallsWaitingToBeAnswered { get; }
+        IDictionary<IPortCore, IPortCore> CallsWaitingToBeAnswered { get; }
 
         IList<ICall> CallsInProgress { get; }
 
-        void AddPorts(IEnumerable<IPort> ports);
+        void AddPorts(IEnumerable<IPortCore> ports);
 
-        void RemovePorts(IEnumerable<IPort> ports);
+        void RemovePorts(IEnumerable<IPortCore> ports);
 
-        void AddPort(IPort port);
+        void AddPort(IPortCore port);
 
-        void RemovePort(IPort port);
+        void RemovePort(IPortCore port);
     }
 }

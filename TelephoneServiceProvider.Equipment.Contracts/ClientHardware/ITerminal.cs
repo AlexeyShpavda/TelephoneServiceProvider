@@ -1,7 +1,7 @@
 ﻿using System;
 using TelephoneServiceProvider.Equipment.Contracts.ClientHardware.Enums;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
 
 namespace TelephoneServiceProvider.Equipment.Contracts.ClientHardware
 {
@@ -23,7 +23,7 @@ namespace TelephoneServiceProvider.Equipment.Contracts.ClientHardware
 
         void SetDisplayMethod(Action<string> action);
 
-        void ConnectToPort(IPort port);
+        void ConnectToPort(IPortCore port);
 
         void DisconnectFromPort();
 

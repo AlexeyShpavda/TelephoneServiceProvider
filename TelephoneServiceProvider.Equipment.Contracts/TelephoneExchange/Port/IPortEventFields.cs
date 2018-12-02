@@ -1,10 +1,9 @@
 ﻿using System;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 
-namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
+namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port
 {
-    public interface IPort
+    public interface IPortEventFields
     {
         event EventHandler<OutgoingCallEventArgs> NotifyStationOfOutgoingCall;
 
@@ -17,15 +16,5 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
         event EventHandler<FailureEventArgs> NotifyTerminalOfFailure;
 
         event EventHandler<IncomingCallEventArgs> NotifyTerminalOfIncomingCall;
-
-        string PhoneNumber { get; }
-
-        PortStatus PortStatus { get; }
-
-        void ConnectToTerminal(object sender, ConnectionEventArgs e);
-
-        void DisconnectFromTerminal(object sender, ConnectionEventArgs e);
-
-        void OutgoingCall(object sender, OutgoingCallEventArgs e);
     }
 }

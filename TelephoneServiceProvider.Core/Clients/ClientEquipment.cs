@@ -1,6 +1,6 @@
 ﻿using TelephoneServiceProvider.Core.Contracts.Clients;
 using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
 
 namespace TelephoneServiceProvider.Core.Clients
 {
@@ -8,9 +8,9 @@ namespace TelephoneServiceProvider.Core.Clients
     {
         public ITerminal Terminal { get; }
 
-        public IPort Port { get; }
+        public IPortCore Port { get; }
 
-        public ClientEquipment(ITerminal terminal, IPort port)
+        public ClientEquipment(ITerminal terminal, IPortCore port)
         {
             Terminal = terminal;
             Port = port;

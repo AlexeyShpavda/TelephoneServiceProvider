@@ -1,5 +1,5 @@
 ﻿using TelephoneServiceProvider.Equipment.Contracts.ClientHardware;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
 
 namespace TelephoneServiceProvider.Core.Contracts.Clients
 {
@@ -7,6 +7,6 @@ namespace TelephoneServiceProvider.Core.Contracts.Clients
     {
         ITerminal Terminal { get; }
 
-        IPort Port { get; }
+        IPortCore Port { get; }
     }
 }

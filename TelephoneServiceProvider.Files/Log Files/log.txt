@@ -42,3 +42,91 @@
 12/02/2018 23:21:53:  2044018252 Answered Call from 1082377186
 12/02/2018 23:21:56:  2044018252 Ended Call with 1082377186
 12/02/2018 23:21:56:  Base Station Notifies Billing System of Completed call from 1082377186 to 2044018252
+12/03/2018 00:22:35:  1283437622 was Attached to Station
+12/03/2018 00:22:35:  491122403 was Attached to Station
+12/03/2018 00:22:35:  1627129304 was Attached to Station
+12/03/2018 00:22:35:  1283437622 is Calling 491122403
+12/03/2018 00:22:35:  Billing System Checks 1283437622 Balance
+12/03/2018 00:22:35:  1283437622 has Enough Money to Make Call
+12/03/2018 00:22:35:  1627129304 is Calling 491122403
+12/03/2018 00:22:35:  Billing System Checks 1627129304 Balance
+12/03/2018 00:22:35:  1627129304 has Enough Money to Make Call
+12/03/2018 00:22:35:  491122403 is Busy
+12/03/2018 00:22:39:  491122403 Did not Answer Call from 1283437622
+12/03/2018 00:22:39:  Base Station Notifies Billing System of Failed Call from 1283437622 to 491122403
+12/03/2018 00:22:43:  1627129304 is Calling 123
+12/03/2018 00:22:43:  Billing System Checks 1627129304 Balance
+12/03/2018 00:22:43:  1627129304 has Enough Money to Make Call
+12/03/2018 00:22:43:  123 Does not Exist
+12/03/2018 00:22:43:  1283437622 is Calling 491122403
+12/03/2018 00:22:43:  Billing System Checks 1283437622 Balance
+12/03/2018 00:22:43:  1283437622 has Enough Money to Make Call
+12/03/2018 00:22:43:  491122403 Answered Call from 1283437622
+12/03/2018 00:22:46:  491122403 Ended Call with 1283437622
+12/03/2018 00:22:46:  Base Station Notifies Billing System of Completed call from 1283437622 to 491122403
+12/03/2018 00:28:01:  1532348683 was Attached to Station
+12/03/2018 00:28:01:  1118168263 was Attached to Station
+12/03/2018 00:28:01:  1751313287 was Attached to Station
+12/03/2018 00:28:01:  1532348683 is Calling 1118168263
+12/03/2018 00:28:01:  Billing System Checks 1532348683 Balance
+12/03/2018 00:28:01:  1532348683 has Enough Money to Make Call
+12/03/2018 00:28:01:  1751313287 is Calling 1118168263
+12/03/2018 00:28:01:  Billing System Checks 1751313287 Balance
+12/03/2018 00:28:01:  1751313287 has Enough Money to Make Call
+12/03/2018 00:28:01:  1118168263 is Busy
+12/03/2018 00:28:05:  1118168263 Did not Answer Call from 1532348683
+12/03/2018 00:28:05:  Base Station Notifies Billing System of Failed Call from 1532348683 to 1118168263
+12/03/2018 00:28:09:  1751313287 is Calling 123
+12/03/2018 00:28:09:  Billing System Checks 1751313287 Balance
+12/03/2018 00:28:09:  1751313287 has Enough Money to Make Call
+12/03/2018 00:28:09:  123 Does not Exist
+12/03/2018 00:28:09:  1532348683 is Calling 1118168263
+12/03/2018 00:28:09:  Billing System Checks 1532348683 Balance
+12/03/2018 00:28:09:  1532348683 has Enough Money to Make Call
+12/03/2018 00:28:09:  1118168263 Answered Call from 1532348683
+12/03/2018 00:28:12:  1118168263 Ended Call with 1532348683
+12/03/2018 00:28:12:  Base Station Notifies Billing System of Completed call from 1532348683 to 1118168263
+12/03/2018 00:32:01:  1731802125 was Attached to Station
+12/03/2018 00:32:01:  1293302564 was Attached to Station
+12/03/2018 00:32:01:  1629083143 was Attached to Station
+12/03/2018 00:32:01:  1731802125 is Calling 1293302564
+12/03/2018 00:32:01:  Billing System Checks 1731802125 Balance
+12/03/2018 00:32:01:  1731802125 has Enough Money to Make Call
+12/03/2018 00:32:01:  1629083143 is Calling 1293302564
+12/03/2018 00:32:01:  Billing System Checks 1629083143 Balance
+12/03/2018 00:32:01:  1629083143 has Enough Money to Make Call
+12/03/2018 00:32:01:  1293302564 is Busy
+12/03/2018 00:32:05:  1293302564 Did not Answer Call from 1731802125
+12/03/2018 00:32:05:  Base Station Notifies Billing System of Failed Call from 1731802125 to 1293302564
+12/03/2018 00:32:10:  1629083143 is Calling 123
+12/03/2018 00:32:10:  Billing System Checks 1629083143 Balance
+12/03/2018 00:32:10:  1629083143 has Enough Money to Make Call
+12/03/2018 00:32:10:  123 Does not Exist
+12/03/2018 00:32:10:  1731802125 is Calling 1293302564
+12/03/2018 00:32:10:  Billing System Checks 1731802125 Balance
+12/03/2018 00:32:10:  1731802125 has Enough Money to Make Call
+12/03/2018 00:32:10:  1293302564 Answered Call from 1731802125
+12/03/2018 00:32:13:  1293302564 Ended Call with 1731802125
+12/03/2018 00:32:13:  Base Station Notifies Billing System of Completed call from 1731802125 to 1293302564
+12/03/2018 00:37:38:  1215159685 was Attached to Station
+12/03/2018 00:37:38:  584893179 was Attached to Station
+12/03/2018 00:37:38:  72131426 was Attached to Station
+12/03/2018 00:37:38:  1215159685 is Calling 584893179
+12/03/2018 00:37:38:  Billing System Checks 1215159685 Balance
+12/03/2018 00:37:38:  1215159685 has Enough Money to Make Call
+12/03/2018 00:37:38:  72131426 is Calling 584893179
+12/03/2018 00:37:38:  Billing System Checks 72131426 Balance
+12/03/2018 00:37:38:  72131426 has Enough Money to Make Call
+12/03/2018 00:37:38:  584893179 is Busy
+12/03/2018 00:37:42:  584893179 Did not Answer Call from 1215159685
+12/03/2018 00:37:42:  Base Station Notifies Billing System of Failed Call from 1215159685 to 584893179
+12/03/2018 00:37:46:  72131426 is Calling 123
+12/03/2018 00:37:46:  Billing System Checks 72131426 Balance
+12/03/2018 00:37:46:  72131426 has Enough Money to Make Call
+12/03/2018 00:37:46:  123 Does not Exist
+12/03/2018 00:37:46:  1215159685 is Calling 584893179
+12/03/2018 00:37:46:  Billing System Checks 1215159685 Balance
+12/03/2018 00:37:46:  1215159685 has Enough Money to Make Call
+12/03/2018 00:37:46:  584893179 Answered Call from 1215159685
+12/03/2018 00:37:49:  584893179 Ended Call with 1215159685
+12/03/2018 00:37:49:  Base Station Notifies Billing System of Completed call from 1215159685 to 584893179

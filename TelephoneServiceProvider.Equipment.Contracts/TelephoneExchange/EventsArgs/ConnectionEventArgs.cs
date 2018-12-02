@@ -1,10 +1,12 @@
-﻿namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs
+﻿using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
+
+namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs
 {
     public class ConnectionEventArgs
     {
-        public IPort Port { get; set; }
+        public IPortCore Port { get; set; }
 
-        public ConnectionEventArgs(IPort port)
+        public ConnectionEventArgs(IPortCore port)
         {
             Port = port;
         }

@@ -7,6 +7,7 @@ using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
 
 namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 {
@@ -24,24 +25,24 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public event EventHandler<CheckBalanceEventArgs> CheckBalanceInBillingSystem;
 
-        public IList<IPort> Ports { get; }
+        public IList<IPortCore> Ports { get; }
 
-        public IDictionary<IPort, IPort> CallsWaitingToBeAnswered { get; }
+        public IDictionary<IPortCore, IPortCore> CallsWaitingToBeAnswered { get; }
 
-        public IDictionary<IPort, Timer> PortTimeout { get; }
+        public IDictionary<IPortCore, Timer> PortTimeout { get; }
 
         public IList<ICall> CallsInProgress { get; }
 
         public BaseStation(int cancellationTime = 4000)
         {
-            CallsWaitingToBeAnswered = new Dictionary<IPort, IPort>();
-            PortTimeout = new Dictionary<IPort, Timer>();
+            CallsWaitingToBeAnswered = new Dictionary<IPortCore, IPortCore>();
+            PortTimeout = new Dictionary<IPortCore, Timer>();
             CallsInProgress = new List<ICall>();
-            Ports = new List<IPort>();
+            Ports = new List<IPortCore>();
             CancellationTime = cancellationTime;
         }
 
-        public void AddPorts(IEnumerable<IPort> ports)
+        public void AddPorts(IEnumerable<IPortCore> ports)
         {
             foreach (var port in ports)
             {
@@ -49,7 +50,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        public void RemovePorts(IEnumerable<IPort> ports)
+        public void RemovePorts(IEnumerable<IPortCore> ports)
         {
             foreach (var port in ports)
             {
@@ -57,18 +58,18 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        public void AddPort(IPort port)
+        public void AddPort(IPortCore port)
         {
-            Mapping.ConnectPortToStation(port as Port, this);
+            Mapping.ConnectPortToStation(port as IPortEvents, this);
 
             Ports.Add(port);
 
             Logger.WriteLine($"{port.PhoneNumber} was Attached to Station");
         }
 
-        public void RemovePort(IPort port)
+        public void RemovePort(IPortCore port)
         {
-            Mapping.DisconnectPortFromStation(port as Port, this);
+            Mapping.DisconnectPortFromStation(port as IPortEvents, this);
 
             Ports.Remove(port);
 
@@ -78,7 +79,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         internal void NotifyIncomingCallPort(object sender, OutgoingCallEventArgs e)
         {
-            var senderPort = sender as IPort;
+            var senderPort = sender as IPortCore;
 
             Logger.WriteLine($"{e.SenderPhoneNumber} is Calling {e.ReceiverPhoneNumber}");
 
@@ -102,7 +103,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        private void ConnectPorts(IPort senderPort, OutgoingCallEventArgs e)
+        private void ConnectPorts(IPortCore senderPort, OutgoingCallEventArgs e)
         {
             var receiverPort = Ports.FirstOrDefault(x => x.PhoneNumber == e.ReceiverPhoneNumber);
 
@@ -130,7 +131,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        private Timer SetTimer(IPort senderPort, IPort receiverPort)
+        private Timer SetTimer(IPortCore senderPort, IPortCore receiverPort)
         {
             var timer = new Timer(CancellationTime);
 
@@ -162,7 +163,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             return timer;
         }
 
-        private void DisposeTimer(IPort port)
+        private void DisposeTimer(IPortCore port)
         {
             PortTimeout[port].Dispose();
             PortTimeout.Remove(port);
@@ -170,7 +171,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         internal void AnswerCall(object sender, AnsweredCallEventArgs e)
         {
-            if (!(sender is IPort receiverPort)) return;
+            if (!(sender is IPortCore receiverPort)) return;
 
             var senderPort = CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == receiverPort).Key;
 
@@ -187,7 +188,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         internal void RejectCall(object sender, RejectedCallEventArgs e)
         {
-            if (!(sender is IPort portRejectedCall)) return;
+            if (!(sender is IPortCore portRejectedCall)) return;
 
             var suitableCall = CallsInProgress.FirstOrDefault(x =>
                 x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
@@ -200,7 +201,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             OnNotifyPortAboutRejectionOfCall(e, portWhichNeedToSendNotification);
         }
 
-        private IPort CompleteCallInProgress(IPort portRejectedCall, IAnsweredCall call, RejectedCallEventArgs e)
+        private IPortCore CompleteCallInProgress(IPortCore portRejectedCall, IAnsweredCall call, RejectedCallEventArgs e)
         {
             var portWhichNeedToSendNotification = call.SenderPhoneNumber == portRejectedCall.PhoneNumber
                 ? Ports.FirstOrDefault(x => x.PhoneNumber == call.ReceiverPhoneNumber)
@@ -220,9 +221,9 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             return portWhichNeedToSendNotification;
         }
 
-        private IPort CancelNotStartedCall(IPort portRejectedCall, RejectedCallEventArgs e)
+        private IPortCore CancelNotStartedCall(IPortCore portRejectedCall, RejectedCallEventArgs e)
         {
-            IPort portWhichNeedToSendNotification;
+            IPortCore portWhichNeedToSendNotification;
             string senderPhoneNumber;
             string receiverPhoneNumber;
 
@@ -257,7 +258,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             return portWhichNeedToSendNotification;
         }
 
-        private void OnNotifyPortOfIncomingCall(IncomingCallEventArgs e, IPort port)
+        private void OnNotifyPortOfIncomingCall(IncomingCallEventArgs e, IPortCore port)
         {
             if (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == port) != null)
             {
@@ -266,7 +267,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        private void OnNotifyPortOfFailure(FailureEventArgs e, IPort port)
+        private void OnNotifyPortOfFailure(FailureEventArgs e, IPortCore port)
         {
             if (NotifyPortOfFailure?.GetInvocationList().FirstOrDefault(x => x.Target == port) != null)
             {
@@ -275,7 +276,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             }
         }
 
-        private void OnNotifyPortAboutRejectionOfCall(RejectedCallEventArgs e, IPort port)
+        private void OnNotifyPortAboutRejectionOfCall(RejectedCallEventArgs e, IPortCore port)
         {
             if (NotifyPortOfRejectionOfCall?.GetInvocationList().FirstOrDefault(x => x.Target == port) != null)
             {

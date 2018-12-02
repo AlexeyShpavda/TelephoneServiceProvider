@@ -7,7 +7,7 @@ using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 using TelephoneServiceProvider.BillingSystem.Tariffs;
 using TelephoneServiceProvider.Core;
 using TelephoneServiceProvider.Core.Clients;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
 namespace TelephoneServiceProvider.PresentationLayer
@@ -42,7 +42,7 @@ namespace TelephoneServiceProvider.PresentationLayer
             terminal1.SetDisplayMethod(displayMethod);
             terminal3.SetDisplayMethod(displayMethod);
 
-            company.BaseStation.AddPorts(new List<IPort> { port1, port2, port3 });
+            company.BaseStation.AddPorts(new List<IPortCore> { port1, port2, port3 });
 
             terminal1.ConnectToPort(port1);
             terminal2.ConnectToPort(port2);
