@@ -1,4 +1,4 @@
-﻿using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
+﻿using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 
 namespace TelephoneServiceProvider.BillingSystem.Contracts
 {
@@ -10,6 +10,6 @@ namespace TelephoneServiceProvider.BillingSystem.Contracts
 
         void ReduceBalance(string phoneNumber, decimal amountOfMoney);
 
-        decimal CalculateCostOfCall(ICall call);
+        void CheckPossibilityOfCall(object sender, CheckBalanceEventArgs e);
     }
 }

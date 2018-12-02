@@ -1,5 +1,5 @@
 ﻿using TelephoneServiceProvider.BillingSystem.Contracts;
-using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
+using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 
 namespace TelephoneServiceProvider.BillingSystem
 {
@@ -33,17 +33,11 @@ namespace TelephoneServiceProvider.BillingSystem
             phone?.ReduceBalance(amountOfMoney);
         }
 
-        public decimal CalculateCostOfCall(ICall call)
+        public void CheckPossibilityOfCall(object sender, CheckBalanceEventArgs e)
         {
-            if (!(call is IAnsweredCall answeredCall)) return 0;
+            var phone = PhoneManagement.GetPhoneOnNumber(e.PhoneNumber);
 
-            var phone = PhoneManagement.GetPhoneOnNumber(answeredCall.SenderPhoneNumber);
-            var duration = answeredCall.Duration;
-            var callDurationInSeconds = duration.Hours * 3600 + duration.Minutes * 60 + duration.Seconds;
-            var pricePerSecond = phone.Tariff.PricePerMinute / 60;
-            var callCost = callDurationInSeconds * pricePerSecond;
-
-            return callCost;
+            e.IsAllowedCall = phone.Balance >= 0;
         }
     }
 }

@@ -17,7 +17,5 @@ namespace TelephoneServiceProvider.BillingSystem.Contracts
         void PutCallOnRecord(object sender, ICall e);
 
         void PutPhoneOnRecord(object sender, ContractConclusionEventArgs e);
-
-        void CheckPossibilityOfCall(object sender, CheckBalanceEventArgs e);
     }
 }
