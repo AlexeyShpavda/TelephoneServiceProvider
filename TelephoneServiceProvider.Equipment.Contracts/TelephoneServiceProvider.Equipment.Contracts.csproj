@@ -41,6 +41,7 @@
     <Compile Include="TelephoneExchange\Enums\FailureType.cs" />
     <Compile Include="TelephoneExchange\Enums\PortStatus.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\AnsweredCallEventArgs.cs" />
+    <Compile Include="TelephoneExchange\EventsArgs\ConnectionEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\FailureEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\IncomingCallEventArgs.cs" />
     <Compile Include="TelephoneExchange\EventsArgs\OutgoingCallEventArgs.cs" />

@@ -22,10 +22,10 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 
         PortStatus PortStatus { get; }
 
-        void ConnectToTerminal();
+        void ConnectToTerminal(object sender, ConnectionEventArgs e);
 
-        void DisconnectFromTerminal();
+        void DisconnectFromTerminal(object sender, ConnectionEventArgs e);
 
-        void OutgoingCall(string receiverPhoneNumber);
+        void OutgoingCall(object sender, OutgoingCallEventArgs e);
     }
 }

@@ -5,6 +5,7 @@
         IncomingCall,
         OutgoingCall,
         Conversation,
+        Disabled,
         Inaction
     }
 }

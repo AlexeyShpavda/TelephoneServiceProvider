@@ -12,22 +12,25 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
     {
         public Action<string> DisplayMethod { get; private set; }
 
+        public event EventHandler<ConnectionEventArgs> ConnectedToPort;
+
+        public event EventHandler<ConnectionEventArgs> DisconnectedFromPort;
+
+        public event EventHandler<OutgoingCallEventArgs> NotifyPortAboutOutgoingCall;
+
         public event EventHandler<RejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
 
         public event EventHandler<AnsweredCallEventArgs> NotifyPortAboutAnsweredCall;
 
         public Guid SerialNumber { get; }
 
-        public IPort Port { get; private set; }
-
         public TerminalStatus TerminalStatus { get; private set; }
 
-        public Terminal(IPort port = null, Action<string> displayMethod = null)
+        public Terminal(Action<string> displayMethod = null)
         {
             DisplayMethod = displayMethod;
             SerialNumber = Guid.NewGuid();
-            Port = port;
-            TerminalStatus = TerminalStatus.Inaction;
+            TerminalStatus = TerminalStatus.Disabled;
         }
 
         public void SetDisplayMethod(Action<string> action)
@@ -37,34 +40,64 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void ConnectToPort(IPort port)
         {
-            if (port == null || port.PortStatus != PortStatus.SwitchedOff) return;
+            if (port == null || TerminalStatus != TerminalStatus.Disabled)
+            {
+                DisplayMethod?.Invoke("ERROR! Unable to Connect to Port");
+                return;
+            }
 
-            Port = port;
-            Port.ConnectToTerminal();
-            Mapping.ConnectTerminalToPort(this, Port as Port);
+            Mapping.MergeTerminalAndPortBehaviorWhenConnecting(this, port as Port);
+
+            var connectionEventArgs = new ConnectionEventArgs(port);
+
+            OnConnectedToPort(connectionEventArgs);
+
+            if (connectionEventArgs.Port == null)
+            {
+                DisplayMethod?.Invoke("ERROR! Another Terminal is Already Connected to This Port");
+                return;
+            }
+
+            Mapping.ConnectTerminalToPort(this, connectionEventArgs.Port as Port);
+
+            TerminalStatus = TerminalStatus.Inaction;
+
+            DisplayMethod?.Invoke("SUCCESS! Terminal is Connected");
         }
 
         public void DisconnectFromPort()
         {
-            Mapping.DisconnectTerminalFromPort(this, Port as Port);
-            Port.DisconnectFromTerminal();
-            Port = null;
+            if (TerminalStatus == TerminalStatus.Disabled)
+            {
+                DisplayMethod?.Invoke("ERROR! Terminal is Already Disconnected");
+                return;
+            }
+
+            var connectionEventArgs = new ConnectionEventArgs(null);
+
+            OnDisconnectedFromPort(connectionEventArgs);
+
+            Mapping.SeparateTerminalAndPortBehaviorWhenConnecting(this, connectionEventArgs.Port as Port);
+
+            Mapping.DisconnectTerminalFromPort(this, connectionEventArgs.Port as Port);
+
+            TerminalStatus = TerminalStatus.Disabled;
+
+            DisplayMethod?.Invoke("SUCCESS! Terminal is Disconnected");
         }
 
         public void Call(string receiverPhoneNumber)
         {
-            if (Port == null || Port.PortStatus != PortStatus.Free ||
-                TerminalStatus != TerminalStatus.Inaction) return;
+            if (TerminalStatus != TerminalStatus.Inaction) return;
 
             TerminalStatus = TerminalStatus.OutgoingCall;
 
-            Port.OutgoingCall(receiverPhoneNumber);
+            OnNotifyPortOfOutgoingCall(new OutgoingCallEventArgs("", receiverPhoneNumber));
         }
 
         public void Answer()
         {
-            if (Port == null || Port.PortStatus != PortStatus.Busy ||
-                TerminalStatus != TerminalStatus.IncomingCall) return;
+            if (TerminalStatus != TerminalStatus.IncomingCall) return;
 
             TerminalStatus = TerminalStatus.Conversation;
 
@@ -75,8 +108,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void Reject()
         {
-            if (Port == null || Port.PortStatus != PortStatus.Busy ||
-                TerminalStatus == TerminalStatus.Inaction) return;
+            if (TerminalStatus == TerminalStatus.Inaction || TerminalStatus == TerminalStatus.Disabled) return;
 
             TerminalStatus = TerminalStatus.Inaction;
 
@@ -128,6 +160,21 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
         private void OnNotifyPortAboutAnsweredCall(AnsweredCallEventArgs e)
         {
             NotifyPortAboutAnsweredCall?.Invoke(this, e);
+        }
+
+        private void OnNotifyPortOfOutgoingCall(OutgoingCallEventArgs e)
+        {
+            NotifyPortAboutOutgoingCall?.Invoke(this, e);
+        }
+
+        private void OnConnectedToPort(ConnectionEventArgs e)
+        {
+            ConnectedToPort?.Invoke(this, e);
+        }
+
+        private void OnDisconnectedFromPort(ConnectionEventArgs e)
+        {
+            DisconnectedFromPort?.Invoke(this, e);
         }
     }
 }

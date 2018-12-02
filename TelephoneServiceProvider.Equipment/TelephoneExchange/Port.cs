@@ -29,22 +29,34 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             PhoneNumber = phoneNumber;
         }
 
-        public void ConnectToTerminal()
+        public void ConnectToTerminal(object sender, ConnectionEventArgs e)
         {
-            PortStatus = PortStatus.Free;
+            if(PortStatus == PortStatus.SwitchedOff)
+            {
+                PortStatus = PortStatus.Free;
+            }
+            else
+            {
+                e.Port = null;
+            }
         }
 
-        public void DisconnectFromTerminal()
+        public void DisconnectFromTerminal(object sender, ConnectionEventArgs e)
         {
+            OnNotifyStationAboutRejectionOfCall(new RejectedCallEventArgs(PhoneNumber)
+                { CallRejectionTime = DateTime.Now });
+
             PortStatus = PortStatus.SwitchedOff;
+            e.Port = this;
         }
 
-        public void OutgoingCall(string receiverPhoneNumber)
+        public void OutgoingCall(object sender, OutgoingCallEventArgs e)
         {
-            if (PortStatus != PortStatus.Free || PhoneNumber == receiverPhoneNumber) return;
+            if (PortStatus != PortStatus.Free || PhoneNumber == e.ReceiverPhoneNumber) return;
 
             PortStatus = PortStatus.Busy;
-            OnNotifyStationOfOutgoingCall(new OutgoingCallEventArgs(PhoneNumber, receiverPhoneNumber));
+
+            OnNotifyStationOfOutgoingCall(new OutgoingCallEventArgs(PhoneNumber, e.ReceiverPhoneNumber));
         }
 
         internal void IncomingCall(object sender, IncomingCallEventArgs e)

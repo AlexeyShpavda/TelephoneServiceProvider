@@ -7,13 +7,17 @@ namespace TelephoneServiceProvider.Equipment.Contracts.ClientHardware
 {
     public interface ITerminal
     {
+        event EventHandler<ConnectionEventArgs> ConnectedToPort;
+
+        event EventHandler<ConnectionEventArgs> DisconnectedFromPort;
+
+        event EventHandler<OutgoingCallEventArgs> NotifyPortAboutOutgoingCall;
+
         event EventHandler<RejectedCallEventArgs> NotifyPortAboutRejectionOfCall;
 
         event EventHandler<AnsweredCallEventArgs> NotifyPortAboutAnsweredCall;
 
         Guid SerialNumber { get; }
-
-        IPort Port { get; }
 
         TerminalStatus TerminalStatus { get; }
 
