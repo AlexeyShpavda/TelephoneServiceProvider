@@ -1,6 +1,6 @@
 ﻿using TelephoneServiceProvider.Equipment.ClientHardware;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.BaseStation;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
-using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
 namespace TelephoneServiceProvider.Equipment
 {
@@ -16,7 +16,7 @@ namespace TelephoneServiceProvider.Equipment
             terminal.NotifyPortAboutAnsweredCall += port.AnswerCall;
         }
 
-        internal static void ConnectPortToStation(IPortEvents port, BaseStation baseStation)
+        internal static void ConnectPortToStation(IPortEvents port, IBaseStationEvents baseStation)
         {
             port.NotifyStationOfOutgoingCall += baseStation.NotifyIncomingCallPort;
             baseStation.NotifyPortOfFailure += port.ReportError;
@@ -36,7 +36,7 @@ namespace TelephoneServiceProvider.Equipment
             terminal.NotifyPortAboutAnsweredCall -= port.AnswerCall;
         }
 
-        internal static void DisconnectPortFromStation(IPortEvents port, BaseStation baseStation)
+        internal static void DisconnectPortFromStation(IPortEvents port, IBaseStationEvents baseStation)
         {
             port.NotifyStationOfOutgoingCall -= baseStation.NotifyIncomingCallPort;
             baseStation.NotifyPortOfFailure -= port.ReportError;

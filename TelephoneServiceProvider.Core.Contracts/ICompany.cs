@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TelephoneServiceProvider.BillingSystem.Contracts;
 using TelephoneServiceProvider.Core.Contracts.Clients;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.BaseStation;
 
 namespace TelephoneServiceProvider.Core.Contracts
 {
@@ -15,6 +15,6 @@ namespace TelephoneServiceProvider.Core.Contracts
 
         IBilling Billing { get; }
 
-        IBaseStation BaseStation { get; }
+        IBaseStationCore BaseStation { get; }
     }
 }

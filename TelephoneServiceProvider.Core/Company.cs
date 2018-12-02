@@ -8,7 +8,7 @@ using TelephoneServiceProvider.Core.Clients;
 using TelephoneServiceProvider.Core.Contracts;
 using TelephoneServiceProvider.Core.Contracts.Clients;
 using TelephoneServiceProvider.Equipment.ClientHardware;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.BaseStation;
 using TelephoneServiceProvider.Equipment.TelephoneExchange;
 
 namespace TelephoneServiceProvider.Core
@@ -25,9 +25,9 @@ namespace TelephoneServiceProvider.Core
 
         public IBilling Billing { get; }
 
-        public IBaseStation BaseStation { get; }
+        public IBaseStationCore BaseStation { get; }
 
-        public Company(string name, IBilling billing, IBaseStation baseStation)
+        public Company(string name, IBilling billing, IBaseStationCore baseStation)
         {
             Name = name;
             Clients = new List<IClient>();
@@ -84,9 +84,11 @@ namespace TelephoneServiceProvider.Core
 
         private void SubscribeToEvents()
         {
+            var baseStationEvents = BaseStation as IBaseStationEventFields;
             ReportBillingSystemOfNewClient += Billing.PutPhoneOnRecord;
-            BaseStation.NotifyBillingSystemAboutCallEnd += Billing.PutCallOnRecord;
-            BaseStation.CheckBalanceInBillingSystem += Billing.BalanceOperation.CheckPossibilityOfCall;
+            if (baseStationEvents == null) return;
+            baseStationEvents.NotifyBillingSystemAboutCallEnd += Billing.PutCallOnRecord;
+            baseStationEvents.CheckBalanceInBillingSystem += Billing.BalanceOperation.CheckPossibilityOfCall;
         }
 
         private void OnReportBillingSystemOfNewClient(ContractConclusionEventArgs e)

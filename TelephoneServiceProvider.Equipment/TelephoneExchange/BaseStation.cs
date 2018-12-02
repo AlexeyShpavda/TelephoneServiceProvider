@@ -4,14 +4,14 @@ using System.Linq;
 using System.Timers;
 using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
-using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.BaseStation;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
 
 namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 {
-    public class BaseStation : IBaseStation
+    public class BaseStation : IBaseStationCore, IBaseStationEvents
     {
         public int CancellationTime { get; }
 
@@ -77,7 +77,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             Logger.WriteLine($"{port.PhoneNumber} was Disconnected from Station");
         }
 
-        internal void NotifyIncomingCallPort(object sender, OutgoingCallEventArgs e)
+        public void NotifyIncomingCallPort(object sender, OutgoingCallEventArgs e)
         {
             var senderPort = sender as IPortCore;
 
@@ -169,7 +169,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             PortTimeout.Remove(port);
         }
 
-        internal void AnswerCall(object sender, AnsweredCallEventArgs e)
+        public void AnswerCall(object sender, AnsweredCallEventArgs e)
         {
             if (!(sender is IPortCore receiverPort)) return;
 
@@ -186,7 +186,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             Logger.WriteLine($"{receiverPort.PhoneNumber} Answered Call from {senderPort.PhoneNumber}");
         }
 
-        internal void RejectCall(object sender, RejectedCallEventArgs e)
+        public void RejectCall(object sender, RejectedCallEventArgs e)
         {
             if (!(sender is IPortCore portRejectedCall)) return;
 

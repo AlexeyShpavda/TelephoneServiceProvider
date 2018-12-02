@@ -40,6 +40,7 @@
     <Compile Include="Clients\ClientEquipment.cs" />
     <Compile Include="Clients\Passport.cs" />
     <Compile Include="Company.cs" />
+    <Compile Include="Mapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
