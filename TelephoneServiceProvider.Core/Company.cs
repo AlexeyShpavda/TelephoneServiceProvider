@@ -52,14 +52,20 @@ namespace TelephoneServiceProvider.Core
 
             Contracts.Add(newContract);
 
-            if (Clients.All(x => x != client))
-            {
-                Clients.Add(client);
-            }
+            AddNewClientToCompany(client);
 
             OnReportBillingSystemOfNewClient(new ContractConclusionEventArgs(phoneNumber, tariff));
 
             return newContract;
+        }
+
+        private void AddNewClientToCompany(IClient client)
+        {
+            client.Codeword = "EPAM";
+            if (Clients.All(x => x != client))
+            {
+                Clients.Add(client);
+            }
         }
 
         private string GetUniquePhoneNumber()

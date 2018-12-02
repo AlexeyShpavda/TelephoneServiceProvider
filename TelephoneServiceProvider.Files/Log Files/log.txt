@@ -20,3 +20,25 @@
 12/02/2018 22:31:48:  1329923074 Answered Call from 971425318
 12/02/2018 22:31:51:  1329923074 Ended Call with 971425318
 12/02/2018 22:31:51:  Base Station Notifies Billing System of Completed call from 971425318 to 1329923074
+12/02/2018 23:21:45:  1082377186 was Attached to Station
+12/02/2018 23:21:45:  2044018252 was Attached to Station
+12/02/2018 23:21:45:  2074354878 was Attached to Station
+12/02/2018 23:21:45:  1082377186 is Calling 2044018252
+12/02/2018 23:21:45:  Billing System Checks 1082377186 Balance
+12/02/2018 23:21:45:  1082377186 has Enough Money to Make Call
+12/02/2018 23:21:45:  2074354878 is Calling 2044018252
+12/02/2018 23:21:45:  Billing System Checks 2074354878 Balance
+12/02/2018 23:21:45:  2074354878 has Enough Money to Make Call
+12/02/2018 23:21:45:  2044018252 is Busy
+12/02/2018 23:21:49:  2044018252 Did not Answer Call from 1082377186
+12/02/2018 23:21:49:  Base Station Notifies Billing System of Failed Call from 1082377186 to 2044018252
+12/02/2018 23:21:53:  2074354878 is Calling 123
+12/02/2018 23:21:53:  Billing System Checks 2074354878 Balance
+12/02/2018 23:21:53:  2074354878 has Enough Money to Make Call
+12/02/2018 23:21:53:  123 Does not Exist
+12/02/2018 23:21:53:  1082377186 is Calling 2044018252
+12/02/2018 23:21:53:  Billing System Checks 1082377186 Balance
+12/02/2018 23:21:53:  1082377186 has Enough Money to Make Call
+12/02/2018 23:21:53:  2044018252 Answered Call from 1082377186
+12/02/2018 23:21:56:  2044018252 Ended Call with 1082377186
+12/02/2018 23:21:56:  Base Station Notifies Billing System of Completed call from 1082377186 to 2044018252

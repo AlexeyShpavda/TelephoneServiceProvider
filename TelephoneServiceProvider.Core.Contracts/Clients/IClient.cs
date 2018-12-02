@@ -6,6 +6,6 @@
 
         IContract Contract { get; set; }
 
-        string Codeword { get; }
+        string Codeword { get; set; }
     }
 }

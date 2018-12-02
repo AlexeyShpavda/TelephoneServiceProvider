@@ -22,9 +22,9 @@ namespace TelephoneServiceProvider.PresentationLayer
 
             var tariff = company.Billing.Tariffs.First();
 
-            var client1 = new Client();
-            var client2 = new Client();
-            var client3 = new Client();
+            var client1 = new Client(new Passport("Edmond", "D"));
+            var client2 = new Client(new Passport("Tom", "S"));
+            var client3 = new Client(new Passport("Gary", "G"));
 
             client1.Contract = company.EnterIntoContract(client1, tariff);
             client2.Contract = company.EnterIntoContract(client2, tariff);
