@@ -21,10 +21,5 @@ namespace TelephoneServiceProvider.BillingSystem.Repositories
         {
             _entitiesList.Add(entity);
         }
-
-        public void Remove(T entity)
-        {
-            _entitiesList.Remove(entity);
-        }
     }
 }

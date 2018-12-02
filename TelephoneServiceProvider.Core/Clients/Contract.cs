@@ -21,7 +21,8 @@ namespace TelephoneServiceProvider.Core.Clients
 
         public string Conditions { get; }
 
-        public Contract(ICompany company, IPassport individualPassport, string phoneNumber, ITariff tariff, IClientEquipment clientEquipment, string conditions)
+        public Contract(ICompany company, IPassport individualPassport, string phoneNumber, ITariff tariff,
+            IClientEquipment clientEquipment, string conditions)
         {
             ContractNumber = Guid.NewGuid();
             Company = company;

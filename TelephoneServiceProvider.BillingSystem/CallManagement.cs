@@ -35,7 +35,7 @@ namespace TelephoneServiceProvider.BillingSystem
 
                     BalanceOperation.ReduceBalance(call.SenderPhoneNumber, CalculateCostOfCall(call));
                 }
-                    break;
+                break;
 
                 case IUnansweredCall unansweredCall:
                 {
@@ -44,7 +44,7 @@ namespace TelephoneServiceProvider.BillingSystem
                         unansweredCall.ReceiverPhoneNumber,
                         unansweredCall.CallResetTime));
                 }
-                    break;
+                break;
             }
         }
 

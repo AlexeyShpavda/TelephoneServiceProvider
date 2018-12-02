@@ -31,7 +31,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public void ConnectToTerminal(object sender, ConnectionEventArgs e)
         {
-            if(PortStatus == PortStatus.SwitchedOff)
+            if (PortStatus == PortStatus.SwitchedOff)
             {
                 PortStatus = PortStatus.Free;
             }
@@ -44,7 +44,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
         public void DisconnectFromTerminal(object sender, ConnectionEventArgs e)
         {
             OnNotifyStationAboutRejectionOfCall(new RejectedCallEventArgs(PhoneNumber)
-                { CallRejectionTime = DateTime.Now });
+            { CallRejectionTime = DateTime.Now });
 
             PortStatus = PortStatus.SwitchedOff;
             e.Port = this;
