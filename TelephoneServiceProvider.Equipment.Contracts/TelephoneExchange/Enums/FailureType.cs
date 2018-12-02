@@ -2,6 +2,7 @@
 {
     public enum FailureType
     {
+        SubscriberIsNotResponding,
         SubscriberIsBusy,
         SubscriberDoesNotExist,
         InsufficientFunds

@@ -52,8 +52,9 @@ namespace TelephoneServiceProvider.PresentationLayer
 
             terminal3.Call(port2.PhoneNumber);
 
-            terminal2.Answer();
             Thread.Sleep(5000);
+            terminal2.Answer();
+            Thread.Sleep(3000);
             terminal2.Reject();
 
             terminal3.Call("123");

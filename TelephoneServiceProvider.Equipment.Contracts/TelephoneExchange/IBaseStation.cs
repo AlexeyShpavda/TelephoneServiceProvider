@@ -8,6 +8,8 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange
 {
     public interface IBaseStation
     {
+        int CancellationTime { get; }
+
         event EventHandler<IncomingCallEventArgs> NotifyPortOfIncomingCall;
 
         event EventHandler<RejectedCallEventArgs> NotifyPortOfRejectionOfCall;

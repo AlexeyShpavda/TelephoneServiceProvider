@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using TelephoneServiceProvider.BillingSystem.Contracts.EventArgs;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange;
@@ -11,6 +12,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 {
     public class BaseStation : IBaseStation
     {
+        public int CancellationTime { get; }
+
         public event EventHandler<IncomingCallEventArgs> NotifyPortOfIncomingCall;
 
         public event EventHandler<RejectedCallEventArgs> NotifyPortOfRejectionOfCall;
@@ -25,18 +28,17 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public IDictionary<IPort, IPort> CallsWaitingToBeAnswered { get; }
 
+        public IDictionary<IPort, Timer> PortTimeout { get; }
+
         public IList<ICall> CallsInProgress { get; }
 
-        public BaseStation()
+        public BaseStation(int cancellationTime = 4000)
         {
             CallsWaitingToBeAnswered = new Dictionary<IPort, IPort>();
+            PortTimeout = new Dictionary<IPort, Timer>();
             CallsInProgress = new List<ICall>();
             Ports = new List<IPort>();
-        }
-
-        public BaseStation(IEnumerable<IPort> ports) : this()
-        {
-            AddPorts(ports);
+            CancellationTime = cancellationTime;
         }
 
         public void AddPorts(IEnumerable<IPort> ports)
@@ -105,8 +107,43 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             {
                 CallsWaitingToBeAnswered.Add(senderPort, receiverPort);
 
+                PortTimeout.Add(senderPort, SetTimer(senderPort, receiverPort));
+
                 OnNotifyPortOfIncomingCall(new IncomingCallEventArgs(senderPort.PhoneNumber), receiverPort);
             }
+        }
+
+        private Timer SetTimer(IPort senderPort, IPort receiverPort)
+        {
+            var timer = new Timer(CancellationTime);
+
+            timer.Elapsed += (sender, eventArgs) =>
+            {
+                OnNotifyPortOfFailure(
+                    new FailureEventArgs(receiverPort.PhoneNumber, FailureType.SubscriberIsNotResponding),
+                    senderPort);
+
+                OnNotifyPortOfFailure(
+                    new FailureEventArgs(receiverPort.PhoneNumber, FailureType.SubscriberIsNotResponding),
+                    receiverPort);
+
+                CallsWaitingToBeAnswered.Remove(senderPort);
+                DisposeTimer(senderPort);
+
+                OnNotifyBillingSystemAboutCallEnd(new UnansweredCallEventArgs(senderPort.PhoneNumber,
+                    receiverPort.PhoneNumber, DateTime.Now));
+            };
+
+            timer.AutoReset = false;
+            timer.Enabled = true;
+
+            return timer;
+        }
+
+        private void DisposeTimer(IPort port)
+        {
+            PortTimeout[port].Dispose();
+            PortTimeout.Remove(port);
         }
 
         internal void AnswerCall(object sender, AnsweredCallEventArgs e)
@@ -117,6 +154,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
             if (senderPort == null) return;
 
+            DisposeTimer(senderPort);
             CallsWaitingToBeAnswered.Remove(senderPort);
 
             if (receiverPort != null)
@@ -181,17 +219,19 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
                 CallsWaitingToBeAnswered.Remove(portWhichNeedToSendNotification);
             }
 
+            DisposeTimer(portRejectedCall);
+
             OnNotifyBillingSystemAboutCallEnd(new UnansweredCallEventArgs(senderPhoneNumber, receiverPhoneNumber,
                 e.CallRejectionTime));
 
             return portWhichNeedToSendNotification;
         }
 
-        private void OnNotifyPortOfIncomingCall(IncomingCallEventArgs e, IPort receiverPort)
+        private void OnNotifyPortOfIncomingCall(IncomingCallEventArgs e, IPort port)
         {
-            if (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == receiverPort) != null)
+            if (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == port) != null)
             {
-                (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == receiverPort) as
+                (NotifyPortOfIncomingCall?.GetInvocationList().FirstOrDefault(x => x.Target == port) as
                     EventHandler<IncomingCallEventArgs>)?.Invoke(this, e);
             }
         }

@@ -40,7 +40,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void ConnectToPort(IPort port)
         {
-            if (IsPossibleToConnect(port))
+            if (!IsPossibleToConnect(port))
             {
                 DisplayMethod?.Invoke("ERROR! Unable to Connect to Port");
                 return;
