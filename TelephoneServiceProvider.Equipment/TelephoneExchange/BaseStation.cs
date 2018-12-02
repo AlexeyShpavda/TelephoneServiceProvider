@@ -62,6 +62,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             Mapping.ConnectPortToStation(port as Port, this);
 
             Ports.Add(port);
+
+            Logger.WriteLine($"{port.PhoneNumber} was Attached to Station");
         }
 
         public void RemovePort(IPort port)
@@ -69,21 +71,32 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             Mapping.DisconnectPortFromStation(port as Port, this);
 
             Ports.Remove(port);
+
+
+            Logger.WriteLine($"{port.PhoneNumber} was Disconnected from Station");
         }
 
         internal void NotifyIncomingCallPort(object sender, OutgoingCallEventArgs e)
         {
             var senderPort = sender as IPort;
 
+            Logger.WriteLine($"{e.SenderPhoneNumber} is Calling {e.ReceiverPhoneNumber}");
+
             var checkBalanceEventArgs = new CheckBalanceEventArgs(e.SenderPhoneNumber);
             OnCheckBalanceInBillingSystem(checkBalanceEventArgs);
 
+            Logger.WriteLine($"Billing System Checks {e.SenderPhoneNumber} Balance");
+
             if (checkBalanceEventArgs.IsAllowedCall)
             {
+                Logger.WriteLine($"{e.SenderPhoneNumber} has Enough Money to Make Call");
+
                 ConnectPorts(senderPort, e);
             }
             else
             {
+                Logger.WriteLine($"{e.SenderPhoneNumber} has not Enough Money to Make Call");
+
                 OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber, FailureType.InsufficientFunds),
                     senderPort);
             }
@@ -97,11 +110,15 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             {
                 OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber, FailureType.SubscriberDoesNotExist),
                     senderPort);
+
+                Logger.WriteLine($"{e.ReceiverPhoneNumber} Does not Exist");
             }
             else if (receiverPort.PortStatus != PortStatus.Free)
             {
                 OnNotifyPortOfFailure(new FailureEventArgs(e.ReceiverPhoneNumber, FailureType.SubscriberIsBusy),
                     senderPort);
+
+                Logger.WriteLine($"{e.ReceiverPhoneNumber} is Busy");
             }
             else
             {
@@ -119,6 +136,8 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
             timer.Elapsed += (sender, eventArgs) =>
             {
+                Logger.WriteLine($"{receiverPort.PhoneNumber} Did not Answer Call from {senderPort.PhoneNumber}");
+
                 OnNotifyPortOfFailure(
                     new FailureEventArgs(receiverPort.PhoneNumber, FailureType.SubscriberIsNotResponding),
                     senderPort);
@@ -129,6 +148,9 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
                 CallsWaitingToBeAnswered.Remove(senderPort);
                 DisposeTimer(senderPort);
+
+                Logger.WriteLine("Base Station Notifies Billing System of Failed Call " +
+                                 $"from {senderPort.PhoneNumber} to {receiverPort.PhoneNumber}");
 
                 OnNotifyBillingSystemAboutCallEnd(new UnansweredCallEventArgs(senderPort.PhoneNumber,
                     receiverPort.PhoneNumber, DateTime.Now));
@@ -148,7 +170,7 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         internal void AnswerCall(object sender, AnsweredCallEventArgs e)
         {
-            var receiverPort = sender as IPort;
+            if (!(sender is IPort receiverPort)) return;
 
             var senderPort = CallsWaitingToBeAnswered.FirstOrDefault(x => x.Value == receiverPort).Key;
 
@@ -157,20 +179,19 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
             DisposeTimer(senderPort);
             CallsWaitingToBeAnswered.Remove(senderPort);
 
-            if (receiverPort != null)
-            {
-                CallsInProgress.Add(new HeldCallEventArgs(senderPort.PhoneNumber, receiverPort.PhoneNumber)
-                { CallStartTime = e.CallStartTime });
-            }
+            CallsInProgress.Add(new HeldCallEventArgs(senderPort.PhoneNumber, receiverPort.PhoneNumber)
+            { CallStartTime = e.CallStartTime });
+
+            Logger.WriteLine($"{receiverPort.PhoneNumber} Answered Call from {senderPort.PhoneNumber}");
         }
 
         internal void RejectCall(object sender, RejectedCallEventArgs e)
         {
-            var portRejectedCall = sender as IPort;
+            if (!(sender is IPort portRejectedCall)) return;
 
             var suitableCall = CallsInProgress.FirstOrDefault(x =>
-                portRejectedCall != null && (x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
-                                             x.SenderPhoneNumber == portRejectedCall.PhoneNumber));
+                x.ReceiverPhoneNumber == portRejectedCall.PhoneNumber ||
+                x.SenderPhoneNumber == portRejectedCall.PhoneNumber);
 
             var portWhichNeedToSendNotification = suitableCall is IAnsweredCall answeredCall
                 ? CompleteCallInProgress(portRejectedCall, answeredCall, e)
@@ -185,7 +206,13 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
                 ? Ports.FirstOrDefault(x => x.PhoneNumber == call.ReceiverPhoneNumber)
                 : Ports.FirstOrDefault(x => x.PhoneNumber == call.SenderPhoneNumber);
 
+            if (portWhichNeedToSendNotification != null) Logger.WriteLine(
+                $"{portRejectedCall.PhoneNumber} Ended Call with {portWhichNeedToSendNotification.PhoneNumber}");
+
             CallsInProgress.Remove(call);
+
+            Logger.WriteLine("Base Station Notifies Billing System of Completed call " +
+                             $"from {call.SenderPhoneNumber} to {call.ReceiverPhoneNumber}");
 
             OnNotifyBillingSystemAboutCallEnd(new HeldCallEventArgs(call.SenderPhoneNumber, call.ReceiverPhoneNumber,
                 call.CallStartTime, e.CallRejectionTime));
@@ -223,6 +250,9 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
             OnNotifyBillingSystemAboutCallEnd(new UnansweredCallEventArgs(senderPhoneNumber, receiverPhoneNumber,
                 e.CallRejectionTime));
+
+            Logger.WriteLine(
+                $"{portRejectedCall.PhoneNumber} Rejected Call from {portWhichNeedToSendNotification.PhoneNumber}");
 
             return portWhichNeedToSendNotification;
         }

@@ -17,6 +17,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelephoneServiceProvider.Bi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelephoneServiceProvider.Equipment.Contracts", "TelephoneServiceProvider.Equipment.Contracts\TelephoneServiceProvider.Equipment.Contracts.csproj", "{4BFF2F4C-DA82-4DFC-A497-AA81C1DBDC8B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TelephoneServiceProvider.Files", "TelephoneServiceProvider.Files", "{B40C668B-D29B-401C-ACE8-FCB9D9A7FC72}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Log Files", "Log Files", "{0B78E76C-5D21-4C20-A0AA-143198F7C8DD}"
+	ProjectSection(SolutionItems) = preProject
+		TelephoneServiceProvider.Files\Log Files\log.txt = TelephoneServiceProvider.Files\Log Files\log.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +61,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0B78E76C-5D21-4C20-A0AA-143198F7C8DD} = {B40C668B-D29B-401C-ACE8-FCB9D9A7FC72}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {48ECDACD-2BE5-4A24-9457-B6496CF10B2F}
