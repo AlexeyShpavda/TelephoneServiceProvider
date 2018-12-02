@@ -32,26 +32,26 @@ namespace TelephoneServiceProvider.BillingSystem
             switch (call)
             {
                 case IAnsweredCall answeredCall:
-                    {
-                        Data.Calls.Add(new HeldCall(
-                            answeredCall.SenderPhoneNumber,
-                            answeredCall.ReceiverPhoneNumber,
-                            answeredCall.CallStartTime,
-                            answeredCall.CallEndTime));
+                {
+                    Data.Calls.Add(new HeldCall(
+                        answeredCall.SenderPhoneNumber,
+                        answeredCall.ReceiverPhoneNumber,
+                        answeredCall.CallStartTime,
+                        answeredCall.CallEndTime));
 
-                        BalanceOperation.ReduceBalance(call.SenderPhoneNumber,
-                            BalanceOperation.CalculateCostOfCall(call));
-                    }
-                    break;
+                    BalanceOperation.ReduceBalance(call.SenderPhoneNumber,
+                        BalanceOperation.CalculateCostOfCall(call));
+                }
+                break;
 
                 case IUnansweredCall unansweredCall:
-                    {
-                        Data.Calls.Add(new UnansweredCall(
-                            unansweredCall.SenderPhoneNumber,
-                            unansweredCall.ReceiverPhoneNumber,
-                            unansweredCall.CallResetTime));
-                    }
-                    break;
+                {
+                    Data.Calls.Add(new UnansweredCall(
+                        unansweredCall.SenderPhoneNumber,
+                        unansweredCall.ReceiverPhoneNumber,
+                        unansweredCall.CallResetTime));
+                }
+                break;
             }
         }
 

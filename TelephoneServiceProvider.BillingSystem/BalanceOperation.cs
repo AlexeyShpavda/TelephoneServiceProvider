@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using TelephoneServiceProvider.BillingSystem.Contracts;
+﻿using TelephoneServiceProvider.BillingSystem.Contracts;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 
 namespace TelephoneServiceProvider.BillingSystem
