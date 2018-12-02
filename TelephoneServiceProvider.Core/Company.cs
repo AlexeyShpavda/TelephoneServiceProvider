@@ -84,9 +84,8 @@ namespace TelephoneServiceProvider.Core
 
         private void SubscribeToEvents()
         {
-            var baseStationEvents = BaseStation as IBaseStationEventFields;
             ReportBillingSystemOfNewClient += Billing.PutPhoneOnRecord;
-            if (baseStationEvents == null) return;
+            if (!(BaseStation is IBaseStationEventFields baseStationEvents)) return;
             baseStationEvents.NotifyBillingSystemAboutCallEnd += Billing.PutCallOnRecord;
             baseStationEvents.CheckBalanceInBillingSystem += Billing.BalanceOperation.CheckPossibilityOfCall;
         }

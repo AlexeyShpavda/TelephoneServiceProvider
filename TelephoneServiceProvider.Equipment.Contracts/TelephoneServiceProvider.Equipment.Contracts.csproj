@@ -36,9 +36,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientHardware\Enums\TerminalStatus.cs" />
-    <Compile Include="ClientHardware\ITerminal.cs" />
-    <Compile Include="ClientHardware\Terminal\ITerminal.cs" />
-    <Compile Include="ClientHardware\Terminal\ITerminalCoreFunctionality.cs" />
+    <Compile Include="ClientHardware\Terminal\ITerminalCore.cs" />
+    <Compile Include="ClientHardware\Terminal\ITerminalEventFields.cs" />
+    <Compile Include="ClientHardware\Terminal\ITerminalEvents.cs" />
+    <Compile Include="ClientHardware\Terminal\ITerminalMethodsChainForEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TelephoneExchange\BaseStation\IBaseStationCore.cs" />
     <Compile Include="TelephoneExchange\BaseStation\IBaseStationEventFields.cs" />

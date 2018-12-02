@@ -1,4 +1,4 @@
-﻿using TelephoneServiceProvider.Equipment.ClientHardware;
+﻿using TelephoneServiceProvider.Equipment.Contracts.ClientHardware.Terminal;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.BaseStation;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port;
 
@@ -6,7 +6,7 @@ namespace TelephoneServiceProvider.Equipment
 {
     internal static class Mapping
     {
-        internal static void ConnectTerminalToPort(Terminal terminal, IPortEvents port)
+        internal static void ConnectTerminalToPort(ITerminalEvents terminal, IPortEvents port)
         {
             terminal.NotifyPortAboutOutgoingCall += port.OutgoingCall;
             port.NotifyTerminalOfFailure += terminal.NotifyUserAboutError;
@@ -26,7 +26,7 @@ namespace TelephoneServiceProvider.Equipment
             port.NotifyStationOfAnsweredCall += baseStation.AnswerCall;
         }
 
-        internal static void DisconnectTerminalFromPort(Terminal terminal, IPortEvents port)
+        internal static void DisconnectTerminalFromPort(ITerminalEvents terminal, IPortEvents port)
         {
             terminal.NotifyPortAboutOutgoingCall -= port.OutgoingCall;
             port.NotifyTerminalOfFailure -= terminal.NotifyUserAboutError;
@@ -46,13 +46,13 @@ namespace TelephoneServiceProvider.Equipment
             port.NotifyStationOfAnsweredCall -= baseStation.AnswerCall;
         }
 
-        internal static void MergeTerminalAndPortBehaviorWhenConnecting(Terminal terminal, IPortEvents port)
+        internal static void MergeTerminalAndPortBehaviorWhenConnecting(ITerminalEvents terminal, IPortEvents port)
         {
             terminal.ConnectedToPort += port.ConnectToTerminal;
             terminal.DisconnectedFromPort += port.DisconnectFromTerminal;
         }
 
-        internal static void SeparateTerminalAndPortBehaviorWhenConnecting(Terminal terminal, IPortEvents port)
+        internal static void SeparateTerminalAndPortBehaviorWhenConnecting(ITerminalEvents terminal, IPortEvents port)
         {
             terminal.ConnectedToPort -= port.ConnectToTerminal;
             terminal.DisconnectedFromPort -= port.DisconnectFromTerminal;

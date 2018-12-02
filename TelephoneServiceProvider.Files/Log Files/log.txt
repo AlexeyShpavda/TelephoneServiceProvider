@@ -152,3 +152,25 @@
 12/03/2018 00:56:54:  1587713563 Answered Call from 817185635
 12/03/2018 00:56:57:  1587713563 Ended Call with 817185635
 12/03/2018 00:56:57:  Base Station Notifies Billing System of Completed call from 817185635 to 1587713563
+12/03/2018 01:18:42:  1354035740 was Attached to Station
+12/03/2018 01:18:42:  1533566223 was Attached to Station
+12/03/2018 01:18:42:  690693333 was Attached to Station
+12/03/2018 01:18:42:  1354035740 is Calling 1533566223
+12/03/2018 01:18:42:  Billing System Checks 1354035740 Balance
+12/03/2018 01:18:42:  1354035740 has Enough Money to Make Call
+12/03/2018 01:18:42:  690693333 is Calling 1533566223
+12/03/2018 01:18:42:  Billing System Checks 690693333 Balance
+12/03/2018 01:18:42:  690693333 has Enough Money to Make Call
+12/03/2018 01:18:42:  1533566223 is Busy
+12/03/2018 01:18:46:  1533566223 Did not Answer Call from 1354035740
+12/03/2018 01:18:46:  Base Station Notifies Billing System of Failed Call from 1354035740 to 1533566223
+12/03/2018 01:18:50:  690693333 is Calling 123
+12/03/2018 01:18:50:  Billing System Checks 690693333 Balance
+12/03/2018 01:18:50:  690693333 has Enough Money to Make Call
+12/03/2018 01:18:50:  123 Does not Exist
+12/03/2018 01:18:50:  1354035740 is Calling 1533566223
+12/03/2018 01:18:50:  Billing System Checks 1354035740 Balance
+12/03/2018 01:18:50:  1354035740 has Enough Money to Make Call
+12/03/2018 01:18:50:  1533566223 Answered Call from 1354035740
+12/03/2018 01:18:53:  1533566223 Ended Call with 1354035740
+12/03/2018 01:18:53:  Base Station Notifies Billing System of Completed call from 1354035740 to 1533566223
