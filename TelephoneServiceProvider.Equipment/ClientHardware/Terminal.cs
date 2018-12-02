@@ -132,13 +132,18 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
                     DisplayMethod?.Invoke("You don't have enough funds to make a call");
                     break;
                 case FailureType.SubscriberIsBusy:
-                    DisplayMethod?.Invoke($"{e.ReceiverPhoneNumber} - Subscriber is Busy");
+                    DisplayMethod?.Invoke($"{e.PhoneNumber} - Subscriber is Busy");
                     break;
                 case FailureType.SubscriberDoesNotExist:
-                    DisplayMethod?.Invoke($"{e.ReceiverPhoneNumber} - Subscriber Doesn't Exist");
+                    DisplayMethod?.Invoke($"{e.PhoneNumber} - Subscriber Doesn't Exist");
+                    break;
+                case FailureType.SubscriberIsNotResponding:
+                    DisplayMethod?.Invoke(sender is IPort port && port.PhoneNumber == e.PhoneNumber
+                        ? "You Have Missed Call"
+                        : $"{e.PhoneNumber} - Subscriber Is Not Responding");
                     break;
                 default:
-                    DisplayMethod?.Invoke("Unknown error");
+                    DisplayMethod?.Invoke("Unknown Error");
                     break;
             }
         }

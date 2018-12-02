@@ -5,13 +5,13 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsA
 {
     public class FailureEventArgs : EventArgs
     {
-        public string ReceiverPhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         public FailureType FailureType { get; set; }
 
-        public FailureEventArgs(string receiverPhoneNumber, FailureType failureType)
+        public FailureEventArgs(string phoneNumber, FailureType failureType)
         {
-            ReceiverPhoneNumber = receiverPhoneNumber;
+            PhoneNumber = phoneNumber;
             FailureType = failureType;
         }
     }
