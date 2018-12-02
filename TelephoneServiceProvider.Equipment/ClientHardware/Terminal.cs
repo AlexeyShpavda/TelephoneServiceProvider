@@ -40,7 +40,7 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
 
         public void ConnectToPort(IPort port)
         {
-            if (port == null || TerminalStatus != TerminalStatus.Disabled)
+            if (IsPossibleToConnect(port))
             {
                 DisplayMethod?.Invoke("ERROR! Unable to Connect to Port");
                 return;
@@ -63,6 +63,11 @@ namespace TelephoneServiceProvider.Equipment.ClientHardware
             TerminalStatus = TerminalStatus.Inaction;
 
             DisplayMethod?.Invoke("SUCCESS! Terminal is Connected");
+        }
+
+        private bool IsPossibleToConnect(IPort port)
+        {
+            return port != null && TerminalStatus == TerminalStatus.Disabled;
         }
 
         public void DisconnectFromPort()
