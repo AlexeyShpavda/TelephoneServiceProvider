@@ -3,13 +3,13 @@ using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 
 namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 {
-    public class CallInformation : ICallInformation
+    public class CallInformation<TCall> : ICallInformation<TCall> where TCall : ICall
     {
-        public ICall Call { get; }
+        public TCall Call { get; }
 
         public decimal CallCost { get; }
 
-        public CallInformation(ICall call, decimal callCost)
+        public CallInformation(TCall call, decimal callCost)
         {
             Call = call;
             CallCost = callCost;

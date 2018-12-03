@@ -76,8 +76,10 @@ namespace TelephoneServiceProvider.PresentationLayer
             Thread.Sleep(3000);
             terminal2.Reject();
 
-            Console.WriteLine(company.Billing.GetCallReport<IAnsweredCall>(port1.PhoneNumber,
-                x => x.Duration > new TimeSpan(0, 0, 0, 1) && x.Duration < new TimeSpan(0, 0, 0, 4)));
+            Console.WriteLine(
+                company.Billing.GetCallReport<IAnsweredCall>(port1.PhoneNumber,
+                    x => x.CallCost > 0.001m && x.CallCost < 3m,
+                    y => y.Duration > new TimeSpan(0, 0, 0, 1) && y.Duration < new TimeSpan(0, 0, 0, 4)));
 
             Console.ReadKey();
         }

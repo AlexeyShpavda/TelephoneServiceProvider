@@ -1,8 +1,8 @@
 ﻿namespace TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities
 {
-    public interface ICallInformation
+    public interface ICallInformation<out T> where T : ICall
     {
-        ICall Call { get; }
+        T Call { get; }
 
         decimal CallCost { get; }
     }

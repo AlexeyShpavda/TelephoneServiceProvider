@@ -42,11 +42,26 @@ namespace TelephoneServiceProvider.BillingSystem
             PhoneManagement.PutPhoneOnRecord(e.PhoneNumber, e.Tariff);
         }
 
-        public ICallReport GetCallReport<T>(string phoneNumber, Func<T, bool> selector = null) where T : ICall
+        public ICallReport<TCall> GetCallReport<TCall>(string phoneNumber,
+            Func<ICallInformation<TCall>, bool> selectorCallInfo = null, Func<TCall, bool> selectorCall = null)
+            where TCall : ICall
         {
-            var subscriberCalls = CallManagement.GetCallList(phoneNumber, selector);
+            var subscriberCalls = CallManagement.GetCallList(phoneNumber, selectorCall);
 
-            return new CallReport(subscriberCalls.Select(call => new CallInformation(call, CallManagement.CalculateCostOfCall(call))));
+            IEnumerable<ICallInformation<TCall>> callInformationList;
+
+            if (selectorCallInfo != null)
+            {
+                callInformationList = subscriberCalls.Select(call =>
+                    new CallInformation<TCall>(call, CallManagement.CalculateCostOfCall(call))).Where(selectorCallInfo).ToList();
+            }
+            else
+            {
+                callInformationList = subscriberCalls.Select(call =>
+                    new CallInformation<TCall>(call, CallManagement.CalculateCostOfCall(call))).ToList();
+            }
+
+            return new CallReport<TCall>(callInformationList);
         }
     }
 }
