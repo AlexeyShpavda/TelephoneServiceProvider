@@ -49,23 +49,16 @@ namespace TelephoneServiceProvider.BillingSystem
         {
             var subscriberCalls = CallManagement.GetCallList(phoneNumber, selectorCall);
 
-            IEnumerable<TCallInfo> callInformationList;
-
-            if (selectorCallInfo != null)
-            {
-                callInformationList = subscriberCalls.Select(call =>
-                    new CallInformation<TCall>(call, CallManagement.CalculateCostOfCall(call)))
+            IEnumerable<TCallInfo> callInformationList = selectorCallInfo != null
+                ? subscriberCalls.Select(call =>
+                        new CallInformation<TCall>(call, CallManagement.CalculateCostOfCall(call)))
                     .OfType<TCallInfo>()
                     .Where(selectorCallInfo)
-                    .ToList();
-            }
-            else
-            {
-                callInformationList = subscriberCalls.Select(call =>
-                    new CallInformation<TCall>(call, CallManagement.CalculateCostOfCall(call)))
+                    .ToList()
+                : subscriberCalls.Select(call =>
+                        new CallInformation<TCall>(call, CallManagement.CalculateCostOfCall(call)))
                     .OfType<TCallInfo>()
                     .ToList();
-            }
 
             return new CallReport<TCallInfo, TCall>(callInformationList);
         }
