@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 
 namespace TelephoneServiceProvider.BillingSystem.Contracts
@@ -7,7 +8,7 @@ namespace TelephoneServiceProvider.BillingSystem.Contracts
     {
         void PutCallOnRecord(ICall call);
 
-        ICallReport GetCallReport(string phoneNumber, Func<ICall, bool> selector = null);
+        IEnumerable<T> GetCallList<T>(string phoneNumber, Func<T, bool> selector = null) where T : ICall;
 
         decimal CalculateCostOfCall(ICall call);
     }

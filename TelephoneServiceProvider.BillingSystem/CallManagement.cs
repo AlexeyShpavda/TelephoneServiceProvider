@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TelephoneServiceProvider.BillingSystem.Contracts;
 using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
@@ -10,14 +11,11 @@ namespace TelephoneServiceProvider.BillingSystem
     {
         private IBillingUnitOfWork Data { get; }
 
-        private IBalanceOperation BalanceOperation { get; }
-
         private IPhoneManagement PhoneManagement { get; }
 
-        public CallManagement(IBillingUnitOfWork data, IBalanceOperation balanceOperation, IPhoneManagement phoneManagement)
+        public CallManagement(IBillingUnitOfWork data, IPhoneManagement phoneManagement)
         {
             Data = data;
-            BalanceOperation = balanceOperation;
             PhoneManagement = phoneManagement;
         }
 
@@ -32,8 +30,6 @@ namespace TelephoneServiceProvider.BillingSystem
                         answeredCall.ReceiverPhoneNumber,
                         answeredCall.CallStartTime,
                         answeredCall.CallEndTime));
-
-                    BalanceOperation.ReduceBalance(call.SenderPhoneNumber, CalculateCostOfCall(call));
                 }
                 break;
 
@@ -48,17 +44,17 @@ namespace TelephoneServiceProvider.BillingSystem
             }
         }
 
-        public ICallReport GetCallReport(string phoneNumber, Func<ICall, bool> selector = null)
+        public IEnumerable<T> GetCallList<T>(string phoneNumber, Func<T, bool> selector = null) where T : ICall
         {
             var subscriberCalls = selector != null
-                ? Data.Calls.GetAll()
+                ? Data.Calls.GetAll().OfType<T>()
                     .Where(x => x.SenderPhoneNumber == phoneNumber || x.ReceiverPhoneNumber == phoneNumber)
-                    .Where(selector).ToList()
-                : Data.Calls.GetAll()
+                    .Where(selector)
+                    .ToList()
+                : Data.Calls.GetAll().OfType<T>()
                     .Where(x => x.SenderPhoneNumber == phoneNumber || x.ReceiverPhoneNumber == phoneNumber);
 
-            return new CallReport(subscriberCalls.Select(call =>
-                new CallInformation(call, CalculateCostOfCall(call))));
+            return subscriberCalls;
         }
 
         public decimal CalculateCostOfCall(ICall call)

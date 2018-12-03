@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TelephoneServiceProvider.BillingSystem;
+using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 using TelephoneServiceProvider.BillingSystem.Contracts.Tariffs.Abstract;
 using TelephoneServiceProvider.BillingSystem.Tariffs;
 using TelephoneServiceProvider.Core;
@@ -75,7 +76,8 @@ namespace TelephoneServiceProvider.PresentationLayer
             Thread.Sleep(3000);
             terminal2.Reject();
 
-            Console.WriteLine(company.Billing.GetCallReport(port1.PhoneNumber));
+            Console.WriteLine(company.Billing.GetCallReport<IAnsweredCall>(port1.PhoneNumber,
+                x => x.Duration > new TimeSpan(0, 0, 0, 1) && x.Duration < new TimeSpan(0, 0, 0, 4)));
 
             Console.ReadKey();
         }
