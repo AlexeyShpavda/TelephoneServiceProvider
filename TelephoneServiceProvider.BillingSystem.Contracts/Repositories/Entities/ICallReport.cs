@@ -2,9 +2,10 @@
 
 namespace TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities
 {
-    public interface ICallReport<out TCall> 
-        where TCall : ICall
+    public interface ICallReport<out TCallInfo, out TCall> 
+        where TCallInfo : ICallInformation<TCall>
+        where TCall :ICall
     {
-        IEnumerable<ICallInformation<TCall>> CallInformation { get; }
+        IEnumerable<TCallInfo> CallInformation { get; }
     }
 }

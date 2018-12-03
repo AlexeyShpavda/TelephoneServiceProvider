@@ -4,12 +4,13 @@ using TelephoneServiceProvider.BillingSystem.Contracts.Repositories.Entities;
 
 namespace TelephoneServiceProvider.BillingSystem.Repositories.Entities
 {
-    public class CallReport<TCall> : ICallReport<TCall>
+    public class CallReport<TCallInfo, TCall> : ICallReport<TCallInfo, TCall>
+        where TCallInfo : ICallInformation<TCall>
         where TCall : ICall
     {
-        public IEnumerable<ICallInformation<TCall>> CallInformation { get; }
+        public IEnumerable<TCallInfo> CallInformation { get; }
 
-        public CallReport(IEnumerable<ICallInformation<TCall>> callInformation)
+        public CallReport(IEnumerable<TCallInfo> callInformation)
         {
             CallInformation = callInformation;
         }

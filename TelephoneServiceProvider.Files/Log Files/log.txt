@@ -1392,3 +1392,47 @@
 12/03/2018 11:36:09:  1976345217 Answered Call from 1205817289
 12/03/2018 11:36:09:  1976345217 Ended Call with 1205817289
 12/03/2018 11:36:09:  Base Station Notifies Billing System of Completed call from 1205817289 to 1976345217
+12/03/2018 11:44:44:  1996930345 was Attached to Station
+12/03/2018 11:44:44:  86167762 was Attached to Station
+12/03/2018 11:44:44:  1863230240 was Attached to Station
+12/03/2018 11:44:44:  1996930345 is Calling 86167762
+12/03/2018 11:44:44:  Billing System Checks 1996930345 Balance
+12/03/2018 11:44:44:  1996930345 has Enough Money to Make Call
+12/03/2018 11:44:44:  1863230240 is Calling 86167762
+12/03/2018 11:44:44:  Billing System Checks 1863230240 Balance
+12/03/2018 11:44:44:  1863230240 has Enough Money to Make Call
+12/03/2018 11:44:44:  86167762 is Busy
+12/03/2018 11:44:48:  86167762 Did not Answer Call from 1996930345
+12/03/2018 11:44:48:  Base Station Notifies Billing System of Failed Call from 1996930345 to 86167762
+12/03/2018 11:44:52:  1863230240 is Calling 123
+12/03/2018 11:44:52:  Billing System Checks 1863230240 Balance
+12/03/2018 11:44:52:  1863230240 has Enough Money to Make Call
+12/03/2018 11:44:52:  123 Does not Exist
+12/03/2018 11:44:52:  1996930345 is Calling 86167762
+12/03/2018 11:44:52:  Billing System Checks 1996930345 Balance
+12/03/2018 11:44:52:  1996930345 has Enough Money to Make Call
+12/03/2018 11:44:52:  86167762 Answered Call from 1996930345
+12/03/2018 11:44:55:  86167762 Ended Call with 1996930345
+12/03/2018 11:44:55:  Base Station Notifies Billing System of Completed call from 1996930345 to 86167762
+12/03/2018 11:53:47:  226664795 was Attached to Station
+12/03/2018 11:53:47:  850620978 was Attached to Station
+12/03/2018 11:53:47:  181002286 was Attached to Station
+12/03/2018 11:53:47:  226664795 is Calling 850620978
+12/03/2018 11:53:47:  Billing System Checks 226664795 Balance
+12/03/2018 11:53:47:  226664795 has Enough Money to Make Call
+12/03/2018 11:53:47:  181002286 is Calling 850620978
+12/03/2018 11:53:47:  Billing System Checks 181002286 Balance
+12/03/2018 11:53:47:  181002286 has Enough Money to Make Call
+12/03/2018 11:53:47:  850620978 is Busy
+12/03/2018 11:53:51:  850620978 Did not Answer Call from 226664795
+12/03/2018 11:53:51:  Base Station Notifies Billing System of Failed Call from 226664795 to 850620978
+12/03/2018 11:53:55:  181002286 is Calling 123
+12/03/2018 11:53:55:  Billing System Checks 181002286 Balance
+12/03/2018 11:53:55:  181002286 has Enough Money to Make Call
+12/03/2018 11:53:55:  123 Does not Exist
+12/03/2018 11:53:55:  226664795 is Calling 850620978
+12/03/2018 11:53:55:  Billing System Checks 226664795 Balance
+12/03/2018 11:53:55:  226664795 has Enough Money to Make Call
+12/03/2018 11:53:55:  850620978 Answered Call from 226664795
+12/03/2018 11:53:58:  850620978 Ended Call with 226664795
+12/03/2018 11:53:58:  Base Station Notifies Billing System of Completed call from 226664795 to 850620978

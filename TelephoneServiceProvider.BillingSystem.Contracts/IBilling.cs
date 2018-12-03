@@ -12,8 +12,9 @@ namespace TelephoneServiceProvider.BillingSystem.Contracts
 
         IBalanceOperation BalanceOperation { get; }
 
-        ICallReport<TCall> GetCallReport<TCall>(string phoneNumber,
-            Func<ICallInformation<TCall>, bool> selectorCallInfo = null, Func<TCall, bool> selectorCall = null)
+        ICallReport<TCallInfo, TCall> GetCallReport<TCallInfo, TCall>(string phoneNumber,
+            Func<TCallInfo, bool> selectorCallInfo = null, Func<TCall, bool> selectorCall = null)
+            where TCallInfo : ICallInformation<TCall>
             where TCall : ICall;
 
         void PutCallOnRecord(object sender, ICall e);

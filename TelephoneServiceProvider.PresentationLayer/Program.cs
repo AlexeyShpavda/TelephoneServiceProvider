@@ -77,7 +77,7 @@ namespace TelephoneServiceProvider.PresentationLayer
             terminal2.Reject();
 
             Console.WriteLine(
-                company.Billing.GetCallReport<IAnsweredCall>(port1.PhoneNumber,
+                company.Billing.GetCallReport<ICallInformation<IAnsweredCall>, IAnsweredCall>(port1.PhoneNumber,
                     x => x.CallCost > 0.001m && x.CallCost < 3m,
                     y => y.Duration > new TimeSpan(0, 0, 0, 1) && y.Duration < new TimeSpan(0, 0, 0, 4)));
 
