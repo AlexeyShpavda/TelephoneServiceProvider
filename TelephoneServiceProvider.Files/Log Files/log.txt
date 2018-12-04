@@ -1436,3 +1436,69 @@
 12/03/2018 11:53:55:  850620978 Answered Call from 226664795
 12/03/2018 11:53:58:  850620978 Ended Call with 226664795
 12/03/2018 11:53:58:  Base Station Notifies Billing System of Completed call from 226664795 to 850620978
+12/03/2018 12:20:34:  1833411597 was Attached to Station
+12/03/2018 12:20:34:  1806566245 was Attached to Station
+12/03/2018 12:20:34:  191743466 was Attached to Station
+12/03/2018 12:20:34:  1833411597 is Calling 1806566245
+12/03/2018 12:20:34:  Billing System Checks 1833411597 Balance
+12/03/2018 12:20:34:  1833411597 has Enough Money to Make Call
+12/03/2018 12:20:34:  191743466 is Calling 1806566245
+12/03/2018 12:20:34:  Billing System Checks 191743466 Balance
+12/03/2018 12:20:34:  191743466 has Enough Money to Make Call
+12/03/2018 12:20:34:  1806566245 is Busy
+12/03/2018 12:20:38:  1806566245 Did not Answer Call from 1833411597
+12/03/2018 12:20:38:  Base Station Notifies Billing System of Failed Call from 1833411597 to 1806566245
+12/03/2018 12:20:42:  191743466 is Calling 123
+12/03/2018 12:20:42:  Billing System Checks 191743466 Balance
+12/03/2018 12:20:42:  191743466 has Enough Money to Make Call
+12/03/2018 12:20:42:  123 Does not Exist
+12/03/2018 12:20:42:  1833411597 is Calling 1806566245
+12/03/2018 12:20:42:  Billing System Checks 1833411597 Balance
+12/03/2018 12:20:42:  1833411597 has Enough Money to Make Call
+12/03/2018 12:20:42:  1806566245 Answered Call from 1833411597
+12/03/2018 12:20:45:  1806566245 Ended Call with 1833411597
+12/03/2018 12:20:45:  Base Station Notifies Billing System of Completed call from 1833411597 to 1806566245
+12/03/2018 12:23:22:  1616073383 was Attached to Station
+12/03/2018 12:23:22:  812453337 was Attached to Station
+12/03/2018 12:23:22:  470840494 was Attached to Station
+12/03/2018 12:23:22:  1616073383 is Calling 812453337
+12/03/2018 12:23:22:  Billing System Checks 1616073383 Balance
+12/03/2018 12:23:22:  1616073383 has Enough Money to Make Call
+12/03/2018 12:23:22:  470840494 is Calling 812453337
+12/03/2018 12:23:22:  Billing System Checks 470840494 Balance
+12/03/2018 12:23:22:  470840494 has Enough Money to Make Call
+12/03/2018 12:23:22:  812453337 is Busy
+12/03/2018 12:23:26:  812453337 Did not Answer Call from 1616073383
+12/03/2018 12:23:26:  Base Station Notifies Billing System of Failed Call from 1616073383 to 812453337
+12/03/2018 12:23:30:  470840494 is Calling 123
+12/03/2018 12:23:30:  Billing System Checks 470840494 Balance
+12/03/2018 12:23:30:  470840494 has Enough Money to Make Call
+12/03/2018 12:23:30:  123 Does not Exist
+12/03/2018 12:23:30:  1616073383 is Calling 812453337
+12/03/2018 12:23:30:  Billing System Checks 1616073383 Balance
+12/03/2018 12:23:30:  1616073383 has Enough Money to Make Call
+12/03/2018 12:23:30:  812453337 Answered Call from 1616073383
+12/03/2018 12:23:33:  812453337 Ended Call with 1616073383
+12/03/2018 12:23:33:  Base Station Notifies Billing System of Completed call from 1616073383 to 812453337
+12/03/2018 14:16:37:  986325703 was Attached to Station
+12/03/2018 14:16:37:  1756853631 was Attached to Station
+12/03/2018 14:16:37:  1937509581 was Attached to Station
+12/03/2018 14:16:37:  986325703 is Calling 1756853631
+12/03/2018 14:16:37:  Billing System Checks 986325703 Balance
+12/03/2018 14:16:37:  986325703 has Enough Money to Make Call
+12/03/2018 14:16:37:  1937509581 is Calling 1756853631
+12/03/2018 14:16:37:  Billing System Checks 1937509581 Balance
+12/03/2018 14:16:37:  1937509581 has Enough Money to Make Call
+12/03/2018 14:16:37:  1756853631 is Busy
+12/03/2018 14:16:41:  1756853631 Did not Answer Call from 986325703
+12/03/2018 14:16:41:  Base Station Notifies Billing System of Failed Call from 986325703 to 1756853631
+12/03/2018 14:16:45:  1937509581 is Calling 123
+12/03/2018 14:16:45:  Billing System Checks 1937509581 Balance
+12/03/2018 14:16:45:  1937509581 has Enough Money to Make Call
+12/03/2018 14:16:45:  123 Does not Exist
+12/03/2018 14:16:45:  986325703 is Calling 1756853631
+12/03/2018 14:16:45:  Billing System Checks 986325703 Balance
+12/03/2018 14:16:45:  986325703 has Enough Money to Make Call
+12/03/2018 14:16:45:  1756853631 Answered Call from 986325703
+12/03/2018 14:16:48:  1756853631 Ended Call with 986325703
+12/03/2018 14:16:48:  Base Station Notifies Billing System of Completed call from 986325703 to 1756853631

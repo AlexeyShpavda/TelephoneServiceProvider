@@ -49,7 +49,7 @@ namespace TelephoneServiceProvider.BillingSystem
         {
             var subscriberCalls = CallManagement.GetCallList(phoneNumber, selectorCall);
 
-            IEnumerable<TCallInfo> callInformationList = selectorCallInfo != null
+            var callInformationList = selectorCallInfo != null
                 ? subscriberCalls.Select(call =>
                         new CallInformation<TCall>(call, CallManagement.CalculateCostOfCall(call)))
                     .OfType<TCallInfo>()
