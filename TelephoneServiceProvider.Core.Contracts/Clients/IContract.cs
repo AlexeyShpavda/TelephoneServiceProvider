@@ -7,6 +7,8 @@ namespace TelephoneServiceProvider.Core.Contracts.Clients
     {
         Guid ContractNumber { get; }
 
+        DateTime DateOfContract { get; }
+
         ICompany Company { get; }
 
         IPassport IndividualPassport { get; }

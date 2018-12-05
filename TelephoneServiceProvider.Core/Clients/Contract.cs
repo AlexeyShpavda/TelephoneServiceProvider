@@ -9,6 +9,8 @@ namespace TelephoneServiceProvider.Core.Clients
     {
         public Guid ContractNumber { get; }
 
+        public DateTime DateOfContract { get; }
+
         public ICompany Company { get; }
 
         public IPassport IndividualPassport { get; }
@@ -25,6 +27,7 @@ namespace TelephoneServiceProvider.Core.Clients
             IClientEquipment clientEquipment, string conditions)
         {
             ContractNumber = Guid.NewGuid();
+            DateOfContract = DateTime.Now;
             Company = company;
             IndividualPassport = individualPassport;
             PhoneNumber = phoneNumber;
