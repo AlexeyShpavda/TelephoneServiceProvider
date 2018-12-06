@@ -1502,3 +1502,13 @@
 12/03/2018 14:16:45:  1756853631 Answered Call from 986325703
 12/03/2018 14:16:48:  1756853631 Ended Call with 986325703
 12/03/2018 14:16:48:  Base Station Notifies Billing System of Completed call from 986325703 to 1756853631
+12/06/2018 22:39:14:  103086814 was Attached to Station
+12/06/2018 22:39:14:  1612606942 was Attached to Station
+12/06/2018 22:39:14:  1377212924 was Attached to Station
+12/06/2018 22:39:14:  103086814 is Calling 1612606942
+12/06/2018 22:39:14:  Billing System Checks 103086814 Balance
+12/06/2018 22:39:14:  103086814 has Enough Money to Make Call
+12/06/2018 22:39:14:  1377212924 is Calling 1612606942
+12/06/2018 22:39:14:  Billing System Checks 1377212924 Balance
+12/06/2018 22:39:14:  1377212924 has Enough Money to Make Call
+12/06/2018 22:39:14:  1612606942 is Busy

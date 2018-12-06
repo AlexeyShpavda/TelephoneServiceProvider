@@ -9,6 +9,8 @@ namespace TelephoneServiceProvider.Core.Contracts.Clients
 
         DateTime DateOfContract { get; }
 
+        DateTime ContractExpirationDate { get; }
+
         ICompany Company { get; }
 
         IPassport IndividualPassport { get; }

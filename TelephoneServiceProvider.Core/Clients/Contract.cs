@@ -11,6 +11,8 @@ namespace TelephoneServiceProvider.Core.Clients
 
         public DateTime DateOfContract { get; }
 
+        public DateTime ContractExpirationDate { get; }
+
         public ICompany Company { get; }
 
         public IPassport IndividualPassport { get; }
@@ -24,10 +26,11 @@ namespace TelephoneServiceProvider.Core.Clients
         public string Conditions { get; }
 
         public Contract(ICompany company, IPassport individualPassport, string phoneNumber, ITariff tariff,
-            IClientEquipment clientEquipment, string conditions)
+            IClientEquipment clientEquipment, string conditions, int contractTermInDays = 365)
         {
             ContractNumber = Guid.NewGuid();
             DateOfContract = DateTime.Now;
+            ContractExpirationDate = DateOfContract.AddDays(contractTermInDays);
             Company = company;
             IndividualPassport = individualPassport;
             PhoneNumber = phoneNumber;
