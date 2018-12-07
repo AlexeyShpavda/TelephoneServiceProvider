@@ -73,7 +73,6 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
             Ports.Remove(port);
 
-
             Logger.WriteLine($"{port.PhoneNumber} was Disconnected from Station");
         }
 
