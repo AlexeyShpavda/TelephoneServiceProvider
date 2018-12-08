@@ -21,12 +21,15 @@ namespace TelephoneServiceProvider.Equipment.TelephoneExchange
 
         public string PhoneNumber { get; }
 
+        public Guid IdentificationNumber { get; }
+
         public PortStatus PortStatus { get; private set; }
 
         public Port(string phoneNumber)
         {
-            PortStatus = PortStatus.SwitchedOff;
             PhoneNumber = phoneNumber;
+            IdentificationNumber = Guid.NewGuid();
+            PortStatus = PortStatus.SwitchedOff;
         }
 
         public void ConnectToTerminal(object sender, ConnectionEventArgs e)

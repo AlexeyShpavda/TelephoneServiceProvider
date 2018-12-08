@@ -1512,3 +1512,25 @@
 12/06/2018 22:39:14:  Billing System Checks 1377212924 Balance
 12/06/2018 22:39:14:  1377212924 has Enough Money to Make Call
 12/06/2018 22:39:14:  1612606942 is Busy
+12/08/2018 11:37:20:  1423790194 was Attached to Station
+12/08/2018 11:37:20:  10452132 was Attached to Station
+12/08/2018 11:37:20:  1762978895 was Attached to Station
+12/08/2018 11:37:21:  1423790194 is Calling 10452132
+12/08/2018 11:37:21:  Billing System Checks 1423790194 Balance
+12/08/2018 11:37:21:  1423790194 has Enough Money to Make Call
+12/08/2018 11:37:21:  1762978895 is Calling 10452132
+12/08/2018 11:37:21:  Billing System Checks 1762978895 Balance
+12/08/2018 11:37:21:  1762978895 has Enough Money to Make Call
+12/08/2018 11:37:21:  10452132 is Busy
+12/08/2018 11:37:25:  10452132 Did not Answer Call from 1423790194
+12/08/2018 11:37:25:  Base Station Notifies Billing System of Failed Call from 1423790194 to 10452132
+12/08/2018 11:37:29:  1762978895 is Calling 123
+12/08/2018 11:37:29:  Billing System Checks 1762978895 Balance
+12/08/2018 11:37:29:  1762978895 has Enough Money to Make Call
+12/08/2018 11:37:29:  123 Does not Exist
+12/08/2018 11:37:29:  1423790194 is Calling 10452132
+12/08/2018 11:37:29:  Billing System Checks 1423790194 Balance
+12/08/2018 11:37:29:  1423790194 has Enough Money to Make Call
+12/08/2018 11:37:29:  10452132 Answered Call from 1423790194
+12/08/2018 11:37:32:  10452132 Ended Call with 1423790194
+12/08/2018 11:37:32:  Base Station Notifies Billing System of Completed call from 1423790194 to 10452132

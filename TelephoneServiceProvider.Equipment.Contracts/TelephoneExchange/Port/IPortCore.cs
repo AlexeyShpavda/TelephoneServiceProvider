@@ -1,4 +1,5 @@
-﻿using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
+﻿using System;
+using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Enums;
 using TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.EventsArgs;
 
 namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port
@@ -6,6 +7,8 @@ namespace TelephoneServiceProvider.Equipment.Contracts.TelephoneExchange.Port
     public interface IPortCore
     {
         string PhoneNumber { get; }
+
+        Guid IdentificationNumber { get; }
 
         PortStatus PortStatus { get; }
 
